@@ -79,7 +79,8 @@
               "browserTarget": "softsolution:build:production"
             },
             "development": {
-              "browserTarget": "softsolution:build:development"
+              "browserTarget": "softsolution:build:development",
+              "proxyConfig": "src/proxy.conf.json"
             }
           },
           "defaultConfiguration": "development"
