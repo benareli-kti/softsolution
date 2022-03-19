@@ -1,0 +1,19 @@
+<div class="basic-container submit-form" fxLayout="column" fxLayoutAlign="space-between center" >
+<div class="width-100">
+  <div class="marginbot" fxLayout="row" fxLayoutAlign="space-between center">
+    <mat-button-toggle-group class="active_btn" #group="matButtonToggleGroup" [(value)]="statusActive" (change)="onValChange(group.value)">
+      <mat-button-toggle value="true">Active</mat-button-toggle>
+      <mat-button-toggle value="false">Not Active</mat-button-toggle>
+    </mat-button-toggle-group>
+    <button class="close_btn" mat-button (click)="closeDialog()">X</button>
+  </div>
+
+  <mat-form-field class="input_50">
+    <input matInput placeholder="Description" [(ngModel)]="data.description">
+  </mat-form-field>
+</div>
+
+<div class="width-100">
+  <button mat-button class="save_btn" (click)="updateData()">Save</button>
+</div>
+</div>

@@ -1,0 +1,67 @@
+<div class="flex-container">
+	<div class="flex-left">
+		<div class="submit-form">
+    		<div fxLayout="row">
+      			<mat-form-field class="input_field">
+          			<mat-label class="input_label">Category ID</mat-label>
+          			<input matInput type="text" class="form-control" name="catid" [(ngModel)]="productcatadd.catid" required id="catid">
+        		</mat-form-field>
+      			<mat-form-field class="input_field">
+          			<mat-label class="input_label">Description</mat-label>
+          			<input matInput type="text" class="form-control" name="description" [(ngModel)]="productcatadd.description" required id="description">
+        		</mat-form-field>
+            <div class="quick_add">
+      			<button (click)="saveProductCat()" class="submit">Quick add</button></div>
+    		</div>
+  		</div>
+	</div>
+
+	<div class="flex-right">
+		<mat-form-field class="input_field max_search">
+      <input matInput type="text" class="form-control" placeholder="Search data" (keyup)="applyFilter($event)">
+            <!--[(ngModel)]="searchProdCat"-->
+    </mat-form-field>
+    <button class="submit" (click)="toggleDisplay()">Filter</button>
+	</div>
+</div>
+
+<div fxLayout="row" fxLayoutAlign="space-between center" class="filtered" *ngIf="isShow">
+<!--<mat-form-field>
+  <mat-select [(value)]="selection" placeholder="Status">
+    <mat-option *ngFor="let active of actives" [value]="active" (click)="applyTblFilter(active)">{{active}}</mat-option>
+  </mat-select>
+</mat-form-field>-->
+<mat-form-field appearance="fill" *ngFor="let datafilter of dataFilters">
+  <mat-label>{{ datafilter.name }}</mat-label>
+  <mat-select
+    [(value)]="datafilter.defaultValue"
+    (selectionChange)="applyTblFilter($event, datafilter)"
+  >
+    <mat-option *ngFor="let op of datafilter.options" [value]="op">
+      {{ op }}
+    </mat-option>
+  </mat-select>
+</mat-form-field>
+</div>
+
+<div class="table-container mat-elevation-z3">
+<mat-table #table [dataSource]="dataSource" class="mat-table">
+  <ng-container matColumnDef="id">
+    <mat-header-cell class="max_id" *matHeaderCellDef>ID</mat-header-cell>
+    <mat-cell class="max_id" *matCellDef="let productcats">{{productcats.catid}}</mat-cell>
+  </ng-container>
+  <ng-container matColumnDef="name">
+    <mat-header-cell *matHeaderCellDef>Name</mat-header-cell>
+    <mat-cell *matCellDef="let productcats">{{productcats.description}}</mat-cell>
+  </ng-container>
+
+  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+  <mat-row
+      *matRowDef="let row; columns: displayedColumns;"
+      (click)="openDialog(row)"
+      [class.active]="clickedRows == row"
+  ></mat-row>
+</mat-table>
+</div>
+
+<mat-paginator [pageSizeOptions]="[10, 20, 50, 100]" showFirstLastButtons></mat-paginator>

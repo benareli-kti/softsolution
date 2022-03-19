@@ -1,0 +1,31 @@
+<div class="basic-container submit-form" fxLayout="column" fxLayoutAlign="space-between center" >
+<div class="width-100">
+  <div class="marginbot" fxLayout="row" fxLayoutAlign="space-between center">
+    <mat-button-toggle-group class="active_btn" #group="matButtonToggleGroup" [(value)]="statusActive" (change)="onValChange(group.value)">
+      <mat-button-toggle value="true">Active</mat-button-toggle>
+      <mat-button-toggle value="false">Not Active</mat-button-toggle>
+    </mat-button-toggle-group>
+    <button class="close_btn" mat-button (click)="closeDialog()">X</button>
+  </div>
+
+  <mat-form-field class="input_100">
+    <input matInput required placeholder="Name" [(ngModel)]="datname">
+  </mat-form-field>
+
+  <mat-form-field class="input_50" >
+    <input matInput placeholder="Code" [(ngModel)]="datcode">
+  </mat-form-field>
+
+  <mat-form-field class="input_50 margin_7">
+    <input matInput placeholder="Phone" [(ngModel)]="datphone">
+  </mat-form-field>
+
+  <mat-checkbox class="input_50" [(ngModel)]="isCustomer">Customer</mat-checkbox>
+  <mat-checkbox class="input_50 margin_7" [(ngModel)]="isSupplier">Supplier</mat-checkbox>
+</div>
+
+<div class="width-100">
+  <button *ngIf="!isNew" mat-button class="submit save_btn" (click)="updateData()">Save</button>
+  <button *ngIf="isNew" mat-button class="submit save_btn" (click)="createData()">Save</button>
+</div>
+</div>
