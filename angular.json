@@ -29,6 +29,10 @@
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "sass",
+
+            //NEW
+            "proxyConfig": "src/proxy.conf.json",
+
             "assets": [
               "src/favicon.ico",
               "src/assets"
@@ -76,10 +80,12 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "softsolution:build:production"
+              "browserTarget": "softsolution:build:production",
+              "proxyConfig": "src/proxy.conf.json"
             },
             "development": {
-              "browserTarget": "softsolution:build:development"
+              "browserTarget": "softsolution:build:development",
+              "proxyConfig": "src/proxy.conf.json"
             }
           },
           "defaultConfiguration": "development"
@@ -87,7 +93,8 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "softsolution:build"
+            "browserTarget": "softsolution:build",
+            "proxyConfig": "src/proxy.conf.json"
           }
         },
         "test": {
