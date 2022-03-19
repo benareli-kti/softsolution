@@ -29,10 +29,6 @@
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "sass",
-
-            //NEW
-            "proxyConfig": "src/proxy.conf.json",
-
             "assets": [
               "src/favicon.ico",
               "src/assets"
