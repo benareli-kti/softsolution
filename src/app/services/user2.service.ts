@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, map, of } from 'rxjs';
 import { User } from '../models/user.model';
 
-const baseUrl = 'http://192.53.112.254/:8080/api/users';
+const baseUrl = 'http://192.53.112.254:8080/api/users';
 
 @Injectable({
   providedIn: 'root'
