@@ -31,7 +31,7 @@ export class LoginComponent implements OnInit {
     this.user2Service.getAll()
       .subscribe(user2 => {
         console.log(user2);
-        if (!user2){
+        if (user2){
           this.LogOrReg = false;
           console.log("NEW SYSTEM!")
         }
