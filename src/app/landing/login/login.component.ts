@@ -32,6 +32,7 @@ export class LoginComponent implements OnInit {
       .subscribe(user2 => {
         if (!user2){
           this.LogOrReg = false;
+          console.log("NEW SYSTEM!")
         }
     });
     if (this.tokenStorage.getToken()) {
