@@ -151,4 +151,4 @@ testem.log
 Thumbs.db
 
 #Local Setting
-/baseurl.ts
+src/app/baseurl.ts
