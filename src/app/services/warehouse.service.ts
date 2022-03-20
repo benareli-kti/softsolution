@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, map, of } from 'rxjs';
 import { Warehouse } from '../models/warehouse.model';
 
-const baseUrl = 'http://127.0.0.1:8080/api/warehouses';
+const baseUrl = 'http://192.53.112.254:8080/api/warehouses';
 
 @Injectable({
   providedIn: 'root'
