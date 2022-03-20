@@ -2,8 +2,9 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, map, of } from 'rxjs';
 import { Brand } from '../models/brand.model';
+import { BaseURL } from 'src/app/baseurl';
 
-const baseUrl = 'http://192.53.112.254:8080/api/brands';
+const baseUrl = BaseURL.BASE_URL + 'brands';
 
 @Injectable({
   providedIn: 'root'
