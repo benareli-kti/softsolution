@@ -150,3 +150,5 @@ testem.log
 .DS_Store
 Thumbs.db
 
+#Local Setting
+src/app/baseurl.ts
