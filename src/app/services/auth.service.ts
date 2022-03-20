@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { BaseURL } from 'src/baseurl';
+import { BaseURL } from 'src/app/baseurl';
 
 const AUTH_API = BaseURL.BASE_URL + 'auth/';
 const httpOptions = {
