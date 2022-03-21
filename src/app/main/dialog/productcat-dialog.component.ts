@@ -24,6 +24,7 @@ export class ProductcatDialogComponent implements OnInit {
   isUpdated = 'update';
   currCatId?: string;
   currDescription?: string;
+  log = 0;
 
   constructor(
     public dialogRef: MatDialogRef<ProductcatDialogComponent>,
@@ -46,6 +47,20 @@ export class ProductcatDialogComponent implements OnInit {
       }
     this.currCatId = this.data.catid;
     this.currDescription = this.data.description;
+    this.retrieveLog();
+  }
+
+  retrieveLog(): void {
+    this.logService.getAll()
+      .subscribe({
+        next: (logPR) => {
+          logPR = logPR.filter
+          (dataPR => dataPR.category === this.data.id)
+          console.log(logPR);
+          this.log = logPR.length;
+        },
+        error: (e) => console.error(e)
+      })
   }
 
   onValChange(val: string) {
@@ -85,7 +100,7 @@ export class ProductcatDialogComponent implements OnInit {
           const log = {
             message: this.isUpdated,
             brand: "null",
-            category: res.id,
+            category: this.data.id,
             product: "null",
             partner: "null",
             warehouse: "null",

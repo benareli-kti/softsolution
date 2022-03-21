@@ -25,16 +25,20 @@ export class ProductDialogComponent implements OnInit {
     name: '',
     category: '',
     brand: '',
+    isStock: false,
     active: false
   };
   isChecked = false;
+  isStock = false;
   isNew = false;
+  datid?: string;
   datsku?: string;
   datname?: string;
   datdesc?: string;
   datlprice?: number;
   datbprice?: number;
   datcost?: number;
+  datisstock?: string;
   statusActive?: string;
 
   products?: Product[];
@@ -45,6 +49,7 @@ export class ProductDialogComponent implements OnInit {
 
   a = 0; b = 0;
   isUpdated = 'update';
+  log = 0;
 
   //Add
   productadd: Product = {
@@ -53,6 +58,7 @@ export class ProductDialogComponent implements OnInit {
     description: '',
     category: '',
     brand: '',
+    isStock: true,
     active: true
   };
 
@@ -91,6 +97,7 @@ export class ProductDialogComponent implements OnInit {
 
   ngOnInit() {
     if (this.data){
+      this.datid = this.data.id;
       this.datsku = this.data.sku;
       this.datname = this.data.name;
       this.datdesc = this.data.description;
@@ -106,6 +113,11 @@ export class ProductDialogComponent implements OnInit {
         this.isChecked = false;
         this.a = 1;
       }
+      if (this.data.isStock == true){
+        this.datisstock = 'true';
+      }else{
+        this.datisstock = 'false';
+      }
       if (this.data.category){
         this.selectedCategory = this.data.category._id;
       }else{
@@ -119,11 +131,14 @@ export class ProductDialogComponent implements OnInit {
     } else{
       this.isNew = true;
       this.isChecked = true;
+      this.datisstock = 'true';
       this.statusActive = 'true';
+      this.datdesc = "";
       this.datsku = "";
       this.datname = "";
     }
     this.retrieveProduct();
+    this.retrieveLog();
   }
 
   onValChange(val: string) {
@@ -134,6 +149,15 @@ export class ProductDialogComponent implements OnInit {
     }else{
       this.isChecked = false;
       this.b = 4;
+    }
+  }
+
+  onStockChange(vals: string) {
+    this.datisstock = vals;
+    if (this.datisstock == 'true'){
+      this.isStock = true;
+    }else{
+      this.isStock = false;
     }
   }
 
@@ -155,6 +179,18 @@ export class ProductDialogComponent implements OnInit {
       });
   }
 
+  retrieveLog(): void {
+    this.logService.getAll()
+      .subscribe({
+        next: (logPR) => {
+          logPR = logPR.filter
+          (dataPR => dataPR.product === this.datid)
+          this.log = logPR.length;
+        },
+        error: (e) => console.error(e)
+      })
+  }
+
   closeDialog() {
     this.dialogRef.close();
   }
@@ -164,27 +200,27 @@ export class ProductDialogComponent implements OnInit {
     if (this.a+this.b==3){this.isUpdated = 'activate'};
     if (this.datsku != this.data.sku){
       this.isUpdated = this.isUpdated + ", from " 
-      + this.datsku + " to " + this.data.sku;
+      + this.data.sku + " to " + this.datsku;
     }
     if (this.datname != this.data.name){
       this.isUpdated = this.isUpdated + ", from " 
-      + this.datname + " to " + this.data.name;
+      + this.data.name + " to " + this.datname;
     }
     if (this.datdesc != this.data.description){
       this.isUpdated = this.isUpdated + ", from " 
-      + this.datdesc + " to " + this.data.description;
+      + this.data.description + " to " + this.datdesc;
     }
     if (this.datlprice != this.data.listprice){
       this.isUpdated = this.isUpdated + ", from " 
-      + this.datlprice + " to " + this.data.listprice;
+      + this.data.listprice + " to " + this.datlprice;
     }
     if (this.datbprice != this.data.botprice){
       this.isUpdated = this.isUpdated + ", from " 
-      + this.datbprice + " to " + this.data.botprice;
+      + this.data.botprice + " to " + this.datbprice;
     }
     if (this.datcost != this.data.cost){
       this.isUpdated = this.isUpdated + ", from " 
-      + this.datcost + " to " + this.data.cost;
+      + this.data.cost + " to " + this.datcost;
     }
     const data = {
       sku: this.datsku,
@@ -193,6 +229,7 @@ export class ProductDialogComponent implements OnInit {
       listprice: this.datlprice,
       botprice: this.datbprice,
       cost: this.datcost,
+      isStock: this.isStock,
       category: this.categoryid,
       brand: this.brandid,
       active: this.isChecked
@@ -204,7 +241,7 @@ export class ProductDialogComponent implements OnInit {
             message: this.isUpdated,
             brand: "null",
             category: "null",
-            product: res.id,
+            product: this.datid,
             partner: "null",
             warehouse: "null",
             user: this.globals.userid
@@ -221,6 +258,7 @@ export class ProductDialogComponent implements OnInit {
   }
 
   createData(): void {
+    console.log(this.isStock);
     const data = {
       sku: this.datsku,
       name: this.datname,
@@ -228,6 +266,7 @@ export class ProductDialogComponent implements OnInit {
       listprice: this.datlprice,
       botprice: this.datbprice,
       cost: this.datcost,
+      isStock: this.isStock,
       category: this.categoryid,
       brand: this.brandid,
       active: this.isChecked

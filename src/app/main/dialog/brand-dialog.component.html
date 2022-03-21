@@ -13,7 +13,10 @@
   </mat-form-field>
 </div>
 
-<div class="width-100">
-  <button mat-button class="save_btn" (click)="updateData()">Save</button>
+<div class="width-100" fxLayout="row" fxLayoutAlign="space-between center">
+  <div class="width-10"><button class="log_btn" [(ngModel)]="log">Log: {{log}}</button></div>
+  <div class="width-90">
+    <button mat-button class="save_btn" (click)="updateData()">Save</button>
+  </div>
 </div>
 </div>

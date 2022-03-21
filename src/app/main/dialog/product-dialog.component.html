@@ -8,8 +8,9 @@
     <button class="close_btn" mat-button (click)="closeDialog()">X</button>
   </div>
 
-  <mat-form-field class="input_50" >
-    <input matInput required placeholder="SKU" [(ngModel)]="datsku">
+  <mat-form-field class="input_50" hintLabel="Max 10 characters">
+    <input #input matInput maxlength="10" required placeholder="SKU" [(ngModel)]="datsku">
+    <mat-hint align="end">{{input.value?.length || 0}}/10</mat-hint>
   </mat-form-field>
 
   <mat-form-field class="input_50 margin_7">
@@ -48,10 +49,18 @@
       </mat-option>
     </mat-select>
   </mat-form-field>
+
+  <mat-button-toggle-group class="active_btn margin_7" #group2="matButtonToggleGroup" [(value)]="datisstock" (change)="onStockChange(group2.value)">
+    <mat-button-toggle style="padding: 0pt 30pt;" value="true">Stock</mat-button-toggle>
+    <mat-button-toggle style="padding: 0pt 30pt;" value="false">Jasa</mat-button-toggle>
+  </mat-button-toggle-group>
 </div>
 
-<div class="width-100">
-  <button *ngIf="!isNew" mat-button class="submit save_btn" (click)="updateData()">Save</button>
-  <button *ngIf="isNew" mat-button class="submit save_btn" (click)="createData()">Save</button>
+<div class="width-100" fxLayout="row" fxLayoutAlign="space-between center">
+  <div class="width-10"><button class="log_btn" [(ngModel)]="log">Log: {{log}}</button></div>
+  <div class="width-90">
+    <button *ngIf="!isNew" mat-button class="submit save_btn" (click)="updateData()">Save</button>
+    <button *ngIf="isNew" mat-button class="submit save_btn" (click)="createData()">Save</button>
+  </div>
 </div>
 </div>

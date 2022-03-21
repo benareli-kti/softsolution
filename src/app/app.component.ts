@@ -1,4 +1,5 @@
 import { Component, ViewChild, AfterViewInit } from '@angular/core';
+import { Globals } from 'src/app/global';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
 import { MatSidenav } from '@angular/material/sidenav';
@@ -26,10 +27,12 @@ export class AppComponent {
   username?: string;
   constructor(
     private router: Router,
+    private globals: Globals,
     public breakpointObserver: BreakpointObserver,
     private tokenStorageService: TokenStorageService
   ) { }
   ngOnInit(): void {
+    //console.log(Globals.username);
     this.isLoggedIn = !!this.tokenStorageService.getToken();
     if (this.isLoggedIn) {
       const user = this.tokenStorageService.getUser();
@@ -37,6 +40,8 @@ export class AppComponent {
       this.showAdminBoard = this.roles.includes('ROLE_ADMIN');
       this.showModeratorBoard = this.roles.includes('ROLE_MODERATOR');
       this.username = user.username;
+      this.globals.username = user.username;
+      this.globals.userid = user.id;
     }
     else{
       this.router.navigate(['/login']);

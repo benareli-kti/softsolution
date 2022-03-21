@@ -24,6 +24,7 @@ export class WarehouseDialogComponent implements OnInit {
   isUpdated = 'update';
   currName?: string;
   currShort?: string;
+  log = 0;
 
   constructor(
     public dialogRef: MatDialogRef<WarehouseDialogComponent>,
@@ -46,6 +47,20 @@ export class WarehouseDialogComponent implements OnInit {
       }
     this.currName = this.data.name;
     this.currShort = this.data.short;
+    this.retrieveLog();
+  }
+
+  retrieveLog(): void {
+    this.logService.getAll()
+      .subscribe({
+        next: (logPR) => {
+          logPR = logPR.filter
+          (dataPR => dataPR.warehouse === this.data.id)
+          console.log(logPR);
+          this.log = logPR.length;
+        },
+        error: (e) => console.error(e)
+      })
   }
 
   onValChange(val: string) {
@@ -88,7 +103,7 @@ export class WarehouseDialogComponent implements OnInit {
             category: "null",
             product: "null",
             partner: "null",
-            warehouse: res.id,
+            warehouse: this.data.id,
             user: this.globals.userid
           };
           this.logService.create(log)

@@ -22,6 +22,7 @@ export class BrandDialogComponent implements OnInit {
   a = 0; b = 0;
   isUpdated = 'update';
   currDescription?: string;
+  log = 0;
 
   constructor(
     public dialogRef: MatDialogRef<BrandDialogComponent>,
@@ -43,6 +44,20 @@ export class BrandDialogComponent implements OnInit {
         this.a = 1;
       }
     this.currDescription = this.data.description;
+    this.retrieveLog();
+  }
+
+  retrieveLog(): void {
+    this.logService.getAll()
+      .subscribe({
+        next: (logPR) => {
+          logPR = logPR.filter
+          (dataPR => dataPR.brand === this.data.id)
+          console.log(logPR);
+          this.log = logPR.length;
+        },
+        error: (e) => console.error(e)
+      })
   }
 
   onValChange(val: string) {
@@ -76,7 +91,7 @@ export class BrandDialogComponent implements OnInit {
         next: (res) => {
           const log = {
             message: this.isUpdated,
-            brand: res.id,
+            brand: this.data.id,
             category: "null",
             product: "null",
             partner: "null",

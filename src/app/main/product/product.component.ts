@@ -35,6 +35,7 @@ export class ProductComponent implements OnInit {
     name: '',
     category: '',
     brand: '',
+    isStock: true,
     active: true
   };
   
@@ -89,30 +90,6 @@ export class ProductComponent implements OnInit {
         },
         error: (e) => console.error(e)
     });
-  }
-
-  saveProduct(): void {
-    const data = {
-      sku: this.productadd.sku,
-      name: this.productadd.name,
-      category: this.categoryid,
-      brand: this.brandid,
-      active: this.productadd.active
-    };
-    this.productService.create(data)
-      .subscribe({
-        next: (res) => {
-          this.retrieveProduct();
-          this.productadd = {
-            sku: '',
-            name: '',
-            category: '',
-            brand: '',
-            active: true
-          };
-        },
-        error: (e) => console.error(e)
-      });
   }
 
   applyTblFilter(event: MatSelectChange) {

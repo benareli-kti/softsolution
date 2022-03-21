@@ -6,6 +6,7 @@ export class Product {
     listprice?: number;
     botprice?: number;
     cost?: number;
+    isStock?: boolean;
 	category?: any;
 	brand?: any;
 	active?: boolean;

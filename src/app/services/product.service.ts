@@ -37,8 +37,8 @@ export class ProductService {
   findAllActive(): Observable<Product[]>{
     return this.http.get<Product[]>(`${baseUrl}/active`);
   }
-  findByCatId(sku: any): Observable<Product[]> {
-    return this.http.get<Product[]>(`${baseUrl}?sku=${sku}`);
+  findAllStock(): Observable<Product[]> {
+    return this.http.get<Product[]>(`${baseUrl}/stock`);
   }
   findByDesc(name: any): Observable<Product[]> {
     return this.http.get<Product[]>(`${baseUrl}?name=${name}`);

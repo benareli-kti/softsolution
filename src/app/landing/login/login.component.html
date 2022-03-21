@@ -27,6 +27,9 @@
         <div class="alert" role="alert" *ngIf="f.submitted && isLoginFailed">
           Login failed: {{ errorMessage }}
         </div>
+        <div class="alert" role="alert" *ngIf="f.submitted && isSuccessful">
+          Welcome, please login
+        </div>
       </form>
     </mat-card-content>
   </mat-card>

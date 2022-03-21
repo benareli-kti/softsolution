@@ -26,13 +26,16 @@ export class PartnerDialogComponent implements OnInit {
   isCustomer = false;
   isSupplier = false;
   isNew = false;
+  datid?: string;
   datcode?: string;
   datname?: string;
   datphone?: string;
   statusActive?: string;
 
   a = 0; b = 0;
+  c = 0; d = 0;
   isUpdated = 'update';
+  log = 0;
 
   constructor(
     public dialogRef: MatDialogRef<PartnerDialogComponent>,
@@ -45,6 +48,7 @@ export class PartnerDialogComponent implements OnInit {
 
   ngOnInit() {
     if (this.data){
+      this.datid = this.data.id;
       this.datcode = this.data.code;
       this.datname = this.data.name;
       this.datphone = this.data.phone;
@@ -70,6 +74,20 @@ export class PartnerDialogComponent implements OnInit {
       this.datname = "";
       this.datphone = "";
     }
+    this.retrieveLog();
+  }
+
+  retrieveLog(): void {
+    this.logService.getAll()
+      .subscribe({
+        next: (logPA) => {
+          logPA = logPA.filter
+          (dataPR => dataPR.partner === this.datid)
+          console.log(logPA);
+          this.log = logPA.length;
+        },
+        error: (e) => console.error(e)
+      })
   }
 
   onValChange(val: string) {
@@ -90,15 +108,15 @@ export class PartnerDialogComponent implements OnInit {
     if (this.a+this.b==3){this.isUpdated = 'activate'};
     if (this.datcode != this.data.code){
       this.isUpdated = this.isUpdated + ", from " 
-      + this.datcode + " to " + this.data.code;
+      + this.data.code + " to " + this.datcode;
     }
     if (this.datname != this.data.name){
       this.isUpdated = this.isUpdated + ", from " 
-      + this.datname + " to " + this.data.name;
+      + this.data.name + " to " + this.datname;
     }
     if (this.datphone != this.data.phone){
       this.isUpdated = this.isUpdated + ", from " 
-      + this.datphone + " to " + this.data.phone;
+      + this.data.phone + " to " + this.datphone;
     }
     const data = {
       code: this.datcode,
@@ -115,8 +133,8 @@ export class PartnerDialogComponent implements OnInit {
             message: this.isUpdated,
             brand: "null",
             category: "null",
-            product: res.id,
-            partner: "null",
+            product: "null",
+            partner: this.datid,
             warehouse: "null",
             user: this.globals.userid
           };
@@ -132,6 +150,7 @@ export class PartnerDialogComponent implements OnInit {
   }
 
   createData(): void {
+    this.isChecked = true;
     const data = {
       code: this.datcode,
       name: this.datname,
