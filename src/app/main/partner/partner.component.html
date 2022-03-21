@@ -12,56 +12,36 @@
       <input matInput type="text" class="form-control" placeholder="Search data" (keyup)="applyFilter($event)">
             <!--[(ngModel)]="searchProdCat"-->
     </mat-form-field>
-    <button class="submit" (click)="toggleDisplay()">Filter</button>
 	</div>
 </div>
 
-<div fxLayout="row" fxLayoutAlign="space-between center" class="filtered" *ngIf="isShow">
-<!--<mat-form-field>
-  <mat-select [(value)]="selection" placeholder="Status">
-    <mat-option *ngFor="let active of actives" [value]="active" (click)="applyTblFilter(active)">{{active}}</mat-option>
-  </mat-select>
-</mat-form-field>-->
-<mat-form-field appearance="fill" *ngFor="let datafilter of dataFilters">
-  <mat-label>{{ datafilter.name }}</mat-label>
-  <mat-select
-    [(value)]="datafilter.defaultValue"
-    (selectionChange)="applyTblFilter($event, datafilter)"
-  >
-    <mat-option *ngFor="let op of datafilter.options" [value]="op">
-      {{ op }}
-    </mat-option>
-  </mat-select>
-</mat-form-field>
-</div>
-
 <div class="table-container mat-elevation-z3">
-<mat-table #table [dataSource]="dataSource">
+<mat-table #table [dataSource]="dataSource" class="mat-table">
   <ng-container matColumnDef="code">
-    <mat-header-cell class="max_id" *matHeaderCellDef>Code</mat-header-cell>
-    <mat-cell class="max_id" *matCellDef="let partners">
+    <th class="th-style" fxFlex="25%" mat-header-cell *matHeaderCellDef>Code</th>
+    <td class="tr-style" fxFlex="25%" mat-cell *matCellDef="let partners">
       {{partners.code}}
-    </mat-cell>
+    </td>
   </ng-container>
   <ng-container matColumnDef="name">
-    <mat-header-cell *matHeaderCellDef>Nama</mat-header-cell>
-    <mat-cell *matCellDef="let partners">
+    <th class="th-style" fxFlex="50%" mat-header-cell *matHeaderCellDef>Nama</th>
+    <td class="tr-style" fxFlex="50%" mat-cell *matCellDef="let partners">
       {{partners.name}}
-    </mat-cell>
+    </td>
   </ng-container>
   <ng-container matColumnDef="phone">
-    <mat-header-cell *matHeaderCellDef>Phone</mat-header-cell>
-    <mat-cell *matCellDef="let partners">
-      {{partners.description}}
-    </mat-cell>
+    <th class="th-style" fxFlex="25%" mat-header-cell *matHeaderCellDef>Phone</th>
+    <td class="tr-style" fxFlex="25%" mat-cell *matCellDef="let partners">
+      {{partners.phone}}
+    </td>
   </ng-container>
 
-  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-  <mat-row
+  <tr mat-header-row *matHeaderRowDef="displayedColumns" class="tableHeader"></tr>
+  <tr mat-row class="tableRow" 
       *matRowDef="let row; columns: displayedColumns;"
       (click)="openDialog(row)"
       [class.active]="clickedRows == row"
-  ></mat-row>
+  ></tr>
 </mat-table>
 </div>
 

@@ -1,5 +1,9 @@
 import { Component, OnInit, Inject, Optional, Input } from '@angular/core';
+import { Globals } from 'src/app/global';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Log } from 'src/app/models/log.model';
+import { LogService } from 'src/app/services/log.service';
+
 import { Partner } from 'src/app/models/partner.model';
 import { PartnerService } from 'src/app/services/partner.service';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
@@ -27,9 +31,14 @@ export class PartnerDialogComponent implements OnInit {
   datphone?: string;
   statusActive?: string;
 
+  a = 0; b = 0;
+  isUpdated = 'update';
+
   constructor(
     public dialogRef: MatDialogRef<PartnerDialogComponent>,
     private partnerService: PartnerService,
+    private globals: Globals,
+    private logService: LogService,
     @Inject(MAT_DIALOG_DATA) public data: any,
   ){}
 
@@ -42,9 +51,11 @@ export class PartnerDialogComponent implements OnInit {
       if (this.data.active == true){
         this.statusActive = 'true';
         this.isChecked = true;
+        this.a = 0;
       } else {
         this.statusActive = 'false';
         this.isChecked = false;
+        this.a = 1;
       }
       if (this.data.isCustomer == true){
         this.isCustomer = true;
@@ -75,6 +86,20 @@ export class PartnerDialogComponent implements OnInit {
   }
 
   updateData(): void {
+    if (this.a+this.b==4){this.isUpdated = 'deactivate'};
+    if (this.a+this.b==3){this.isUpdated = 'activate'};
+    if (this.datcode != this.data.code){
+      this.isUpdated = this.isUpdated + ", from " 
+      + this.datcode + " to " + this.data.code;
+    }
+    if (this.datname != this.data.name){
+      this.isUpdated = this.isUpdated + ", from " 
+      + this.datname + " to " + this.data.name;
+    }
+    if (this.datphone != this.data.phone){
+      this.isUpdated = this.isUpdated + ", from " 
+      + this.datphone + " to " + this.data.phone;
+    }
     const data = {
       code: this.datcode,
       name: this.datname,
@@ -86,7 +111,21 @@ export class PartnerDialogComponent implements OnInit {
     this.partnerService.update(this.data.id, data)
       .subscribe({
         next: (res) => {
-          this.closeDialog();
+          const log = {
+            message: this.isUpdated,
+            brand: "null",
+            category: "null",
+            product: res.id,
+            partner: "null",
+            warehouse: "null",
+            user: this.globals.userid
+          };
+          this.logService.create(log)
+          .subscribe({
+            next: (logres) => {
+              this.closeDialog();
+            }
+          });
         },
         error: (e) => console.error(e)
       });
@@ -104,7 +143,21 @@ export class PartnerDialogComponent implements OnInit {
     this.partnerService.create(data)
       .subscribe({
         next: (res) => {
-          this.closeDialog();
+          const log = {
+            message: "add",
+            brand: "null",
+            category: "null",
+            product: "null",
+            partner: res.id,
+            warehouse: "null",
+            user: this.globals.userid
+          };
+          this.logService.create(log)
+          .subscribe({
+            next: (logres) => {
+              this.closeDialog();
+            }
+          });
         },
         error: (e) => console.error(e)
       });

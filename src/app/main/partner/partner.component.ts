@@ -12,12 +12,10 @@ import { PartnerDialogComponent } from '../dialog/partner-dialog.component';
 @Component({
   selector: 'app-partner',
   templateUrl: './partner.component.html',
-  styleUrls: ['./partner.component.sass']
+  styleUrls: ['../style/main.component.sass']
 })
 export class PartnerComponent implements OnInit {
   partners?: Partner[];
-  isShow = false;
-  filtered: Object[];
   
   //Add
   partneradd: Partner = {
@@ -40,17 +38,6 @@ export class PartnerComponent implements OnInit {
   @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort!: MatSort;
 
-  //Filter Data
-  actives=['All','true','false'];
-  columnsToDisplay: string[] = this.displayedColumns.slice();
-  selection: any;
-
-  //New
-  defaultValue = "All";
-  dataFilters: DataFilter[]=[];
-  filterDictionary= new Map<string,string>();
-  //one is boolean , one is string
-
   //Dialog Data
   clickedRows = null;
  
@@ -61,19 +48,6 @@ export class PartnerComponent implements OnInit {
 
   ngOnInit(): void {
     this.retrievePartner();
-
-    this.dataFilters.push({name:'active',options:this.actives,
-      defaultValue:this.defaultValue});
-    this.dataSource.filterPredicate = function (record,filter) {
-      debugger;
-      var map = new Map(JSON.parse(filter));
-      let isMatch = false;
-      for(let [key,value] of map){
-        isMatch = (value=="All") || (record[key as keyof Partner] == value); 
-        if(!isMatch) return false;
-      }
-      return isMatch;
-    }
   }
 
   retrievePartner(): void {
@@ -94,12 +68,6 @@ export class PartnerComponent implements OnInit {
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
     });
-  }
-
-  applyTblFilter(ob:MatSelectChange,datafilter:DataFilter) {
-    this.filterDictionary.set(datafilter.name,ob.value);
-    var jsonString = JSON.stringify(Array.from(this.filterDictionary.entries()));
-    this.dataSource.filter = jsonString;
   }
 
   applyFilter(event: Event) {
@@ -127,9 +95,4 @@ export class PartnerComponent implements OnInit {
       .afterClosed()
       .subscribe(() => this.retrievePartner());
   }
-
-  toggleDisplay() {
-    this.isShow = !this.isShow;
-  }
-
 }

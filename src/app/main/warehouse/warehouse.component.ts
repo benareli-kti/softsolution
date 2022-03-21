@@ -1,6 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { Globals } from 'src/app/global';
 import { Warehouse } from 'src/app/models/warehouse.model';
 import { WarehouseService } from 'src/app/services/warehouse.service';
+import { Log } from 'src/app/models/log.model';
+import { LogService } from 'src/app/services/log.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort, SortDirection } from '@angular/material/sort';
@@ -12,12 +15,10 @@ import { WarehouseDialogComponent } from '../dialog/warehouse-dialog.component';
 @Component({
   selector: 'app-warehouse',
   templateUrl: './warehouse.component.html',
-  styleUrls: ['./warehouse.component.sass']
+  styleUrls: ['../style/main.component.sass']
 })
 export class WarehouseComponent implements OnInit {
   warehouses?: Warehouse[];
-  isShow = false;
-  filtered: Object[];
   
   //Add
   warehouseadd: Warehouse = {
@@ -37,40 +38,18 @@ export class WarehouseComponent implements OnInit {
   @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort!: MatSort;
 
-  //Filter Data
-  actives=['All','true','false'];
-  columnsToDisplay: string[] = this.displayedColumns.slice();
-  selection: any;
-
-  //New
-  defaultValue = "All";
-  dataFilters: DataFilter[]=[];
-  filterDictionary= new Map<string,string>();
-  //one is boolean , one is string
-
   //Dialog Data
   clickedRows = null;
  
   constructor(
+    private globals: Globals,
     private warehouseService: WarehouseService,
+    private logService: LogService,
     private dialog: MatDialog
   ) { }
 
   ngOnInit(): void {
     this.retrieveWarehouse();
-
-    this.dataFilters.push({name:'active',options:this.actives,
-      defaultValue:this.defaultValue});
-    this.dataSource.filterPredicate = function (record,filter) {
-      debugger;
-      var map = new Map(JSON.parse(filter));
-      let isMatch = false;
-      for(let [key,value] of map){
-        isMatch = (value=="All") || (record[key as keyof Warehouse] == value); 
-        if(!isMatch) return false;
-      }
-      return isMatch;
-    }
   }
 
   retrieveWarehouse(): void {
@@ -100,21 +79,29 @@ export class WarehouseComponent implements OnInit {
     this.warehouseService.create(data)
       .subscribe({
         next: (res) => {
-          this.retrieveWarehouse();
-          this.warehouseadd = {
-            name: '',
-            short: '',
-            active: true
+          const log = {
+            message: "add",
+            brand: "null",
+            category: "null",
+            product: "null",
+            partner: "null",
+            warehouse: res.id,
+            user: this.globals.userid
           };
+          this.logService.create(log)
+          .subscribe({
+            next: (logres) => {
+              this.retrieveWarehouse();
+              this.warehouseadd = {
+                name: '',
+                short: '',
+                active: true
+              };
+            }
+          });
         },
         error: (e) => console.error(e)
       });
-  }
-
-  applyTblFilter(ob:MatSelectChange,datafilter:DataFilter) {
-    this.filterDictionary.set(datafilter.name,ob.value);
-    var jsonString = JSON.stringify(Array.from(this.filterDictionary.entries()));
-    this.dataSource.filter = jsonString;
   }
 
   applyFilter(event: Event) {
@@ -131,10 +118,6 @@ export class WarehouseComponent implements OnInit {
     })
       .afterClosed()
       .subscribe(() => this.retrieveWarehouse());
-  }
-
-  toggleDisplay() {
-    this.isShow = !this.isShow;
   }
 
 }

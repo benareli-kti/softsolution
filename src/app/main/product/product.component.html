@@ -16,14 +16,19 @@
 	</div>
 </div>
 
-<div fxLayout="row" fxLayoutAlign="space-between center" class="filtered" *ngIf="isShow">
+<div fxLayout="row" fxLayoutAlign="space-between center" class="filtered" *ngIf="!isShow">
+
 <!--<mat-form-field>
-  <mat-select [(value)]="selection" placeholder="Status">
-    <mat-option *ngFor="let active of actives" [value]="active" (click)="applyTblFilter(active)">{{active}}</mat-option>
+  <mat-label>Category</mat-label>
+  <mat-select name="categoryString" (selectionChange)="applyTblFilter($event)" >
+  <mat-option *ngFor="let productcat of productcats" [value]="productcat.id" ngDefaultControl [(ngModel)]="productadd.category">
+        {{ productcat.description }}
+  </mat-option>
   </mat-select>
 </mat-form-field>-->
-<mat-form-field appearance="fill" *ngFor="let datafilter of dataFilters">
-  <mat-label>{{ datafilter.name }}</mat-label>
+
+<!--<mat-form-field appearance="fill" *ngFor="let product of products">
+  <mat-label>{{ product.category.description }}</mat-label>
   <mat-select
     [(value)]="datafilter.defaultValue"
     (selectionChange)="applyTblFilter($event, datafilter)"
@@ -32,62 +37,57 @@
       {{ op }}
     </mat-option>
   </mat-select>
-</mat-form-field>
+</mat-form-field>-->
+
 </div>
 
 <div class="table-container mat-elevation-z3">
-<mat-table #table [dataSource]="dataSource">
+<mat-table #table [dataSource]="dataSource" class="mat-table">
   <ng-container matColumnDef="sku">
-    <mat-header-cell class="max_id" *matHeaderCellDef>ID</mat-header-cell>
-    <mat-cell class="max_id" *matCellDef="let products">
+    <th class="th-style" fxFlex="10%" mat-header-cell *matHeaderCellDef>ID</th>
+    <td class="tr-style" fxFlex="10%" mat-cell *matCellDef="let products">
       {{products.sku}}
-    </mat-cell>
+    </td>
   </ng-container>
   <ng-container matColumnDef="name">
-    <mat-header-cell *matHeaderCellDef>Nama</mat-header-cell>
-    <mat-cell *matCellDef="let products">
+    <th class="th-style" fxFlex="15%" mat-header-cell *matHeaderCellDef>Nama</th>
+    <td class="tr-style" fxFlex="15%" mat-cell *matCellDef="let products">
       {{products.name}}
-    </mat-cell>
+    </td>
   </ng-container>
   <ng-container matColumnDef="description">
-    <mat-header-cell *matHeaderCellDef>Deskripsi</mat-header-cell>
-    <mat-cell *matCellDef="let products">
+    <th class="th-style" fxFlex="50%" mat-header-cell *matHeaderCellDef>Deskripsi</th>
+    <td class="tr-style" fxFlex="50%" mat-cell *matCellDef="let products">
       {{products.description}}
-    </mat-cell>
+    </td>
   </ng-container>
   <ng-container matColumnDef="listprice">
-    <mat-header-cell *matHeaderCellDef>Harga Jual</mat-header-cell>
-    <mat-cell *matCellDef="let products">
+    <th class="th-style" fxFlex="12%" mat-header-cell *matHeaderCellDef>Harga Jual</th>
+    <td class="tr-style" fxFlex="12%" mat-cell *matCellDef="let products">
       {{products.listprice}}
-    </mat-cell>
-  </ng-container>
-  <ng-container matColumnDef="botprice">
-    <mat-header-cell *matHeaderCellDef>Batas Bawah</mat-header-cell>
-    <mat-cell *matCellDef="let products">
-      {{products.botprice}}
-    </mat-cell>
+    </td>
   </ng-container>
   <ng-container matColumnDef="category">
-    <mat-header-cell *matHeaderCellDef>Category</mat-header-cell>
-    <mat-cell *matCellDef="let products">
+    <th class="th-style" fxFlex="15%" mat-header-cell *matHeaderCellDef mat-sort-header>Category</th>
+    <td class="tr-style" fxFlex="15%" mat-cell *matCellDef="let products">
       {{products.category.description}}
-    </mat-cell>
+    </td>
   </ng-container>
   <ng-container matColumnDef="brand">
-    <mat-header-cell *matHeaderCellDef>Brand</mat-header-cell>
-    <mat-cell *matCellDef="let products">
+    <th class="th-style" fxFlex="15%" mat-header-cell *matHeaderCellDef>Brand</th>
+    <td class="tr-style" fxFlex="15%" mat-cell *matCellDef="let products">
       <div *ngIf="!products.brand"></div>
       <div *ngIf="products.brand">
       {{products.brand.description}}</div>
-    </mat-cell>
+    </td>
   </ng-container>
 
-  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-  <mat-row
+  <tr mat-header-row *matHeaderRowDef="displayedColumns" class="tableHeader"></tr>
+  <tr mat-row class="tableRow" 
       *matRowDef="let row; columns: displayedColumns;"
       (click)="openDialog(row)"
       [class.active]="clickedRows == row"
-  ></mat-row>
+  ></tr>
 </mat-table>
 </div>
 

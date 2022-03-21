@@ -1,7 +1,10 @@
 import { Component, OnInit, Inject, Optional, Input } from '@angular/core';
+import { Globals } from 'src/app/global';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Productcat } from 'src/app/models/productcat.model';
 import { ProductCatService } from 'src/app/services/product-cat.service';
+import { Log } from 'src/app/models/log.model';
+import { LogService } from 'src/app/services/log.service';
 
 @Component({
   selector: 'app-productcat-dialog',
@@ -17,8 +20,15 @@ export class ProductcatDialogComponent implements OnInit {
   isChecked = false;
   statusActive?: string;
 
+  a = 0; b = 0;
+  isUpdated = 'update';
+  currCatId?: string;
+  currDescription?: string;
+
   constructor(
     public dialogRef: MatDialogRef<ProductcatDialogComponent>,
+    private globals: Globals,
+    private logService: LogService,
     private productCatService: ProductCatService,
     @Inject(MAT_DIALOG_DATA) public data: any,
   ){}
@@ -28,18 +38,24 @@ export class ProductcatDialogComponent implements OnInit {
     if (this.data.active == true){
         this.statusActive = 'true';
         this.isChecked = true;
+        this.a = 0;
       } else {
         this.statusActive = 'false';
         this.isChecked = false;
+        this.a = 1;
       }
+    this.currCatId = this.data.catid;
+    this.currDescription = this.data.description;
   }
 
   onValChange(val: string) {
     this.statusActive = val;
     if (this.statusActive == 'true'){
       this.isChecked = true;
+      this.b = 2;
     }else{
       this.isChecked = false;
+      this.b = 4;
     }
   }
 
@@ -48,6 +64,16 @@ export class ProductcatDialogComponent implements OnInit {
   }
 
   updateData(): void {
+    if (this.a+this.b==4){this.isUpdated = 'deactivate'};
+    if (this.a+this.b==3){this.isUpdated = 'activate'};
+    if (this.currDescription != this.data.description){
+      this.isUpdated = this.isUpdated + ", from " 
+      + this.currDescription + " to " + this.data.description;
+    }
+    if (this.currCatId != this.data.catid){
+      this.isUpdated = this.isUpdated + ", from " 
+      + this.currCatId + " to " + this.data.catid;
+    }
     const data = {
       catid: this.data.catid,
       description: this.data.description,
@@ -56,7 +82,21 @@ export class ProductcatDialogComponent implements OnInit {
     this.productCatService.update(this.data.id, data)
       .subscribe({
         next: (res) => {
-          this.closeDialog();
+          const log = {
+            message: this.isUpdated,
+            brand: "null",
+            category: res.id,
+            product: "null",
+            partner: "null",
+            warehouse: "null",
+            user: this.globals.userid
+          };
+          this.logService.create(log)
+          .subscribe({
+            next: (logres) => {
+              this.closeDialog();
+            }
+          });
         },
         error: (e) => console.error(e)
       });

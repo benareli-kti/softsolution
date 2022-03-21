@@ -1,0 +1,93 @@
+.max_action
+  max-width: 35pt
+  text-align: center
+
+.max_id
+  max-width: 100pt
+
+.max_search
+  width: 300pt
+
+.filtered
+  background: #ddd
+  padding: 6pt
+
+.flex-container
+  display: flex
+  flex-direction: row
+  flex-wrap: wrap
+  text-align: center
+  width: calc(100vw - 190pt)
+  justify-content: space-between
+
+.flex-left
+  padding: 3pt
+
+.flex-right
+  padding: 3pt
+
+.input_field
+  padding: 0
+  margin-right: 6pt
+  font-size: .9em
+  color: #222
+
+.submit
+  color: #3f5efb
+  background: none
+  border: 0
+  text-transform: uppercase
+  letter-spacing: 1pt
+
+.quick_add
+  padding: 5pt
+  background: #fff
+  border:1px solid #3f5efb
+  border-radius: 5pt
+  margin-top:5pt
+  height: 15pt
+
+.table-container
+  border-radius: 5pt
+  overflow: hidden
+
+mat-paginator
+  background: none
+
+mat-table
+  background: #fff
+  font-size: 1.2em
+  width: 100%
+  display: flex
+  flex-direction: column
+  
+  .tableHeader
+    background: #eee
+    height: 23pt
+    padding: 5pt
+    border: 0
+    font-size: 1em
+    text-weight: bold
+    text-transform: uppercase
+
+  .tableRow
+    height: 23pt
+    border-bottom: 1px solid #eee
+    padding: 5pt
+    font-size: 1em
+    text-weight: bold
+
+  .th-style
+    color: #111
+    border: 0
+
+  .tr-style
+    color: #333
+    border: 0
+
+$layout-breakpoint-small: 800px
+
+@media (max-width: $layout-breakpoint-small)
+  .flex-container
+    width: calc(100vw - 60pt)
+    background: white

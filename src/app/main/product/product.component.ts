@@ -19,7 +19,7 @@ import { ProductDialogComponent } from '../dialog/product-dialog.component';
 @Component({
   selector: 'app-product',
   templateUrl: './product.component.html',
-  styleUrls: ['./product.component.sass']
+  styleUrls: ['../style/main.component.sass']
 })
 export class ProductComponent implements OnInit {
   products?: Product[];
@@ -28,28 +28,6 @@ export class ProductComponent implements OnInit {
   isShow = false;
   categoryid?: any;
   brandid?: any;
-
-  //Select Category
-  selectedCategory: string = "";
-  selectedData: { valueCat: string; text: string } = {
-    valueCat: "",
-    text: ""
-  };
-  selectedCategoryControl = new FormControl(this.selectedCategory);
-  selectedValue(event: MatSelectChange) {
-    this.categoryid = event.value
-  }
-
-  //Select Brand
-  selectedBrand: string = "";
-  selectedData2: { valueBrand: string; textBrand: string } = {
-    valueBrand: "",
-    textBrand: ""
-  };
-  selectedBrandControl = new FormControl(this.selectedBrand);
-  selectedValue2(event: MatSelectChange) {
-    this.brandid = event.value
-  }
 
   //Add
   productadd: Product = {
@@ -64,55 +42,26 @@ export class ProductComponent implements OnInit {
   currentProduct: Product = {};
   searchProd='';
 
-  //Product Category
-  currentProductCat: Productcat = {};
-  //Brand
-  currentBrand: Brand = {};
-
   //Table
   displayedColumns: string[] = 
-  ['sku', 'name', 'description', 'listprice', 'botprice',
+  ['sku', 'name', 'description', 'listprice',
   'category', 'brand'];
   dataSource = new MatTableDataSource<Product>();
   @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort!: MatSort;
 
-  //Filter Data
-  actives=['All','true','false'];
-  columnsToDisplay: string[] = this.displayedColumns.slice();
-  selection: any;
-
-  //New
-  defaultValue = "All";
-  dataFilters: DataFilter[]=[];
-  filterDictionary= new Map<string,string>();
-  //one is boolean , one is string
-
   //Dialog Data
   clickedRows = null;
- 
+
   constructor(
     private productService: ProductService,
     private productCatService: ProductCatService,
     private brandService: BrandService,
     private dialog: MatDialog
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.retrieveProduct();
-
-    this.dataFilters.push({name:'active',options:this.actives,
-      defaultValue:this.defaultValue});
-    this.dataSource.filterPredicate = function (record,filter) {
-      debugger;
-      var map = new Map(JSON.parse(filter));
-      let isMatch = false;
-      for(let [key,value] of map){
-        isMatch = (value=="All") || (record[key as keyof Product] == value); 
-        if(!isMatch) return false;
-      }
-      return isMatch;
-    }
   }
 
   retrieveProduct(): void {
@@ -125,29 +74,20 @@ export class ProductComponent implements OnInit {
         this.dataSource.sort = this.sort;
     });
 
-    this.productCatService.getAll()
+    this.productCatService.findAllActive()
       .subscribe({
         next: (dataPC) => {
           this.productcats = dataPC;
         },
         error: (e) => console.error(e)
-      });
+    });
 
-    this.brandService.getAll()
+    this.brandService.findAllActive()
       .subscribe({
         next: (dataB) => {
           this.brands = dataB;
         },
         error: (e) => console.error(e)
-      });
-  }
-
-  searchData(): void {
-    this.productService.findByDesc(this.searchProd)
-      .subscribe(prod => {
-        this.dataSource.data = prod;
-        this.dataSource.paginator = this.paginator;
-        this.dataSource.sort = this.sort;
     });
   }
 
@@ -175,14 +115,9 @@ export class ProductComponent implements OnInit {
       });
   }
 
-  /*applyTblFilter(filterValue: string) {
-    this.dataSource.filter = this.selection.trim().toLowerCase()
-  }*/
-
-  applyTblFilter(ob:MatSelectChange,datafilter:DataFilter) {
-    this.filterDictionary.set(datafilter.name,ob.value);
-    var jsonString = JSON.stringify(Array.from(this.filterDictionary.entries()));
-    this.dataSource.filter = jsonString;
+  applyTblFilter(event: MatSelectChange) {
+    //this.dataSource.filter = this.selection.trim().toLowerCase()
+    console.log(event.value);
   }
 
   applyFilter(event: Event) {
