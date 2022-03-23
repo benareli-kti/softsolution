@@ -2,7 +2,7 @@ import { Component, OnInit, Inject, Optional, Input } from '@angular/core';
 import { Globals } from 'src/app/global';
 import { FormsModule, FormBuilder, FormGroup, FormControl } from '@angular/forms';
 import { Observable, of } from "rxjs";
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSelectChange, MatSelectModule } from '@angular/material/select';
 import { Log } from 'src/app/models/log.model';
 import { LogService } from 'src/app/services/log.service';
@@ -29,8 +29,16 @@ export class ProductDialogComponent implements OnInit {
     active: false
   };
   isChecked = false;
-  isStock = false;
+  isStock = true;
   isNew = false;
+  oriid?: string;
+  orisku?: string;
+  oriname?: string;
+  oridesc?: string;
+  orilprice?: number;
+  oribprice?: number;
+  oricost?: number;
+
   datid?: string;
   datsku?: string;
   datname?: string;
@@ -97,37 +105,7 @@ export class ProductDialogComponent implements OnInit {
 
   ngOnInit() {
     if (this.data){
-      this.datid = this.data.id;
-      this.datsku = this.data.sku;
-      this.datname = this.data.name;
-      this.datdesc = this.data.description;
-      this.datlprice = this.data.listprice;
-      this.datbprice = this.data.botprice;
-      this.datcost = this.data.cost;
-      if (this.data.active == true){
-        this.statusActive = 'true';
-        this.isChecked = true;
-        this.a = 0;
-      } else {
-        this.statusActive = 'false';
-        this.isChecked = false;
-        this.a = 1;
-      }
-      if (this.data.isStock == true){
-        this.datisstock = 'true';
-      }else{
-        this.datisstock = 'false';
-      }
-      if (this.data.category){
-        this.selectedCategory = this.data.category._id;
-      }else{
-        this.selectedCategory = "";
-      }
-      if (this.data.brand){
-        this.selectedBrand = this.data.brand._id;
-      }else{
-        this.selectedBrand = "";
-      }
+      this.checkData(this.data);
     } else{
       this.isNew = true;
       this.isChecked = true;
@@ -139,6 +117,51 @@ export class ProductDialogComponent implements OnInit {
     }
     this.retrieveProduct();
     this.retrieveLog();
+  }
+
+  checkData(id: any){
+    this.productService.get(id)
+      .subscribe(prod => {
+        this.datid = prod.id;
+        this.datsku = prod.sku;
+        this.orisku = prod.sku;
+        this.datname = prod.name;
+        this.oriname = prod.name;
+        this.datdesc = prod.description;
+        this.oridesc = prod.description;
+        this.datlprice = prod.listprice;
+        this.orilprice = prod.listprice;
+        this.datbprice = prod.botprice;
+        this.oribprice = prod.botprice;
+        this.datcost = prod.cost;
+        this.oricost = prod.cost;
+        if (prod.active == true){
+          this.statusActive = 'true';
+          this.isChecked = true;
+          this.a = 0;
+        } else {
+          this.statusActive = 'false';
+          this.isChecked = false;
+          this.a = 1;
+        }
+        if (prod.isStock == true){
+          this.datisstock = 'true';
+          this.isStock = true;
+        }else{
+          this.datisstock = 'false';
+          this.isStock = false;
+        }
+        if (prod.category){
+          this.selectedCategory = prod.category._id;
+        }else{
+          this.selectedCategory = "";
+        }
+        if (prod.brand){
+          this.selectedBrand = prod.brand._id;
+        }else{
+          this.selectedBrand = "";
+        }
+    });
   }
 
   onValChange(val: string) {
@@ -184,7 +207,7 @@ export class ProductDialogComponent implements OnInit {
       .subscribe({
         next: (logPR) => {
           logPR = logPR.filter
-          (dataPR => dataPR.product === this.datid)
+          (dataPR => dataPR.product === this.data)
           this.log = logPR.length;
         },
         error: (e) => console.error(e)
@@ -198,31 +221,31 @@ export class ProductDialogComponent implements OnInit {
   updateData(): void {
     if (this.a+this.b==4){this.isUpdated = 'deactivate'};
     if (this.a+this.b==3){this.isUpdated = 'activate'};
-    if (this.datsku != this.data.sku){
+    if (this.datsku != this.orisku){
       this.isUpdated = this.isUpdated + ", from " 
-      + this.data.sku + " to " + this.datsku;
+      + this.orisku + " to " + this.datsku;
     }
-    if (this.datname != this.data.name){
+    if (this.datname != this.oriname){
       this.isUpdated = this.isUpdated + ", from " 
-      + this.data.name + " to " + this.datname;
+      + this.oriname + " to " + this.datname;
     }
-    if (this.datdesc != this.data.description){
+    if (this.datdesc != this.oridesc){
       this.isUpdated = this.isUpdated + ", from " 
-      + this.data.description + " to " + this.datdesc;
+      + this.oridesc + " to " + this.datdesc;
     }
-    if (this.datlprice != this.data.listprice){
+    if (this.datlprice != this.orilprice){
       this.isUpdated = this.isUpdated + ", from " 
-      + this.data.listprice + " to " + this.datlprice;
+      + this.orilprice + " to " + this.datlprice;
     }
-    if (this.datbprice != this.data.botprice){
+    if (this.datbprice != this.oribprice){
       this.isUpdated = this.isUpdated + ", from " 
-      + this.data.botprice + " to " + this.datbprice;
+      + this.oribprice + " to " + this.datbprice;
     }
-    if (this.datcost != this.data.cost){
+    if (this.datcost != this.oricost){
       this.isUpdated = this.isUpdated + ", from " 
-      + this.data.cost + " to " + this.datcost;
+      + this.oricost + " to " + this.datcost;
     }
-    const data = {
+    const dataProd = {
       sku: this.datsku,
       name: this.datname,
       description: this.datdesc,
@@ -234,7 +257,7 @@ export class ProductDialogComponent implements OnInit {
       brand: this.brandid,
       active: this.isChecked
     };
-    this.productService.update(this.data.id, data)
+    this.productService.update(this.data, dataProd)
       .subscribe({
         next: (res) => {
           const log = {
@@ -258,7 +281,6 @@ export class ProductDialogComponent implements OnInit {
   }
 
   createData(): void {
-    console.log(this.isStock);
     const data = {
       sku: this.datsku,
       name: this.datname,
@@ -269,6 +291,7 @@ export class ProductDialogComponent implements OnInit {
       isStock: this.isStock,
       category: this.categoryid,
       brand: this.brandid,
+      qoh: 0,
       active: this.isChecked
     };
     this.productService.create(data)

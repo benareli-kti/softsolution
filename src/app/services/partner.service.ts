@@ -37,6 +37,12 @@ export class PartnerService {
   findAllActive(): Observable<Partner[]>{
     return this.http.get<Partner[]>(`${baseUrl}/active`);
   }
+  findAllActiveCustomer(): Observable<Partner[]>{
+    return this.http.get<Partner[]>(`${baseUrl}/activecustomer`);
+  }
+  findAllActiveSupplier(): Observable<Partner[]>{
+    return this.http.get<Partner[]>(`${baseUrl}/activesupplier`);
+  }
   findByDesc(name: any): Observable<Partner[]> {
     return this.http.get<Partner[]>(`${baseUrl}?name=${name}`);
   }

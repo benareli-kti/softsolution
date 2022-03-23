@@ -15,6 +15,7 @@ import { MatSelectChange, MatSelectModule } from '@angular/material/select';
 import { MatDialog } from '@angular/material/dialog';
 import { DataFilter, filterOption } from 'src/app/models/datafilter';
 import { ProductDialogComponent } from '../dialog/product-dialog.component';
+import { StockMoveDialogComponent } from '../dialog/stockmove-dialog.component';
 
 @Component({
   selector: 'app-product',
@@ -45,8 +46,8 @@ export class ProductComponent implements OnInit {
 
   //Table
   displayedColumns: string[] = 
-  ['sku', 'name', 'description', 'listprice',
-  'category', 'brand'];
+  ['name', 'description', 'qty', 'listprice',
+  'category', 'brand', 'stock'];
   dataSource = new MatTableDataSource<Product>();
   @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort!: MatSort;
@@ -102,12 +103,34 @@ export class ProductComponent implements OnInit {
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
-  openDialog(row: Product) {
+  /*openDialog(row: Product) {
     const dialog = this.dialog.open(ProductDialogComponent, {
       width: '98%',
       height: '90%',
       disableClose: true,
       data: row
+    })
+      .afterClosed()
+      .subscribe(() => this.retrieveProduct());
+  }*/
+
+  openDialog(id: string) {
+    const dialog = this.dialog.open(ProductDialogComponent, {
+      width: '98%',
+      height: '90%',
+      disableClose: true,
+      data: id
+    })
+      .afterClosed()
+      .subscribe(() => this.retrieveProduct());
+  }
+
+  openStockDialog(id: string) {
+    const dialog = this.dialog.open(StockMoveDialogComponent, {
+      width: '75%',
+      height: '60%',
+      disableClose: true,
+      data: id
     })
       .afterClosed()
       .subscribe(() => this.retrieveProduct());

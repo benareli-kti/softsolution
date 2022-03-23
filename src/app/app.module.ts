@@ -42,6 +42,7 @@ import { WarehouseComponent } from './main/warehouse/warehouse.component';
 import { WarehouseDialogComponent } from './main/dialog/warehouse-dialog.component';
 import { PartnerComponent } from './main/partner/partner.component';
 import { PartnerDialogComponent } from './main/dialog/partner-dialog.component';
+import { StockMoveDialogComponent } from './main/dialog/stockmove-dialog.component';
 
 @NgModule({
   declarations: [
@@ -59,7 +60,8 @@ import { PartnerDialogComponent } from './main/dialog/partner-dialog.component';
     WarehouseComponent,
     WarehouseDialogComponent,
     PartnerComponent,
-    PartnerDialogComponent
+    PartnerDialogComponent,
+    StockMoveDialogComponent
   ],
   imports: [
     BrowserModule,

@@ -43,28 +43,34 @@
 
 <div class="table-container mat-elevation-z3">
 <mat-table #table [dataSource]="dataSource" class="mat-table">
-  <ng-container matColumnDef="sku">
+  <!--<ng-container matColumnDef="sku">
     <th class="th-style" fxFlex="10%" mat-header-cell *matHeaderCellDef>ID</th>
     <td class="tr-style" fxFlex="10%" mat-cell *matCellDef="let products">
-      {{products.sku}}
+      <a (click)="openDialog(products.id)">{{products.sku}}</a>
     </td>
-  </ng-container>
+  </ng-container>-->
   <ng-container matColumnDef="name">
     <th class="th-style" fxFlex="15%" mat-header-cell *matHeaderCellDef>Nama</th>
     <td class="tr-style" fxFlex="15%" mat-cell *matCellDef="let products">
-      {{products.name}}
+      <a (click)="openDialog(products.id)">{{products.name}}</a>
     </td>
   </ng-container>
   <ng-container matColumnDef="description">
     <th class="th-style" fxFlex="50%" mat-header-cell *matHeaderCellDef>Deskripsi</th>
     <td class="tr-style" fxFlex="50%" mat-cell *matCellDef="let products">
-      {{products.description}}
+      <a (click)="openDialog(products.id)">{{products.description}}</a>
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="qty">
+    <th class="th-style" fxFlex="15%" mat-header-cell *matHeaderCellDef>Quantity</th>
+    <td class="tr-style" fxFlex="15%" mat-cell *matCellDef="let products">
+      <a (click)="openDialog(products.id)">{{products.qoh}}</a>
     </td>
   </ng-container>
   <ng-container matColumnDef="listprice">
     <th class="th-style" fxFlex="12%" mat-header-cell *matHeaderCellDef>Harga Jual</th>
     <td class="tr-style" fxFlex="12%" mat-cell *matCellDef="let products">
-      {{products.listprice}}
+      <a (click)="openDialog(products.id)">{{products.listprice}}</a>
     </td>
   </ng-container>
   <ng-container matColumnDef="category">
@@ -81,13 +87,22 @@
       {{products.brand.description}}</div>
     </td>
   </ng-container>
+  <ng-container matColumnDef="stock">
+    <th class="th-style" fxFlex="50%" mat-header-cell *matHeaderCellDef>Action</th>
+    <td class="tr-style" fxFlex="50%" mat-cell *matCellDef="let products">
+      <div *ngIf="products.isStock == true">
+        <a class="add_stock" (click)="openStockDialog(products.id)">Tambah Stock</a>
+      </div>
+    </td>
+  </ng-container>
 
   <tr mat-header-row *matHeaderRowDef="displayedColumns" class="tableHeader"></tr>
   <tr mat-row class="tableRow" 
       *matRowDef="let row; columns: displayedColumns;"
-      (click)="openDialog(row)"
+      
       [class.active]="clickedRows == row"
   ></tr>
+  <!--(click)="openDialog(row)"-->
 </mat-table>
 </div>
 

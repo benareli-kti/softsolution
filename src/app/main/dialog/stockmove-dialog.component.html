@@ -1,0 +1,40 @@
+<div class="basic-container submit-form" fxLayout="column" fxLayoutAlign="space-between center" >
+<div class="width-100">
+  <div class="marginbot" fxLayout="row" fxLayoutAlign="space-between center">
+    <span class="title_dialog" name="datname" [innerText]="datname"></span>
+    <button class="close_btn" mat-button (click)="closeDialog()">X</button>
+  </div>
+
+  <mat-form-field class="input_field input_50">
+    <mat-label>Warehouse</mat-label>
+    <mat-select required name="warehouseString" (selectionChange)="selectedValue($event)" [(value)]="selectedWarehouse">
+      <mat-option *ngFor="let warehouse of warehouses" [value]="warehouse.id" ngDefaultControl [(ngModel)]="warehouse.name">
+        {{ warehouse.short }} - {{ warehouse.name }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field class="input_field margin_7 input_50">
+    <mat-label>Partner</mat-label>
+    <mat-select name="partnerString" (selectionChange)="selectedValue2($event)" [(value)]="selectedPartner">
+      <mat-option *ngFor="let partner of partners" [value]="partner.id" ngDefaultControl [(ngModel)]="partner.name">
+        {{ partner.name }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field class="input_50">
+    <input matInput required placeholder="Quantity" [(ngModel)]="datqty">
+  </mat-form-field>
+
+  <mat-button-toggle-group class="active_btn margin_7" #group="matButtonToggleGroup" [(value)]="datinout" (change)="onInOutChange(group.value)">
+    <mat-button-toggle style="padding: 0pt 30pt;" value="in">In</mat-button-toggle>
+    <mat-button-toggle style="padding: 0pt 30pt;" value="out">Out</mat-button-toggle>
+  </mat-button-toggle-group>
+
+
+  
+</div>
+
+  <button mat-button class="submit save_btn" (click)="createData()">Save</button>
+</div>
