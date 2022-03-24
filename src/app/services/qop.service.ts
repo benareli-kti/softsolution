@@ -25,7 +25,7 @@ export class QopService {
   findByProduct(product: any): Observable<Qop[]> {
     return this.http.get<Qop[]>(`${baseUrl}?product=${product}`);
   }
-  createUpdate(qop: any): Observable<any> {
-    return this.http.get<Qop[]>(`${baseUrl}/cu/?product=${product}&partner={partner}&warehouse={warehouse}&qop={qop}`);
+  createUpdate(product:any, partner:any, warehouse:any, qop:any): Observable<any> {
+    return this.http.get<Qop[]>(`${baseUrl}/cu/?product=${product}&partner=${partner}&warehouse=${warehouse}&qop=${qop}`);
   }
 }
