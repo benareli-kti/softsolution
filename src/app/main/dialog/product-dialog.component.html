@@ -22,15 +22,16 @@
   </mat-form-field>
 
   <mat-form-field class="input_50">
-    <input matInput required placeholder="Harga Jual" [(ngModel)]="datlprice">
+    <input matInput required placeholder="Harga Jual" type="number" [(ngModel)]="datlprice">
   </mat-form-field>
 
   <mat-form-field class="input_50 margin_7">
-    <input matInput placeholder="Harga Batas" [(ngModel)]="datbprice">
+    <input matInput placeholder="Harga Batas" type="number" [(ngModel)]="datbprice">
+    <mat-error *ngIf="bbigger">Harga Batas tidak bisa lebih besar dari Harga Jual</mat-error>
   </mat-form-field>
 
   <mat-form-field class="input_50">
-    <input matInput placeholder="Cost" [(ngModel)]="datcost">
+    <input matInput placeholder="Cost" type="number" [(ngModel)]="datcost">
   </mat-form-field>
 
   <mat-form-field class="input_field margin_7 input_50">

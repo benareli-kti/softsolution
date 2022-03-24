@@ -24,7 +24,7 @@
   </mat-form-field>
 
   <mat-form-field class="input_50">
-    <input matInput required placeholder="Quantity" [(ngModel)]="datqty">
+    <input matInput required placeholder="Quantity" type="number" [(ngModel)]="datqty">
   </mat-form-field>
 
   <mat-button-toggle-group class="active_btn margin_7" #group="matButtonToggleGroup" [(value)]="datinout" (change)="onInOutChange(group.value)">

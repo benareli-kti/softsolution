@@ -115,7 +115,7 @@ export class StockMoveDialogComponent implements OnInit {
     this.datinout = vals;
   }
 
-  createData(): void {
+  /*createData(): void {
     if(!this.partnerid){
       this.partnerid = "null";
     }
@@ -140,6 +140,43 @@ export class StockMoveDialogComponent implements OnInit {
         },
         error: (e) => console.error(e)
       });
+  }*/
+  
+  createData(): void{
+    if(!this.partnerid){
+      this.partnerid = "null";
+    }
+    const dataSM = {
+      user: this.globals.userid,
+      product: this.data,
+      partner: this.partnerid,
+      warehouse: this.warehouseid,
+      qin: this.datqty
+    };
+    this.stockmoveService.create(dataSM)
+      .subscribe({
+        next: (res) => {
+          this.qop();
+          //this.closeDialog();
+        },
+        error: (e) => console.error(e)
+      }); 
+  }
+  
+  qop(): void{
+    const qop = {
+      product: this.data,
+      partner: this.partnerid,
+      warehouse: this.warehouseid,
+      qty: this.datqty
+    }
+    this.qopService.createUpdate(qop)
+      .subscribe({
+        next: (res) => {
+          this.closeDialog();
+        },
+        error: (e) => console.error(e)
+      })
   }
 
   qof(): void{

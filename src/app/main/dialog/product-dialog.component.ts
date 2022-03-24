@@ -31,6 +31,7 @@ export class ProductDialogComponent implements OnInit {
   isChecked = false;
   isStock = true;
   isNew = false;
+  bbigger = false;
   oriid?: string;
   orisku?: string;
   oriname?: string;
@@ -281,39 +282,43 @@ export class ProductDialogComponent implements OnInit {
   }
 
   createData(): void {
-    const data = {
-      sku: this.datsku,
-      name: this.datname,
-      description: this.datdesc,
-      listprice: this.datlprice,
-      botprice: this.datbprice,
-      cost: this.datcost,
-      isStock: this.isStock,
-      category: this.categoryid,
-      brand: this.brandid,
-      qoh: 0,
-      active: this.isChecked
-    };
-    this.productService.create(data)
-      .subscribe({
-        next: (res) => {
-          const log = {
-            message: "add",
-            brand: "null",
-            category: "null",
-            product: res.id,
-            partner: "null",
-            warehouse: "null",
-            user: this.globals.userid
-          };
-          this.logService.create(log)
-          .subscribe({
-            next: (logres) => {
-              this.closeDialog();
-            }
-          });
-        },
-        error: (e) => console.error(e)
+    if(this.datbprice > this.datlprice){
+      bbigger = true;
+    }else{
+      const data = {
+        sku: this.datsku,
+        name: this.datname,
+        description: this.datdesc,
+        listprice: this.datlprice,
+        botprice: this.datbprice,
+        cost: this.datcost,
+        isStock: this.isStock,
+        category: this.categoryid,
+        brand: this.brandid,
+        qoh: 0,
+        active: this.isChecked
+      };
+      this.productService.create(data)
+        .subscribe({
+          next: (res) => {
+            const log = {
+              message: "add",
+              brand: "null",
+              category: "null",
+              product: res.id,
+              partner: "null",
+              warehouse: "null",
+              user: this.globals.userid
+            };
+            this.logService.create(log)
+            .subscribe({
+              next: (logres) => {
+                this.closeDialog();
+              }
+            });
+          },
+          error: (e) => console.error(e)
       });
+    }
   }
 }
