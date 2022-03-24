@@ -283,7 +283,7 @@ export class ProductDialogComponent implements OnInit {
 
   createData(): void {
     if(this.datbprice > this.datlprice){
-      bbigger = true;
+      this.bbigger = true;
     }else{
       const data = {
         sku: this.datsku,

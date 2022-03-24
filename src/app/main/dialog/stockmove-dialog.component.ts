@@ -11,6 +11,8 @@ import { Stockmove } from 'src/app/models/stockmove.model';
 import { StockmoveService } from 'src/app/services/stockmove.service';
 import { Qof } from 'src/app/models/qof.model';
 import { QofService } from 'src/app/services/qof.service';
+import { Qop } from 'src/app/models/qop.model';
+import { QopService } from 'src/app/services/qop.service';
 import { Product } from 'src/app/models/product.model';
 import { ProductService } from 'src/app/services/product.service';
 import { Partner } from 'src/app/models/partner.model';
@@ -77,6 +79,7 @@ export class StockMoveDialogComponent implements OnInit {
     private warehouseService: WarehouseService,
     private stockmoveService: StockmoveService,
     private qofService: QofService,
+    private qopService: QopService,
     @Inject(MAT_DIALOG_DATA) public data: any,
   ){}
 
