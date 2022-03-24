@@ -173,7 +173,7 @@ export class StockMoveDialogComponent implements OnInit {
       warehouse: this.warehouseid,
       qty: this.datqty
     }
-    this.qopService.createUpdate(qop)
+    this.qopService.createUpdate(this.data, this.partnerid, this.warehouseid, this.datqty)
       .subscribe({
         next: (res) => {
           this.closeDialog();
