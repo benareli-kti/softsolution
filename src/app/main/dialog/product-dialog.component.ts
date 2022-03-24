@@ -284,9 +284,9 @@ export class ProductDialogComponent implements OnInit {
   }
 
   createData(): void {
-    if(this.datbprice){bprice = this.datbprice;}
-    if(this.datlprice){lprice = this.datlprice;}
-    if(bprice > lprice){
+    if(this.datbprice){this.bprice = this.datbprice;}
+    if(this.datlprice){this.lprice = this.datlprice;}
+    if(this.bprice > this.lprice){
       this.bbigger = true;
     }else{
       const data = {
