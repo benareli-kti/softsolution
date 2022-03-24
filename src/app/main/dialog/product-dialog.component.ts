@@ -4,6 +4,7 @@ import { FormsModule, FormBuilder, FormGroup, FormControl } from '@angular/forms
 import { Observable, of } from "rxjs";
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSelectChange, MatSelectModule } from '@angular/material/select';
+import { MatTableDataSource } from '@angular/material/table';
 import { Log } from 'src/app/models/log.model';
 import { LogService } from 'src/app/services/log.service';
 
@@ -13,6 +14,8 @@ import { Productcat } from 'src/app/models/productcat.model';
 import { ProductCatService } from 'src/app/services/product-cat.service';
 import { Brand } from 'src/app/models/brand.model';
 import { BrandService } from 'src/app/services/brand.service';
+import { Qop } from 'src/app/models/qop.model';
+import { QopService } from 'src/app/services/qop.service';
 
 @Component({
   selector: 'app-product-dialog',
@@ -95,11 +98,21 @@ export class ProductDialogComponent implements OnInit {
     this.brandid = event.value;
   }
 
+  //Table
+  qops?: Qop[]; 
+  displayedColumns: string[] = 
+  ['warehouse', 'partner', 'qty'];
+  dataSource = new MatTableDataSource<Qop>();
+
+  //Dialog Data
+  clickedRows = null;
+
   constructor(
     public dialogRef: MatDialogRef<ProductDialogComponent>,
     private productService: ProductService,
     private brandService: BrandService,
     private productCatService: ProductCatService,
+    private qopService: QopService,
     private globals: Globals,
     private logService: LogService,
     private fb: FormBuilder,
@@ -203,6 +216,15 @@ export class ProductDialogComponent implements OnInit {
         },
         error: (e) => console.error(e)
       });
+
+    this.qopService.findByProduct(this.data)
+      .subscribe({
+        next: (dataQop) => {
+          console.log(dataQop);
+          this.dataSource.data = dataQop;
+        },
+        error: (e) => console.error(e)
+      })
   }
 
   retrieveLog(): void {

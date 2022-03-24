@@ -5,6 +5,12 @@
       <mat-button-toggle value="true">Active</mat-button-toggle>
       <mat-button-toggle value="false">Not Active</mat-button-toggle>
     </mat-button-toggle-group>
+
+    <mat-button-toggle-group class="active_btn margin_7" #group2="matButtonToggleGroup" [(value)]="datisstock" (change)="onStockChange(group2.value)">
+      <mat-button-toggle style="padding: 0pt 30pt;" value="true">Stock</mat-button-toggle>
+      <mat-button-toggle style="padding: 0pt 30pt;" value="false">Jasa</mat-button-toggle>
+    </mat-button-toggle-group>
+
     <button class="close_btn" mat-button (click)="closeDialog()">X</button>
   </div>
 
@@ -21,20 +27,20 @@
     <input matInput placeholder="Deskripsi" [(ngModel)]="datdesc">
   </mat-form-field>
 
-  <mat-form-field class="input_50">
+  <mat-form-field class="input_33">
     <input matInput required placeholder="Harga Jual" type="number" [(ngModel)]="datlprice">
   </mat-form-field>
 
-  <mat-form-field class="input_50 margin_7">
+  <mat-form-field class="input_33 margin_7">
     <input matInput placeholder="Harga Batas" type="number" [(ngModel)]="datbprice">
     <mat-error *ngIf="bbigger">Harga Batas tidak bisa lebih besar dari Harga Jual</mat-error>
   </mat-form-field>
 
-  <mat-form-field class="input_50">
+  <mat-form-field class="input_33 margin_7">
     <input matInput placeholder="Cost" type="number" [(ngModel)]="datcost">
   </mat-form-field>
 
-  <mat-form-field class="input_field margin_7 input_50">
+  <mat-form-field class="input_field input_50">
     <mat-label>Category</mat-label>
     <mat-select required name="categoryString" (selectionChange)="selectedValue($event)" [(value)]="selectedCategory">
       <mat-option *ngFor="let productcat of productcats" [value]="productcat.id" ngDefaultControl [(ngModel)]="productadd.category">
@@ -43,19 +49,41 @@
     </mat-select>
   </mat-form-field>
 
-  <mat-form-field class="input_field input_50">
+  <mat-form-field class="input_field margin_7 input_50">
     <mat-label>Brand</mat-label>
     <mat-select name="brandString" (selectionChange)="selectedValue2($event)" [(value)]="selectedBrand">
       <mat-option *ngFor="let brand of brands" [value]="brand.id" ngDefaultControl [(ngModel)]="productadd.brand">{{ brand.description }}
       </mat-option>
     </mat-select>
   </mat-form-field>
-
-  <mat-button-toggle-group class="active_btn margin_7" #group2="matButtonToggleGroup" [(value)]="datisstock" (change)="onStockChange(group2.value)">
-    <mat-button-toggle style="padding: 0pt 30pt;" value="true">Stock</mat-button-toggle>
-    <mat-button-toggle style="padding: 0pt 30pt;" value="false">Jasa</mat-button-toggle>
-  </mat-button-toggle-group>
 </div>
+
+<mat-table #table [dataSource]="dataSource" class="mat-table">
+  <ng-container matColumnDef="warehouse">
+    <th class="th-style" fxFlex="40%" mat-header-cell *matHeaderCellDef>Gudang</th>
+    <td class="tr-style" fxFlex="40%" mat-cell *matCellDef="let qops">
+      {{qops.warehouse.name}}
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="partner">
+    <th class="th-style" fxFlex="40%" mat-header-cell *matHeaderCellDef>Supplier</th>
+    <td class="tr-style" fxFlex="40%" mat-cell *matCellDef="let qops">
+      <div *ngIf="!qops.partner"></div>
+      <div *ngIf="qops.partner">{{qops.partner.name}}</div>
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="qty">
+    <th class="th-style" fxFlex="20%" mat-header-cell *matHeaderCellDef>Quantity</th>
+    <td class="tr-style" fxFlex="20%" mat-cell *matCellDef="let qops">
+      {{qops.qop}}
+    </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns" class="tableHeader"></tr>
+  <tr mat-row class="tableRow" 
+      *matRowDef="let row; columns: displayedColumns;"
+  ></tr>
+</mat-table>
 
 <div class="width-100" fxLayout="row" fxLayoutAlign="space-between center">
   <div class="width-10"><button class="log_btn" [(ngModel)]="log">Log: {{log}}</button></div>

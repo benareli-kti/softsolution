@@ -37,7 +37,6 @@ export class StockMoveDialogComponent implements OnInit {
   warehouseid?: any;
   partnerid?: any;
   datqty=0; qin=0; qout=0; qqof=0;
-  datinout: string;
 
   products?: Product[];
   warehouses?: Warehouse[];
@@ -86,7 +85,6 @@ export class StockMoveDialogComponent implements OnInit {
   ngOnInit() {
     this.retrieveProduct(this.data);
     this.retrieveData();
-    this.datinout = 'in';
   }
 
   retrieveProduct(id: string) {
@@ -105,17 +103,13 @@ export class StockMoveDialogComponent implements OnInit {
         error: (e) => console.error(e)
       });
 
-    this.partnerService.findAllActive()
+    this.partnerService.findAllActiveSupplier()
       .subscribe({
         next: (dataB) => {
           this.partners = dataB;
         },
         error: (e) => console.error(e)
       });
-  }
-
-  onInOutChange(vals: string) {
-    this.datinout = vals;
   }
 
   /*createData(): void {
@@ -173,6 +167,7 @@ export class StockMoveDialogComponent implements OnInit {
       warehouse: this.warehouseid,
       qop: this.datqty
     }
+    console.log(qop);
     this.qopService.createUpdate(qop)
       .subscribe({
         next: (res) => {
@@ -182,7 +177,7 @@ export class StockMoveDialogComponent implements OnInit {
       })
   }
 
-  qof(): void{
+  /*qof(): void{
     if(!this.partnerid){
       this.partnerid = "null";
     }
@@ -204,7 +199,7 @@ export class StockMoveDialogComponent implements OnInit {
         },
         error: (e) => console.error(e)
       });
-  }
+  }*/
 
   closeDialog() {
     this.dialogRef.close();
