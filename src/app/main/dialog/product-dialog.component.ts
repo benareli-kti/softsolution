@@ -32,6 +32,8 @@ export class ProductDialogComponent implements OnInit {
   isStock = true;
   isNew = false;
   bbigger = false;
+  bprice = 0;
+  lprice = 0;
   oriid?: string;
   orisku?: string;
   oriname?: string;
@@ -282,10 +284,8 @@ export class ProductDialogComponent implements OnInit {
   }
 
   createData(): void {
-    let bprice = 0;
-    let lprice = 0;
-    bprice = this.datbprice;
-    lprice = this.datlprice;
+    if(this.datbprice){bprice = this.datbprice;}
+    if(this.datlprice){lprice = this.datlprice;}
     if(bprice > lprice){
       this.bbigger = true;
     }else{
