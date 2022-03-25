@@ -42,7 +42,6 @@ export class AppComponent {
       this.username = user.username;
       this.globals.username = user.username;
       this.globals.userid = user.id;
-      console.log(user.roles);
     }
     else{
       this.router.navigate(['/login']);
