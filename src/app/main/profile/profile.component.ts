@@ -6,7 +6,7 @@ import { RoleService } from 'src/app/services/role.service';
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
-  styleUrls: ['./profile.component.sass']
+  styleUrls: ['../style/main.component.sass']
 })
 export class ProfileComponent implements OnInit {
   currentUser: any;
