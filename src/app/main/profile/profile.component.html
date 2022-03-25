@@ -22,11 +22,13 @@
   
 </div>
 
-<div style="display:flex; flex-direction:column;">
-  <div style="display:flex; flex-direction:row">
-  <mat-slide-toggle>Inventory</mat-slide-toggle>
-  <mat-checkbox class="input_50 padtop">User</mat-checkbox>
-  <mat-checkbox class="input_50 padtop margin_7">Manager</mat-checkbox>
+<div style="width:75%" fxLayout="column" fxLayoutAlign="space-around start">
+  <div fxLayout="row" fxLayoutAlign="space-between start">
+    <mat-slide-toggle>Inventory</mat-slide-toggle>
+    <mat-button-toggle-group class="active_btn" #group="matButtonToggleGroup">
+      <mat-button-toggle value="invusr">User</mat-button-toggle>
+      <mat-button-toggle value="invmgr">Manager</mat-button-toggle>
+    </mat-button-toggle-group> 
   </div>
   
   <mat-slide-toggle>Partner</mat-slide-toggle>
