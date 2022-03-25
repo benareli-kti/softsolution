@@ -124,26 +124,14 @@ export class PartnerDialogComponent implements OnInit {
       phone: this.datphone,
       isCustomer: this.isCustomer,
       isSupplier: this.isSupplier,
-      active: this.isChecked
+      active: this.isChecked,
+      message: this.isUpdated,
+      user: this.globals.userid
     };
     this.partnerService.update(this.data.id, data)
       .subscribe({
         next: (res) => {
-          const log = {
-            message: this.isUpdated,
-            brand: "null",
-            category: "null",
-            product: "null",
-            partner: this.datid,
-            warehouse: "null",
-            user: this.globals.userid
-          };
-          this.logService.create(log)
-          .subscribe({
-            next: (logres) => {
-              this.closeDialog();
-            }
-          });
+          this.closeDialog();
         },
         error: (e) => console.error(e)
       });
@@ -157,26 +145,13 @@ export class PartnerDialogComponent implements OnInit {
       phone: this.datphone,
       isCustomer: this.isCustomer,
       isSupplier: this.isSupplier,
-      active: this.isChecked
+      active: this.isChecked,
+      user: this.globals.userid
     };
     this.partnerService.create(data)
       .subscribe({
         next: (res) => {
-          const log = {
-            message: "add",
-            brand: "null",
-            category: "null",
-            product: "null",
-            partner: res.id,
-            warehouse: "null",
-            user: this.globals.userid
-          };
-          this.logService.create(log)
-          .subscribe({
-            next: (logres) => {
-              this.closeDialog();
-            }
-          });
+          this.closeDialog();
         },
         error: (e) => console.error(e)
       });

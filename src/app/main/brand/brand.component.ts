@@ -72,30 +72,17 @@ export class BrandComponent implements OnInit {
   saveBrand(): void {
     const data = {
       description: this.brandadd.description,
-      active: this.brandadd.active
+      active: this.brandadd.active,
+      user: this.globals.userid
     };
     this.brandService.create(data)
       .subscribe({
         next: (res) => {
-          const log = {
-            message: "add",
-            brand: res.id,
-            category: "null",
-            product: "null",
-            partner: "null",
-            warehouse: "null",
-            user: this.globals.userid
+          this.retrieveBrand();
+          this.brandadd = {
+            description: '',
+            active: true
           };
-          this.logService.create(log)
-          .subscribe({
-            next: (logres) => {
-              this.retrieveBrand();
-              this.brandadd = {
-                description: '',
-                active: true
-              };
-            }
-          });
         },
         error: (e) => console.error(e)
       });

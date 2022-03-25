@@ -74,31 +74,18 @@ export class WarehouseComponent implements OnInit {
     const data = {
       name: this.warehouseadd.name,
       short: this.warehouseadd.short,
-      active: this.warehouseadd.active
+      active: this.warehouseadd.active,
+      user: this.globals.userid
     };
     this.warehouseService.create(data)
       .subscribe({
         next: (res) => {
-          const log = {
-            message: "add",
-            brand: "null",
-            category: "null",
-            product: "null",
-            partner: "null",
-            warehouse: res.id,
-            user: this.globals.userid
+          this.retrieveWarehouse();
+          this.warehouseadd = {
+            name: '',
+            short: '',
+            active: true
           };
-          this.logService.create(log)
-          .subscribe({
-            next: (logres) => {
-              this.retrieveWarehouse();
-              this.warehouseadd = {
-                name: '',
-                short: '',
-                active: true
-              };
-            }
-          });
         },
         error: (e) => console.error(e)
       });

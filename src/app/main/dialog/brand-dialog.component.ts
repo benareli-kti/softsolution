@@ -83,27 +83,15 @@ export class BrandDialogComponent implements OnInit {
       " to " + this.data.description;
     }
     const data = {
+      message: this.isUpdated,
       description: this.data.description,
-      active: this.isChecked
+      active: this.isChecked,
+      user: this.globals.userid
     };
     this.brandService.update(this.data.id, data)
       .subscribe({
         next: (res) => {
-          const log = {
-            message: this.isUpdated,
-            brand: this.data.id,
-            category: "null",
-            product: "null",
-            partner: "null",
-            warehouse: "null",
-            user: this.globals.userid
-          };
-          this.logService.create(log)
-          .subscribe({
-            next: (logres) => {
-              this.closeDialog();
-            }
-          });
+          this.closeDialog();
         },
         error: (e) => console.error(e)
       });

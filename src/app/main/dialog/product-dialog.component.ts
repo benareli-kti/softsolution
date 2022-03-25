@@ -35,8 +35,6 @@ export class ProductDialogComponent implements OnInit {
   isStock = true;
   isNew = false;
   bbigger = false;
-  bprice = 0;
-  lprice = 0;
   oriid?: string;
   orisku?: string;
   oriname?: string;
@@ -220,7 +218,6 @@ export class ProductDialogComponent implements OnInit {
     this.qopService.findByProduct(this.data)
       .subscribe({
         next: (dataQop) => {
-          console.log(dataQop);
           this.dataSource.data = dataQop;
         },
         error: (e) => console.error(e)
@@ -241,6 +238,18 @@ export class ProductDialogComponent implements OnInit {
 
   closeDialog() {
     this.dialogRef.close();
+  }
+
+  checkBigger(): void {
+    if(Number(this.datbprice) > Number(this.datlprice)){
+      this.bbigger = true;
+    }else{
+      if (this.isNew){
+        this.createData();
+      }else{
+        this.updateData();
+      }
+    }
   }
 
   updateData(): void {
@@ -280,71 +289,41 @@ export class ProductDialogComponent implements OnInit {
       isStock: this.isStock,
       category: this.categoryid,
       brand: this.brandid,
-      active: this.isChecked
+      active: this.isChecked,
+      message: this.isUpdated,
+      user: this.globals.userid
     };
     this.productService.update(this.data, dataProd)
       .subscribe({
         next: (res) => {
-          const log = {
-            message: this.isUpdated,
-            brand: "null",
-            category: "null",
-            product: this.datid,
-            partner: "null",
-            warehouse: "null",
-            user: this.globals.userid
-          };
-          this.logService.create(log)
-          .subscribe({
-            next: (logres) => {
-              this.closeDialog();
-            }
-          });
+          this.closeDialog();
         },
         error: (e) => console.error(e)
       });
   }
 
   createData(): void {
-    if(this.datbprice){this.bprice = this.datbprice;}
-    if(this.datlprice){this.lprice = this.datlprice;}
-    if(this.bprice > this.lprice){
-      this.bbigger = true;
-    }else{
-      const data = {
-        sku: this.datsku,
-        name: this.datname,
-        description: this.datdesc,
-        listprice: this.datlprice,
-        botprice: this.datbprice,
-        cost: this.datcost,
-        isStock: this.isStock,
-        category: this.categoryid,
-        brand: this.brandid,
-        qoh: 0,
-        active: this.isChecked
-      };
-      this.productService.create(data)
-        .subscribe({
-          next: (res) => {
-            const log = {
-              message: "add",
-              brand: "null",
-              category: "null",
-              product: res.id,
-              partner: "null",
-              warehouse: "null",
-              user: this.globals.userid
-            };
-            this.logService.create(log)
-            .subscribe({
-              next: (logres) => {
-                this.closeDialog();
-              }
-            });
-          },
-          error: (e) => console.error(e)
-      });
-    }
+    const data = {
+      sku: this.datsku,
+      name: this.datname,
+      description: this.datdesc,
+      listprice: this.datlprice,
+      botprice: this.datbprice,
+      cost: this.datcost,
+      isStock: this.isStock,
+      category: this.categoryid,
+      brand: this.brandid,
+      qoh: 0,
+      active: this.isChecked,
+      user: this.globals.userid
+    };
+    this.productService.create(data)
+      .subscribe({
+        next: (res) => {
+          this.closeDialog();
+        },
+        error: (e) => console.error(e)
+    });
+    
   }
 }

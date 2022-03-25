@@ -103,17 +103,6 @@ export class ProductComponent implements OnInit {
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
-  /*openDialog(row: Product) {
-    const dialog = this.dialog.open(ProductDialogComponent, {
-      width: '98%',
-      height: '90%',
-      disableClose: true,
-      data: row
-    })
-      .afterClosed()
-      .subscribe(() => this.retrieveProduct());
-  }*/
-
   openDialog(id: string) {
     const dialog = this.dialog.open(ProductDialogComponent, {
       width: '98%',

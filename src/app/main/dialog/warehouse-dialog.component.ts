@@ -92,26 +92,14 @@ export class WarehouseDialogComponent implements OnInit {
     const data = {
       short: this.data.short,
       name: this.data.name,
-      active: this.isChecked
+      active: this.isChecked,
+      message: this.isUpdated,
+      user: this.globals.userid
     };
     this.warehouseService.update(this.data.id, data)
       .subscribe({
         next: (res) => {
-          const log = {
-            message: this.isUpdated,
-            brand: "null",
-            category: "null",
-            product: "null",
-            partner: "null",
-            warehouse: this.data.id,
-            user: this.globals.userid
-          };
-          this.logService.create(log)
-          .subscribe({
-            next: (logres) => {
-              this.closeDialog();
-            }
-          });
+          this.closeDialog();
         },
         error: (e) => console.error(e)
       });

@@ -74,31 +74,18 @@ export class ProductCatComponent implements OnInit {
     const data = {
       catid: this.productcatadd.catid,
       description: this.productcatadd.description,
-      active: this.productcatadd.active
+      active: this.productcatadd.active,
+      user: this.globals.userid
     };
     this.productCatService.create(data)
       .subscribe({
         next: (res) => {
-          const log = {
-            message: "add",
-            brand: "null",
-            category: res.id,
-            product: "null",
-            partner: "null",
-            warehouse: "null",
-            user: this.globals.userid
+          this.retrieveProductCat();
+          this.productcatadd = {
+            catid: '',
+            description: '',
+            active: true
           };
-          this.logService.create(log)
-          .subscribe({
-            next: (logres) => {
-              this.retrieveProductCat();
-              this.productcatadd = {
-                catid: '',
-                description: '',
-                active: true
-              };
-            }
-          });
         },
         error: (e) => console.error(e)
       });

@@ -92,26 +92,15 @@ export class ProductcatDialogComponent implements OnInit {
     const data = {
       catid: this.data.catid,
       description: this.data.description,
-      active: this.isChecked
+      active: this.isChecked,
+      message: this.isUpdated,
+      user: this.globals.userid
     };
     this.productCatService.update(this.data.id, data)
       .subscribe({
         next: (res) => {
-          const log = {
-            message: this.isUpdated,
-            brand: "null",
-            category: this.data.id,
-            product: "null",
-            partner: "null",
-            warehouse: "null",
-            user: this.globals.userid
-          };
-          this.logService.create(log)
-          .subscribe({
-            next: (logres) => {
-              this.closeDialog();
-            }
-          });
+          this.closeDialog();
+          
         },
         error: (e) => console.error(e)
       });
