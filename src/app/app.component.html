@@ -32,7 +32,7 @@
             <img src="/assets/img/s.png" width="45" [routerLink]="['/']">
             <span class="text-gradient" style="margin-left:10px;">Soft Solution</span>
           </div>
-          <button mat-button class="menu-button" (click)="toggleProduct()" *ngIf="isLoggedIn">
+          <button mat-button class="menu-button" (click)="toggleProduct()" *ngIf="isLoggedIn && isIU">
             <span>Product</span>
           </button>
           <button mat-button class="menu-button" [routerLink]="'/productcategory'" *ngIf="isLoggedIn && isProductShow">
@@ -51,8 +51,13 @@
             <mat-icon class="mat-icon">keyboard_arrow_right</mat-icon>
             <span>Warehouse</span>
           </button>
-          <button mat-button class="menu-button" [routerLink]="'/partner'" *ngIf="isLoggedIn">
+          <button mat-button class="menu-button" [routerLink]="'/partner'" *ngIf="isLoggedIn && isPU">
             <span>Partner</span>
+          </button>
+        </div>
+        <div *ngIf="sidenav.mode === 'side'" >
+          <button mat-button class="menu-button" [routerLink]="'/partner'" *ngIf="isLoggedIn && isAdm">
+            <span>Setting</span>
           </button>
         </div>
         <div *ngIf="sidenav.mode === 'over'" class="profile2">

@@ -8,19 +8,19 @@
     <button class="close_btn" mat-button (click)="closeDialog()">X</button>
   </div>
   
-  <mat-form-field class="input_50" hintLabel="Max 6 characters" >
+  <mat-form-field class="input_field input_50" hintLabel="Max 6 characters" >
     <input #input matInput maxlength="6" placeholder="ID" [(ngModel)]="data.catid">
     <mat-hint align="end">{{input.value?.length || 0}}/6</mat-hint>
   </mat-form-field>
 
-  <mat-form-field class="input_50 margin_7">
+  <mat-form-field class="input_field input_50 margin_7">
     <input matInput placeholder="Description" [(ngModel)]="data.description">
   </mat-form-field>
 </div>
 
 <div class="width-100" fxLayout="row" fxLayoutAlign="space-between center">
   <div class="width-90">
-    <button mat-button class="save_btn" (click)="updateData()">Save</button>
+    <button mat-button [disabled]="isRes" class="save_btn" (click)="updateData()">Save</button>
   </div>
   <div class="width-10"><button class="log_btn" [(ngModel)]="log"><mat-icon>message</mat-icon> {{log}}</button></div>
 </div>

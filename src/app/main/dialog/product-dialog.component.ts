@@ -52,6 +52,10 @@ export class ProductDialogComponent implements OnInit {
   datcost?: number;
   datisstock?: string;
   statusActive?: string;
+  isIU = false;
+  isIM = false;
+  isAdm = false;
+  isRes = false;
 
   products?: Product[];
   productcats?: Productcat[];
@@ -130,6 +134,16 @@ export class ProductDialogComponent implements OnInit {
       this.datname = "";
     }
     this.retrieveProduct();
+    this.checkRole();
+  }
+
+  checkRole(): void {
+    for(let x=0; x<this.globals.roles!.length;x++){
+      if(this.globals.roles![x]=="inventory_user") this.isIU=true;
+      if(this.globals.roles![x]=="inventory_manager") this.isIM=true;
+      if(this.globals.roles![x]=="admin") this.isAdm=true;
+    };
+    if(!this.isIM || !this.isAdm) this.isRes = true;
     this.retrieveLog();
   }
 

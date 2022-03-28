@@ -20,31 +20,31 @@
   </div>
 
   <div class="flexfull">
-  <mat-form-field class="flex50" hintLabel="Max 10 characters">
+  <mat-form-field class="input_field flex50" hintLabel="Max 10 characters">
     <input #input matInput maxlength="10" required placeholder="SKU" [(ngModel)]="datsku">
     <mat-hint align="end">{{input.value?.length || 0}}/10</mat-hint>
   </mat-form-field>
 
-  <mat-form-field class="flex50 margin_7">
+  <mat-form-field class="input_field flex50 margin_7">
     <input matInput required placeholder="Name" [(ngModel)]="datname">
   </mat-form-field>
   </div>
 
-  <mat-form-field class="input_100">
+  <mat-form-field class="input_field flex100">
     <input matInput placeholder="Deskripsi" [(ngModel)]="datdesc">
   </mat-form-field>
 
   <div class="flexfull">
-  <mat-form-field class="flex33">
+  <mat-form-field class="input_field flex33">
     <input matInput required placeholder="Harga Jual" type="number" [(ngModel)]="datlprice">
   </mat-form-field>
 
-  <mat-form-field class="flex33 margin_7">
+  <mat-form-field class="input_field flex33 margin_7">
     <input matInput placeholder="Harga Batas" type="number" [(ngModel)]="datbprice">
     <div class="alert" role="alert" *ngIf="bbigger">Harga Batas tidak bisa lebih besar!</div>
   </mat-form-field>
 
-  <mat-form-field class="flex33 margin_7">
+  <mat-form-field class="input_field flex33 margin_7">
     <input matInput placeholder="Cost" type="number" [(ngModel)]="datcost">
   </mat-form-field>
   </div>
@@ -98,8 +98,8 @@
 
 <div class="width-100" fxLayout="row" fxLayoutAlign="space-between center">
   <div class="width-90">
-    <button *ngIf="!isNew" mat-button class="submit save_btn" (click)="checkBigger()">Save</button>
-    <button *ngIf="isNew" mat-button class="submit save_btn" (click)="checkBigger()">Save</button>
+    <button *ngIf="!isNew" [disabled]="isRes" mat-button class="submit save_btn" (click)="checkBigger()">Save</button>
+    <button *ngIf="isNew" [disabled]="isRes" mat-button class="submit save_btn" (click)="checkBigger()">Save</button>
   </div>
   <div class="width-10"><button class="log_btn" [(ngModel)]="log"><mat-icon>message</mat-icon> {{log}}</button></div>
 </div>

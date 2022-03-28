@@ -4,7 +4,7 @@ import { Observable, map, of } from 'rxjs';
 import { Role } from '../models/role.model';
 import { BaseURL } from 'src/app/baseurl';
 
-const baseUrl = BaseURL.BASE_URL + 'roles';
+const baseUrl = BaseURL.BASE_URL + 'userrole';
 
 @Injectable({
   providedIn: 'root'

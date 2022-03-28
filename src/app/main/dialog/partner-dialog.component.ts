@@ -31,6 +31,10 @@ export class PartnerDialogComponent implements OnInit {
   datname?: string;
   datphone?: string;
   statusActive?: string;
+  isIU = false;
+  isIM = false;
+  isAdm = false;
+  isRes = false;
 
   a = 0; b = 0;
   c = 0; d = 0;
@@ -44,7 +48,6 @@ export class PartnerDialogComponent implements OnInit {
     private logService: LogService,
     @Inject(MAT_DIALOG_DATA) public data: any,
   ){}
-
 
   ngOnInit() {
     if (this.data){
@@ -74,6 +77,16 @@ export class PartnerDialogComponent implements OnInit {
       this.datname = "";
       this.datphone = "";
     }
+    this.checkRole();
+  }
+
+  checkRole(): void {
+    for(let x=0; x<this.globals.roles!.length;x++){
+      if(this.globals.roles![x]=="inventory_user") this.isIU=true;
+      if(this.globals.roles![x]=="inventory_manager") this.isIM=true;
+      if(this.globals.roles![x]=="admin") this.isAdm=true;
+    };
+    if(!this.isIM || !this.isAdm) this.isRes = true;
     this.retrieveLog();
   }
 

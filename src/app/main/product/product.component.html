@@ -1,44 +1,49 @@
 <div class="flex-container">
 	<div class="flex-left">
-		<div class="submit-form quick_add">
-    		<button (click)="openQuickAdd()" class="submit">
+		<div *ngIf="isIM || isAdm" (click)="openQuickAdd()" class="submit-form quick_add">
+    		<button class="submit">
         Quick add
         </button>
   		</div>
 	</div>
 
 	<div class="flex-right">
+    <div style="display: flex; flex-direction: row;">
 		<mat-form-field class="input_field max_search">
       <input matInput type="text" class="form-control" placeholder="Search data" (keyup)="applyFilter($event)">
             <!--[(ngModel)]="searchProdCat"-->
     </mat-form-field>
-    <button class="submit" (click)="toggleDisplay()">Filter</button>
+    <div (click)="toggleDisplay()" style="padding-top:10pt;" class="submit-form quick_add">
+      <button class="submit">Filter</button>
+    </div>
+    <div *ngIf="isIM || isAdm" fxLayout="column">
+      <button class="submit" (click)="searchActive()">active</button>
+      <button class="submit pink" (click)="searchInactive()">not-active</button>
+    </div>
+    </div>
 	</div>
 </div>
 
-<div fxLayout="row" fxLayoutAlign="space-between center" class="filtered" *ngIf="!isShow">
-
-<!--<mat-form-field>
+<div fxLayout="row" fxLayoutAlign="space-around center" class="filtered" *ngIf="isShow">
+<mat-form-field>
   <mat-label>Category</mat-label>
-  <mat-select name="categoryString" (selectionChange)="applyTblFilter($event)" >
-  <mat-option *ngFor="let productcat of productcats" [value]="productcat.id" ngDefaultControl [(ngModel)]="productadd.category">
+  <mat-select name="categoryString" (selectionChange)="applyCatFilter($event)">
+  <mat-option value="">All</mat-option>
+  <mat-option *ngFor="let productcat of productcats" [value]="productcat.id" ngDefaultControl [(ngModel)]="filterCat">
         {{ productcat.description }}
   </mat-option>
   </mat-select>
-</mat-form-field>-->
+</mat-form-field>
 
-<!--<mat-form-field appearance="fill" *ngFor="let product of products">
-  <mat-label>{{ product.category.description }}</mat-label>
-  <mat-select
-    [(value)]="datafilter.defaultValue"
-    (selectionChange)="applyTblFilter($event, datafilter)"
-  >
-    <mat-option *ngFor="let op of datafilter.options" [value]="op">
-      {{ op }}
-    </mat-option>
+<mat-form-field>
+  <mat-label>Brand</mat-label>
+  <mat-select name="brandString" (selectionChange)="applyBrandFilter($event)">
+  <mat-option value="">All</mat-option>
+  <mat-option *ngFor="let brand of brands" [value]="brand.id" ngDefaultControl [(ngModel)]="filterBrand">
+        {{ brand.description }}
+  </mat-option>
   </mat-select>
-</mat-form-field>-->
-
+</mat-form-field>
 </div>
 
 <div class="table-container mat-elevation-z3">
@@ -52,7 +57,8 @@
   <ng-container matColumnDef="name">
     <th class="th-style" fxFlex="15%" mat-header-cell *matHeaderCellDef>Nama</th>
     <td class="tr-style" fxFlex="15%" mat-cell *matCellDef="let products">
-      <a (click)="openDialog(products.id)">{{products.name}}</a>
+      <a (click)="openDialog(products.id)">
+        <span *ngIf="products.active==false" class="inactive">&nbsp;&nbsp;</span>{{products.name}}</a>
     </td>
   </ng-container>
   <ng-container matColumnDef="description">

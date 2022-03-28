@@ -11,7 +11,7 @@ import { MatSelectChange } from '@angular/material/select';
 import { MatDialog } from '@angular/material/dialog';
 import { DataFilter, filterOption } from 'src/app/models/datafilter';
 import { ProductcatDialogComponent } from '../dialog/productcat-dialog.component';
-
+//console.log(this.roles?.filter(role => role.name === "admin").map(role => role._id)); FUCKING HOLY GRAIL
 @Component({
   selector: 'app-product-cat',
   templateUrl: './product-cat.component.html',
@@ -19,6 +19,9 @@ import { ProductcatDialogComponent } from '../dialog/productcat-dialog.component
 })
 export class ProductCatComponent implements OnInit {
   productcats?: Productcat[];
+  isIU = false;
+  isIM = false;
+  isAdm = false;
   
   //Add
   productcatadd: Productcat = {
@@ -49,25 +52,42 @@ export class ProductCatComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.checkRole();
+  }
+
+  checkRole(): void {
+    for(let x=0; x<this.globals.roles!.length;x++){
+      if(this.globals.roles![x]=="inventory_user") this.isIU=true;
+      if(this.globals.roles![x]=="inventory_manager") this.isIM=true;
+      if(this.globals.roles![x]=="admin") this.isAdm=true;
+    };
     this.retrieveProductCat();
   }
 
   retrieveProductCat(): void {
-    this.productCatService.findAllActive()
-      .subscribe(prodcat => {
-        this.dataSource.data = prodcat;
-        this.dataSource.paginator = this.paginator;
-        this.dataSource.sort = this.sort;
-    });
+    if(this.isIM || this.isAdm){
+      this.productCatService.getAll()
+        .subscribe(category => {
+          this.productcats = category;
+          this.dataSource.data = category;
+          this.dataSource.paginator = this.paginator;
+          this.dataSource.sort = this.sort;
+      });
+    }else{
+      this.productCatService.findAllActive()
+        .subscribe(category => {
+          this.dataSource.data = category;
+          this.dataSource.paginator = this.paginator;
+          this.dataSource.sort = this.sort;
+      });
+    }
   }
 
-  searchData(): void {
-    this.productCatService.findByDesc(this.searchProdCat)
-      .subscribe(prodcat => {
-        this.dataSource.data = prodcat;
-        this.dataSource.paginator = this.paginator;
-        this.dataSource.sort = this.sort;
-    });
+  searchActive(): void {
+    this.dataSource.data = this.productcats!.filter(role => role.active === true);
+  }
+  searchInactive(): void {
+    this.dataSource.data = this.productcats!.filter(role => role.active === false);
   }
 
   saveProductCat(): void {

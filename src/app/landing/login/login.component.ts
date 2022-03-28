@@ -24,6 +24,7 @@ export class LoginComponent implements OnInit {
 
   errorMessage = '';
   roles: string[] = [];
+
   constructor(private authService: AuthService,
     private user2Service: User2Service,
     private tokenStorage: TokenStorageService) { }

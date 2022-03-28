@@ -7,4 +7,5 @@ import { Injectable } from '@angular/core';
 export class Globals{
     username?: string;
     userid?: string;
+    roles?: string[];
 }

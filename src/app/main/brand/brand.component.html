@@ -1,22 +1,28 @@
 <div class="flex-container">
 	<div class="flex-left">
-		<div class="submit-form">
+		<div *ngIf="isIM || isAdm" class="submit-form">
     		<div fxLayout="row">
       			<mat-form-field class="input_field">
           			<mat-label class="input_label">Brand</mat-label>
           			<input matInput type="text" class="form-control" name="description" [(ngModel)]="brandadd.description" required id="description">
         		</mat-form-field>
-            <div class="quick_add">
-      			<button (click)="saveBrand()" class="submit">Quick add</button></div>
+            <div (click)="saveBrand()" class="quick_add">
+      			<button class="submit">Quick add</button></div>
     		</div>
   		</div>
 	</div>
 
 	<div class="flex-right">
+    <div fxLayout="row">
 		<mat-form-field class="input_field max_search">
       <input matInput type="text" class="form-control" placeholder="Search data" (keyup)="applyFilter($event)">
             <!--[(ngModel)]="searchProdCat"-->
     </mat-form-field>
+    <div *ngIf="isIM || isAdm" fxLayout="column">
+      <button class="submit" (click)="searchActive()">active</button>
+      <button class="submit pink" (click)="searchInactive()">not-active</button>
+    </div>
+    </div>
 	</div>
 </div>
 
@@ -24,7 +30,10 @@
 <mat-table #table [dataSource]="dataSource">
   <ng-container matColumnDef="name">
     <th class="th-style" fxFlex="50%" mat-header-cell *matHeaderCellDef>Name</th>
-    <td class="tr-style" fxFlex="50%" mat-cell *matCellDef="let brands">{{brands.description}}</td>
+    <td class="tr-style" fxFlex="50%" mat-cell *matCellDef="let brands">
+      <span *ngIf="brands.active==false" class="inactive">&nbsp;&nbsp;</span>
+      {{brands.description}}
+    </td>
   </ng-container>
   <!--<ng-container matColumnDef="active">
     <mat-header-cell *matHeaderCellDef>Active</mat-header-cell>

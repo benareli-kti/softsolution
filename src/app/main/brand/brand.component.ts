@@ -19,6 +19,9 @@ import { BrandDialogComponent } from '../dialog/brand-dialog.component';
 })
 export class BrandComponent implements OnInit {
   brands?: Brand[];
+  isIU = false;
+  isIM = false;
+  isAdm = false;
   
   //Add
   brandadd: Brand = {
@@ -48,25 +51,42 @@ export class BrandComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.checkRole();
+  }
+
+  checkRole(): void {
+    for(let x=0; x<this.globals.roles!.length;x++){
+      if(this.globals.roles![x]=="inventory_user") this.isIU=true;
+      if(this.globals.roles![x]=="inventory_manager") this.isIM=true;
+      if(this.globals.roles![x]=="admin") this.isAdm=true;
+    };
     this.retrieveBrand();
   }
 
   retrieveBrand(): void {
-    this.brandService.findAllActive()
-      .subscribe(brand => {
-        this.dataSource.data = brand;
-        this.dataSource.paginator = this.paginator;
-        this.dataSource.sort = this.sort;
-    });
+    if(this.isIM || this.isAdm){
+      this.brandService.getAll()
+        .subscribe(brand => {
+          this.brands = brand;
+          this.dataSource.data = brand;
+          this.dataSource.paginator = this.paginator;
+          this.dataSource.sort = this.sort;
+      });
+    }else{
+      this.brandService.findAllActive()
+        .subscribe(brand => {
+          this.dataSource.data = brand;
+          this.dataSource.paginator = this.paginator;
+          this.dataSource.sort = this.sort;
+      });
+    }
   }
 
-  searchData(): void {
-    this.brandService.findByDesc(this.searchBrand)
-      .subscribe(brand => {
-        this.dataSource.data = brand;
-        this.dataSource.paginator = this.paginator;
-        this.dataSource.sort = this.sort;
-    });
+  searchActive(): void {
+    this.dataSource.data = this.brands!.filter(role => role.active === true);
+  }
+  searchInactive(): void {
+    this.dataSource.data = this.brands!.filter(role => role.active === false);
   }
 
   saveBrand(): void {

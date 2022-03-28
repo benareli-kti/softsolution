@@ -19,6 +19,9 @@ import { WarehouseDialogComponent } from '../dialog/warehouse-dialog.component';
 })
 export class WarehouseComponent implements OnInit {
   warehouses?: Warehouse[];
+  isIU = false;
+  isIM = false;
+  isAdm = false;
   
   //Add
   warehouseadd: Warehouse = {
@@ -49,25 +52,42 @@ export class WarehouseComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.checkRole();
+  }
+
+  checkRole(): void {
+    for(let x=0; x<this.globals.roles!.length;x++){
+      if(this.globals.roles![x]=="inventory_user") this.isIU=true;
+      if(this.globals.roles![x]=="inventory_manager") this.isIM=true;
+      if(this.globals.roles![x]=="admin") this.isAdm=true;
+    };
     this.retrieveWarehouse();
   }
 
   retrieveWarehouse(): void {
-    this.warehouseService.findAllActive()
-      .subscribe(warehouse => {
-        this.dataSource.data = warehouse;
-        this.dataSource.paginator = this.paginator;
-        this.dataSource.sort = this.sort;
-    });
+    if(this.isIM || this.isAdm){
+      this.warehouseService.getAll()
+        .subscribe(wh => {
+          this.warehouses = wh;
+          this.dataSource.data = wh;
+          this.dataSource.paginator = this.paginator;
+          this.dataSource.sort = this.sort;
+      });
+    }else{
+      this.warehouseService.findAllActive()
+        .subscribe(wh => {
+          this.dataSource.data = wh;
+          this.dataSource.paginator = this.paginator;
+          this.dataSource.sort = this.sort;
+      });
+    }
   }
 
-  searchData(): void {
-    this.warehouseService.findByDesc(this.searchWarehouse)
-      .subscribe(warehouse => {
-        this.dataSource.data = warehouse;
-        this.dataSource.paginator = this.paginator;
-        this.dataSource.sort = this.sort;
-    });
+  searchActive(): void {
+    this.dataSource.data = this.warehouses!.filter(role => role.active === true);
+  }
+  searchInactive(): void {
+    this.dataSource.data = this.warehouses!.filter(role => role.active === false);
   }
 
   saveWarehouse(): void {

@@ -19,6 +19,10 @@ export class ProductcatDialogComponent implements OnInit {
   };
   isChecked = false;
   statusActive?: string;
+  isIU = false;
+  isIM = false;
+  isAdm = false;
+  isRes = false;
 
   a = 0; b = 0;
   isUpdated = 'update';
@@ -34,7 +38,6 @@ export class ProductcatDialogComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any,
   ){}
 
-
   ngOnInit() {
     if (this.data.active == true){
         this.statusActive = 'true';
@@ -47,6 +50,16 @@ export class ProductcatDialogComponent implements OnInit {
       }
     this.currCatId = this.data.catid;
     this.currDescription = this.data.description;
+    this.checkRole();
+  }
+
+  checkRole(): void {
+    for(let x=0; x<this.globals.roles!.length;x++){
+      if(this.globals.roles![x]=="inventory_user") this.isIU=true;
+      if(this.globals.roles![x]=="inventory_manager") this.isIM=true;
+      if(this.globals.roles![x]=="admin") this.isAdm=true;
+    };
+    if(!this.isIM || !this.isAdm) this.isRes = true;
     this.retrieveLog();
   }
 

@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormsModule, FormControl } from '@angular/forms';
 import { Observable, of } from "rxjs";
-
+import { Globals } from 'src/app/global';
 import { Product } from 'src/app/models/product.model';
 import { Productcat } from 'src/app/models/productcat.model';
 import { Brand } from 'src/app/models/brand.model';
@@ -29,16 +29,12 @@ export class ProductComponent implements OnInit {
   isShow = false;
   categoryid?: any;
   brandid?: any;
+  isIU = false;
+  isIM = false;
+  isAdm = false;
 
-  //Add
-  productadd: Product = {
-    sku: '',
-    name: '',
-    category: '',
-    brand: '',
-    isStock: true,
-    active: true
-  };
+  filterCat: string = '';
+  filterBrand: string = '';
   
   //View
   currentProduct: Product = {};
@@ -56,6 +52,7 @@ export class ProductComponent implements OnInit {
   clickedRows = null;
 
   constructor(
+    private globals: Globals,
     private productService: ProductService,
     private productCatService: ProductCatService,
     private brandService: BrandService,
@@ -63,18 +60,41 @@ export class ProductComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.checkRole();
+  }
+
+  checkRole(): void {
+    for(let x=0; x<this.globals.roles!.length;x++){
+      if(this.globals.roles![x]=="inventory_user") this.isIU=true;
+      if(this.globals.roles![x]=="inventory_manager") this.isIM=true;
+      if(this.globals.roles![x]=="admin") this.isAdm=true;
+    };
     this.retrieveProduct();
   }
 
   retrieveProduct(): void {
-    this.productService.findAllActive()
-      .subscribe(prod => {
-        /*prod = prod.filter
-        (data => data.active === true)*/
-        this.dataSource.data = prod;
-        this.dataSource.paginator = this.paginator;
-        this.dataSource.sort = this.sort;
-    });
+    /*prod = prod.filter
+    (data => data.active === true)*/
+
+    if(this.isIM || this.isAdm){
+      console.log("ALL");
+      this.productService.getAll()
+        .subscribe(prod => {
+          this.products = prod;
+          this.dataSource.data = prod;
+          this.dataSource.paginator = this.paginator;
+          this.dataSource.sort = this.sort;
+      });
+    }else{
+      console.log("TERBATAS");
+      this.productService.findAllActive()
+        .subscribe(prod => {
+          this.products = prod;
+          this.dataSource.data = prod;
+          this.dataSource.paginator = this.paginator;
+          this.dataSource.sort = this.sort;
+      });
+    }
 
     this.productCatService.findAllActive()
       .subscribe({
@@ -93,9 +113,46 @@ export class ProductComponent implements OnInit {
     });
   }
 
-  applyTblFilter(event: MatSelectChange) {
-    //this.dataSource.filter = this.selection.trim().toLowerCase()
-    console.log(event.value);
+  searchActive(): void {
+    this.dataSource.data = this.products!.filter(prod => prod.active === true);
+  }
+  searchInactive(): void {
+    this.dataSource.data = this.products!.filter(prod => prod.active === false);
+  }
+
+  applyCatFilter(event: MatSelectChange) {
+    //this.dataSource.data = this.products!.filter(prod => prod.category._id === event.value);
+    this.filterCat = event.value;
+    this.filter();
+  }
+
+  applyBrandFilter(event: MatSelectChange) {
+    this.filterBrand = event.value;
+    this.filter();
+  }
+
+  filter(): void {
+    console.log(this.filterCat);
+    if(this.filterCat===''&&this.filterBrand===''){
+      console.log("KONTOL");
+      this.retrieveProduct();
+    }else if(this.filterCat===''){
+      this.dataSource.data = this.products!
+        .filter(prod => 
+          prod.brand._id === this.filterBrand
+      );
+    }else if(this.filterBrand===''){
+      this.dataSource.data = this.products!
+        .filter(prod => 
+          prod.category._id === this.filterCat
+      );
+    }else{
+      this.dataSource.data = this.products!
+        .filter(prod => 
+          prod.brand._id === this.filterBrand &&
+          prod.category._id === this.filterCat
+      );
+    }
   }
 
   applyFilter(event: Event) {
