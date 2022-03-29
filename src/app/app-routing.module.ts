@@ -10,6 +10,7 @@ import { BrandComponent } from './main/brand/brand.component';
 import { ProductComponent } from './main/product/product.component';
 import { WarehouseComponent } from './main/warehouse/warehouse.component';
 import { PartnerComponent } from './main/partner/partner.component';
+import { PosComponent } from './main/pos/pos.component';
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -21,6 +22,7 @@ const routes: Routes = [
   { path: 'product', component: ProductComponent },
   { path: 'warehouse', component: WarehouseComponent },
   { path: 'partner', component: PartnerComponent },
+  { path: 'pos', component: PosComponent },
   { path: '', redirectTo: 'home', pathMatch: 'full' }
 ];
 

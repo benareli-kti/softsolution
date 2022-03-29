@@ -13,12 +13,12 @@
       <input matInput type="text" class="form-control" placeholder="Search data" (keyup)="applyFilter($event)">
             <!--[(ngModel)]="searchProdCat"-->
     </mat-form-field>
-    <div (click)="toggleDisplay()" style="padding-top:10pt;" class="submit-form quick_add">
+    <div (click)="toggleDisplay()" class="submit-form quick_add">
       <button class="submit">Filter</button>
     </div>
     <div *ngIf="isIM || isAdm" fxLayout="column">
       <button class="submit" (click)="searchActive()">active</button>
-      <button class="submit pink" (click)="searchInactive()">not-active</button>
+      <button class="submit pink" style="margin-top:5pt" (click)="searchInactive()">not-active</button>
     </div>
     </div>
 	</div>

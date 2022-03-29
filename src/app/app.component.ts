@@ -17,6 +17,7 @@ export class AppComponent {
   isPU = false;
   isTU = false;
   isAdm = false;
+  isPOS?: boolean = false;
 
   isProductShow = false;
   isPartnerShow = false;
@@ -44,6 +45,7 @@ export class AppComponent {
       this.globals.username = user.username;
       this.globals.userid = user.id;
       this.globals.roles = user.roles;
+      this.isPOS = this.globals.isPOS;
       this.checkRole();
     }
     else{
@@ -68,8 +70,13 @@ export class AppComponent {
           this.sidenav.mode = 'over';
           this.sidenav.close();
         } else {
-          this.sidenav.mode = 'side';
-          this.sidenav.open();
+          if(this.isPOS){
+            this.sidenav.mode = 'over';
+            this.sidenav.close();
+          }else{
+            this.sidenav.mode = 'side';
+            this.sidenav.open();
+          }
         }
       });
   }

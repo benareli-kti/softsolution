@@ -8,4 +8,5 @@ export class Globals{
     username?: string;
     userid?: string;
     roles?: string[];
+    isPOS?: boolean;
 }
