@@ -1,4 +1,5 @@
-import { Component, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, ViewChild, AfterViewInit, OnDestroy } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { Globals } from 'src/app/global';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
@@ -11,7 +12,10 @@ import { TokenStorageService } from 'src/app/services/token-storage.service';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.sass']
 })
-export class AppComponent {
+export class AppComponent implements OnDestroy {
+  message: any;
+  subscription: Subscription;
+
   title = 'Soft Solution';
   isIU = false;
   isPU = false;
@@ -33,7 +37,16 @@ export class AppComponent {
     private globals: Globals,
     public breakpointObserver: BreakpointObserver,
     private tokenStorageService: TokenStorageService
-  ) { }
+  ){
+    this.subscription = this.messageService.getMessage().subscribe(message => { this.message = message; });
+    console.log(this.message);
+    if(this.message=="Open PO") {
+      this.isPOS = true;
+      this.ngOnInit();
+    }else{
+      this.isPos = false;
+    }
+  }
   ngOnInit(): void {
     //console.log(Globals.username);
     this.isLoggedIn = !!this.tokenStorageService.getToken();
@@ -87,7 +100,12 @@ export class AppComponent {
   }
 
   logout(): void {
+    this.subscription.unsubscribe();
     this.tokenStorageService.signOut();
     window.location.reload();
+  }
+  
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
 }

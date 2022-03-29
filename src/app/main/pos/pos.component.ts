@@ -15,13 +15,7 @@ export class PosComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.globals.isPOS = true;
-    /*if (!localStorage.getItem('poop')) { 
-      localStorage.setItem('poop', 'no reload') 
-      location.reload() 
-    }else{
-      localStorage.removeItem('poop') 
-    }*/
+    this.messageService.sendMessage('Open POS');
   }
 
 }
