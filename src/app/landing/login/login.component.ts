@@ -31,7 +31,6 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {
     this.user2Service.getAll()
       .subscribe(user2 => {
-        console.log(user2);
         if (user2.length == 0){
           this.LogOrReg = false;
           console.log("NEW SYSTEM!")

@@ -17,7 +17,7 @@ export class AppComponent {
   isPU = false;
   isTU = false;
   isAdm = false;
-  isPOS?: boolean = false;
+  isPOS?: boolean;
 
   isProductShow = false;
   isPartnerShow = false;
@@ -45,7 +45,6 @@ export class AppComponent {
       this.globals.username = user.username;
       this.globals.userid = user.id;
       this.globals.roles = user.roles;
-      this.isPOS = this.globals.isPOS;
       this.checkRole();
     }
     else{
@@ -54,6 +53,8 @@ export class AppComponent {
   }
 
   checkRole() {
+    this.isPOS = this.globals.isPOS;
+    console.log(this.globals.isPOS);
     for(let x=0; x<this.roles!.length;x++){
       if(this.roles![x]=="inventory_user"){ this.isIU=true;}
       if(this.roles![x]=="partner_user"){ this.isPU=true;}
