@@ -20,18 +20,41 @@
   </div>
 
   <div class="flexfull">
-  <div>
+  <!--<div>
     <input (change)="onFileSelect($event)" type="file" />
   </div>
   <div *ngIf="imageData">
     <img [src]="imageData" />
+  </div>-->
+  <div class="flex35">
+    <label class="uploader" ondragover="return false;"
+    [class.loaded]="loaded" 
+    [style.outlineColor]="dragging ? activeColor : baseColor"
+    (dragenter)="handleDragEnter()"
+    (dragleave)="handleDragLeave()"
+    (drop)="handleDrop($event)">
+    
+    <i class="icon icon-upload glyphicon glyphicon-upload" 
+        [style.color]="dragging 
+            ? ((imageSrc.length > 0) ? overlayColor : activeColor)
+            : ((imageSrc.length > 0) ? overlayColor : baseColor)"></i>
+    
+    <img 
+        [src]="imageSrc" 
+        (load)="handleImageLoad()" 
+        [class.loaded]="imageLoaded"/>
+    
+    <input type="file" name="file" accept="image/*"
+        (change)="handleInputChange($event)">
+    </label>
   </div>
-  <mat-form-field class="input_field flex50" hintLabel="Max 10 characters">
+  
+  <mat-form-field class="input_field flex25 margin_7" hintLabel="Max 10 characters">
     <input #input matInput maxlength="10" required placeholder="SKU" [(ngModel)]="datsku">
     <mat-hint align="end">{{input.value?.length || 0}}/10</mat-hint>
   </mat-form-field>
 
-  <mat-form-field class="input_field flex50 margin_7">
+  <mat-form-field class="input_field flex35 margin_7">
     <input matInput required placeholder="Name" [(ngModel)]="datname">
   </mat-form-field>
   </div>
