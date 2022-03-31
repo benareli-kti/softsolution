@@ -77,7 +77,6 @@ export class ProductComponent implements OnInit {
     (data => data.active === true)*/
 
     if(this.isIM || this.isAdm){
-      console.log("ALL");
       this.productService.getAll()
         .subscribe(prod => {
           this.products = prod;
@@ -86,7 +85,6 @@ export class ProductComponent implements OnInit {
           this.dataSource.sort = this.sort;
       });
     }else{
-      console.log("TERBATAS");
       this.productService.findAllActive()
         .subscribe(prod => {
           this.products = prod;

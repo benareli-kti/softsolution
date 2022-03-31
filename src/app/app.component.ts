@@ -1,7 +1,6 @@
 import { Component, ViewChild, AfterViewInit, OnDestroy } from '@angular/core';
-import { Subscription } from 'rxjs';
 import { Globals } from 'src/app/global';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
 import { MatSidenav } from '@angular/material/sidenav';
 
@@ -12,16 +11,13 @@ import { TokenStorageService } from 'src/app/services/token-storage.service';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.sass']
 })
-export class AppComponent implements OnDestroy {
-  message: any;
-  subscription: Subscription;
-
+export class AppComponent {
   title = 'Soft Solution';
   isIU = false;
   isPU = false;
   isTU = false;
   isAdm = false;
-  isPOS?: boolean;
+  isPOS = false;
 
   isProductShow = false;
   isPartnerShow = false;
@@ -34,21 +30,21 @@ export class AppComponent implements OnDestroy {
   username?: string;
   constructor(
     private router: Router,
+    private route : ActivatedRoute,
     private globals: Globals,
     public breakpointObserver: BreakpointObserver,
     private tokenStorageService: TokenStorageService
-  ){
-    this.subscription = this.messageService.getMessage().subscribe(message => { this.message = message; });
-    console.log(this.message);
-    if(this.message=="Open PO") {
-      this.isPOS = true;
-      this.ngOnInit();
-    }else{
-      this.isPos = false;
-    }
+  ){ 
+    router.events.subscribe(event => {
+      if(event instanceof NavigationEnd){
+        console.log(event.url);
+        if(event.url=="/pos") this.wiggle();
+        else this.wigglewiggle();
+      }
+    })
   }
+
   ngOnInit(): void {
-    //console.log(Globals.username);
     this.isLoggedIn = !!this.tokenStorageService.getToken();
     if (this.isLoggedIn) {
       const user = this.tokenStorageService.getUser();
@@ -66,8 +62,6 @@ export class AppComponent implements OnDestroy {
   }
 
   checkRole() {
-    this.isPOS = this.globals.isPOS;
-    console.log(this.globals.isPOS);
     for(let x=0; x<this.roles!.length;x++){
       if(this.roles![x]=="inventory_user"){ this.isIU=true;}
       if(this.roles![x]=="partner_user"){ this.isPU=true;}
@@ -84,13 +78,8 @@ export class AppComponent implements OnDestroy {
           this.sidenav.mode = 'over';
           this.sidenav.close();
         } else {
-          if(this.isPOS){
-            this.sidenav.mode = 'over';
-            this.sidenav.close();
-          }else{
-            this.sidenav.mode = 'side';
-            this.sidenav.open();
-          }
+          this.sidenav.mode = 'side';
+          this.sidenav.open();
         }
       });
   }
@@ -100,12 +89,17 @@ export class AppComponent implements OnDestroy {
   }
 
   logout(): void {
-    this.subscription.unsubscribe();
     this.tokenStorageService.signOut();
     window.location.reload();
   }
-  
-  ngOnDestroy() {
-    this.subscription.unsubscribe();
+
+  wiggle() {
+    this.sidenav.mode = 'over';
+    this.sidenav.close();
+  }
+
+  wigglewiggle() {
+    this.sidenav.mode = 'side';
+    this.sidenav.open();
   }
 }

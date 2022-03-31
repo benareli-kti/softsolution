@@ -24,14 +24,14 @@
             <!--[(ngModel)]="searchProdCat"-->
     </mat-form-field>
     <div *ngIf="isIM || isAdm" fxLayout="column">
-      <button class="submit" (click)="searchActive()">active</button>
-      <button class="submit pink" style="margin-top:5pt" (click)="searchInactive()">not-active</button>
+      <button class="submit" style="font-size: .7em; margin-top:5pt" (click)="searchActive()">active</button>
+      <button class="submit pink" style="font-size: .65em; margin-top:5pt" (click)="searchInactive()">inactive</button>
     </div>
     </div>
 	</div>
 </div>
 
-<div class="table-container mat-elevation-z3">
+<div class="table-container">
 <mat-table #table [dataSource]="dataSource" class="mat-table">
   <ng-container matColumnDef="short">
     <th class="th-style" fxFlex="25%" mat-header-cell *matHeaderCellDef>ID</th>

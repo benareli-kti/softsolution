@@ -20,6 +20,12 @@
   </div>
 
   <div class="flexfull">
+  <div>
+    <input (change)="onFileSelect($event)" type="file" />
+  </div>
+  <div *ngIf="imageData">
+    <img [src]="imageData" />
+  </div>
   <mat-form-field class="input_field flex50" hintLabel="Max 10 characters">
     <input #input matInput maxlength="10" required placeholder="SKU" [(ngModel)]="datsku">
     <mat-hint align="end">{{input.value?.length || 0}}/10</mat-hint>

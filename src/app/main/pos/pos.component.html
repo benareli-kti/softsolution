@@ -1,1 +1,41 @@
-<div>HA</div>
+<div class="container">
+	<div fxLayout="column" class="flex20">
+		Category
+		<ul class="list-group">
+      		<li class="list-group-item"
+        		*ngFor="let productcat of productcats; let i = index"
+        		[class.active]="i == currentIndex">
+      		<!--(click)="setActiveTutorial(tutorial, i)"-->
+        	{{ productcat.description }}
+      		</li>
+    	</ul>
+
+		Brand
+		<ul class="list-group">
+      		<li class="list-group-item"
+        		*ngFor="let brand of brands; let i = index"
+        		[class.active]="i == currentIndex">
+      		<!--(click)="setActiveTutorial(tutorial, i)"-->
+        	{{ brand.description }}
+      		</li>
+    	</ul>
+	</div>
+
+
+	<div class="flex60">
+       	<mat-grid-list cols="3" rowHeight="60pt">
+      		<mat-grid-tile *ngFor="let product of products" [colspan]="1" [rowspan]="2">
+        		<mat-card>
+          			<mat-card-header>
+            			<mat-card-subtitle>{{product.description}}</mat-card-subtitle>
+          			</mat-card-header>
+            		<mat-card-content>
+               			<!--<img mat-card-image src="{{tile.data.imagen}}" alt="Photo of a Shiba Inu">-->
+            		</mat-card-content>        
+        		</mat-card>
+         	</mat-grid-tile> 
+        </mat-grid-list>
+	</div>
+
+	<div class="flex20">C</div>
+</div>

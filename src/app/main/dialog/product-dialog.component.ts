@@ -43,6 +43,8 @@ export class ProductDialogComponent implements OnInit {
   oribprice?: number;
   oricost?: number;
 
+  imageData: string;
+
   datid?: string;
   datsku?: string;
   datname?: string;
@@ -263,6 +265,19 @@ export class ProductDialogComponent implements OnInit {
       }else{
         this.updateData();
       }
+    }
+  }
+
+  onFileSelect(event: Event) {
+    const file = (event.target as HTMLInputElement).files[0];
+    this.form.patchValue({ image: file });
+    const allowedMimeTypes = ["image/png", "image/jpeg", "image/jpg"];
+    if (file && allowedMimeTypes.includes(file.type)) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.imageData = reader.result as string;
+      };
+      reader.readAsDataURL(file);
     }
   }
 
