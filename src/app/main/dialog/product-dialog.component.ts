@@ -281,7 +281,7 @@ export class ProductDialogComponent implements OnInit {
   }
 
   onFileSelect(event: Event) {
-    const file = (event.target as HTMLInputElement).files[0];
+    /*const file = (event.target as HTMLInputElement).files[0];
     this.form.patchValue({ image: file });
     const allowedMimeTypes = ["image/png", "image/jpeg", "image/jpg"];
     if (file && allowedMimeTypes.includes(file.type)) {
@@ -290,7 +290,7 @@ export class ProductDialogComponent implements OnInit {
         this.imageData = reader.result as string;
       };
       reader.readAsDataURL(file);
-    }
+    }*/
   }
 
   updateData(): void {
@@ -370,14 +370,14 @@ export class ProductDialogComponent implements OnInit {
   //handling image
   handleDragEnter() {this.dragging = true;}
   handleDragLeave() {this.dragging = false;}
-  handleDrop(e) {
-    e.preventDefault();
+  handleDrop(event) {
+    event.preventDefault();
     this.dragging = false;
-    this.handleInputChange(e);
+    this.handleInputChange(event);
   }
   handleImageLoad() {this.imageLoaded = true;}
-  handleInputChange(e) {
-    var file = e.dataTransfer ? e.dataTransfer.files[0] : e.target.files[0];
+  handleInputChange(event) {
+    var file = event.dataTransfer ? event.dataTransfer.files[0] : event.target.files[0];
     var pattern = /image-*/;
     var reader = new FileReader();
     if (!file.type.match(pattern)) {
@@ -388,8 +388,8 @@ export class ProductDialogComponent implements OnInit {
     reader.onload = this._handleReaderLoaded.bind(this);
     reader.readAsDataURL(file);
   }
-  _handleReaderLoaded(e) {
-    var reader = e.target;
+  _handleReaderLoaded(event) {
+    var reader = event.target;
     this.imageSrc = reader.result;
     this.loaded = true;
   }
