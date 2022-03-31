@@ -370,13 +370,13 @@ export class ProductDialogComponent implements OnInit {
   //handling image
   handleDragEnter() {this.dragging = true;}
   handleDragLeave() {this.dragging = false;}
-  handleDrop(event) {
-    event.preventDefault();
+  handleDrop($event) {
+    $event.preventDefault();
     this.dragging = false;
-    this.handleInputChange(event);
+    this.handleInputChange($event);
   }
   handleImageLoad() {this.imageLoaded = true;}
-  handleInputChange(event) {
+  handleInputChange(files) {
     var file = event.dataTransfer ? event.dataTransfer.files[0] : event.target.files[0];
     var pattern = /image-*/;
     var reader = new FileReader();
@@ -388,7 +388,7 @@ export class ProductDialogComponent implements OnInit {
     reader.onload = this._handleReaderLoaded.bind(this);
     reader.readAsDataURL(file);
   }
-  _handleReaderLoaded(event) {
+  _handleReaderLoaded(files) {
     var reader = event.target;
     this.imageSrc = reader.result;
     this.loaded = true;
