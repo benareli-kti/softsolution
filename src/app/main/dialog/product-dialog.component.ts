@@ -109,19 +109,7 @@ export class ProductDialogComponent implements OnInit {
   dataSource = new MatTableDataSource<Qop>();
 
   //Dialog Data
-  clickedRows = null;
-  
-  //Handling Image
-  activeColor: string = 'green';
-  baseColor: string = '#ccc';
-  overlayColor: string = 'rgba(255,255,255,0.5)';
-  
-  dragging: boolean = false;
-  loaded: boolean = false;
-  imageLoaded: boolean = false;
-  imageSrc: string = '';
-  
- 
+  clickedRows = null; 
 
   constructor(
     public dialogRef: MatDialogRef<ProductDialogComponent>,
@@ -365,32 +353,5 @@ export class ProductDialogComponent implements OnInit {
         },
         error: (e) => console.error(e)
     });
-  }
-  
-  //handling image
-  handleDragEnter() {this.dragging = true;}
-  handleDragLeave() {this.dragging = false;}
-  handleDrop($event) {
-    $event.preventDefault();
-    this.dragging = false;
-    this.handleInputChange($event);
-  }
-  handleImageLoad() {this.imageLoaded = true;}
-  handleInputChange(files) {
-    var file = event.dataTransfer ? event.dataTransfer.files[0] : event.target.files[0];
-    var pattern = /image-*/;
-    var reader = new FileReader();
-    if (!file.type.match(pattern)) {
-      alert('invalid format');
-      return;
-    }
-    this.loaded = false;
-    reader.onload = this._handleReaderLoaded.bind(this);
-    reader.readAsDataURL(file);
-  }
-  _handleReaderLoaded(files) {
-    var reader = event.target;
-    this.imageSrc = reader.result;
-    this.loaded = true;
   }
 }
