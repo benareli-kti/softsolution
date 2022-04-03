@@ -69,7 +69,6 @@ export class ProductcatDialogComponent implements OnInit {
         next: (logPR) => {
           logPR = logPR.filter
           (dataPR => dataPR.category === this.data.id)
-          console.log(logPR);
           this.log = logPR.length;
         },
         error: (e) => console.error(e)

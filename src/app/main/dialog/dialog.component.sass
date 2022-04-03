@@ -11,6 +11,14 @@
   padding: 5pt 10pt
   border-radius: 4pt
 
+.imagecont
+  border: 3px dashed #ccc
+  border-radius:10pt
+  margin-bottom: 4pt
+
+.paddingstock
+  padding: 0pt 30pt
+
 .close_btn
   background: #fff
   color: #8b0000
@@ -19,6 +27,11 @@
   width: 100%
   font-size: 1em
   color: #121212
+
+.uldialog
+  list-style-type: none
+  padding: 0
+  margin-top: 0px
 
 :host ::ng-deep .mat-form-field-label
   font-size: 1.1em
@@ -105,6 +118,17 @@ mat-table
   font-size: .9em
   background: #fff
 
+.choosefile
+  color: #fff
+
+input[type=file]::file-selector-button
+  color: #fc466b
+  padding: 4pt
+  background: none
+  text-transform: uppercase
+  letter-spacing: 1pt
+  border: 0
+
 .input_50
   width: 47%
   text-align: left
@@ -133,9 +157,25 @@ mat-table
 .flexfull
   width: 100%
   display: flex
+  flex-direction: row
+
+$layout-breakpoint-small: 800px
+
+@media (max-width: $layout-breakpoint-small)
+  .flexfull
+    flex-direction: column
+
+  .margin_7
+    margin-left: 0pt
+
+  .paddingstock
+    padding: 0pt 10pt
 
 .flex100
   flex: 100%
+
+.flex65
+  flex: 65%
 
 .flex50
   flex: 50%

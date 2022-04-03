@@ -24,8 +24,10 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatGridListModule } from '@angular/material/grid-list';
-
 import { AppRoutingModule } from './app-routing.module';
+
+import { NgxFileDragDropModule } from "ngx-file-drag-drop";
+
 import { AppComponent } from './app.component';
 import { LoginComponent } from './landing/login/login.component';
 import { HomeComponent } from './main/home/home.component';
@@ -91,7 +93,9 @@ import { PosComponent } from './main/pos/pos.component';
     MatDialogModule,
     MatSlideToggleModule,
     MatButtonToggleModule,
-    MatGridListModule
+    MatGridListModule,
+
+    NgxFileDragDropModule
   ],
   providers: [authInterceptorProviders],
   bootstrap: [AppComponent]

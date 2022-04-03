@@ -8,14 +8,16 @@
     <button class="close_btn" mat-button (click)="closeDialog()">X</button>
   </div>
 
-  <mat-form-field hintLabel="Max 6 characters" class="input_field input_50">
+  <div class="flexfull">
+  <mat-form-field hintLabel="Max 6 characters" class="input_field flex50">
     <input #input matInput maxlength="6" placeholder="Short" [(ngModel)]="data.short">
     <mat-hint align="end">{{input.value?.length || 0}}/6</mat-hint>
   </mat-form-field>
 
-  <mat-form-field class="input_field input_50 margin_7">
+  <mat-form-field class="input_field flex50 margin_7">
     <input matInput placeholder="Name" [(ngModel)]="data.name">
   </mat-form-field>
+  </div>
 </div>
 
 <div class="width-100" fxLayout="row" fxLayoutAlign="space-between center">

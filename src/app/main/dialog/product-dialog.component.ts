@@ -2,11 +2,13 @@ import { Component, OnInit, Inject, Optional, Input } from '@angular/core';
 import { Globals } from 'src/app/global';
 import { FormsModule, FormBuilder, FormGroup, FormControl } from '@angular/forms';
 import { Observable, of } from "rxjs";
+import { HttpEventType, HttpResponse } from '@angular/common/http';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSelectChange, MatSelectModule } from '@angular/material/select';
 import { MatTableDataSource } from '@angular/material/table';
 import { Log } from 'src/app/models/log.model';
 import { LogService } from 'src/app/services/log.service';
+import { FileUploadService } from 'src/app/services/file-upload.service';
 
 import { Product } from 'src/app/models/product.model';
 import { ProductService } from 'src/app/services/product.service';
@@ -42,6 +44,7 @@ export class ProductDialogComponent implements OnInit {
   orilprice?: number;
   oribprice?: number;
   oricost?: number;
+  oriimage?: string;
 
   imageData: string;
 
@@ -111,8 +114,18 @@ export class ProductDialogComponent implements OnInit {
   //Dialog Data
   clickedRows = null; 
 
+  //Upload File
+  fileName: string;
+  selectedFiles?: FileList;
+  progressInfos: any[] = [];
+  message: string[] = [];
+
+  previews: string[] = [];
+  imageInfos?: Observable<any>;
+
   constructor(
     public dialogRef: MatDialogRef<ProductDialogComponent>,
+    private uploadService: FileUploadService,
     private productService: ProductService,
     private brandService: BrandService,
     private productCatService: ProductCatService,
@@ -135,8 +148,15 @@ export class ProductDialogComponent implements OnInit {
       this.datsku = "";
       this.datname = "";
     }
+    this.imageInfos = this.uploadService.getFiles();
     this.retrieveProduct();
     this.checkRole();
+    
+    this.imageInfos = this.uploadService.getFiles();
+  }
+
+  onValueChange(file: File[]) {
+    console.log("File changed!");
   }
 
   checkRole(): void {
@@ -165,6 +185,7 @@ export class ProductDialogComponent implements OnInit {
         this.oribprice = prod.botprice;
         this.datcost = prod.cost;
         this.oricost = prod.cost;
+        this.oriimage = prod.image;
         if (prod.active == true){
           this.statusActive = 'true';
           this.isChecked = true;
@@ -256,6 +277,14 @@ export class ProductDialogComponent implements OnInit {
     this.dialogRef.close();
   }
 
+  checkImage(): void {
+    if (this.selectedFiles){
+
+    }else {
+      this.checkBigger();
+    }
+  }
+
   checkBigger(): void {
     if(Number(this.datbprice) > Number(this.datlprice)){
       this.bbigger = true;
@@ -268,17 +297,47 @@ export class ProductDialogComponent implements OnInit {
     }
   }
 
-  onFileSelect(event: Event) {
-    /*const file = (event.target as HTMLInputElement).files[0];
-    this.form.patchValue({ image: file });
-    const allowedMimeTypes = ["image/png", "image/jpeg", "image/jpg"];
-    if (file && allowedMimeTypes.includes(file.type)) {
-      const reader = new FileReader();
-      reader.onload = () => {
-        this.imageData = reader.result as string;
-      };
-      reader.readAsDataURL(file);
-    }*/
+  selectFiles(event: any): void {
+    this.message = [];
+    this.selectedFiles = event.target.files;
+
+    this.previews = [];
+    if (this.selectedFiles && this.selectedFiles[0]) {
+      const numberOfFiles = this.selectedFiles.length;
+      for (let i = 0; i < numberOfFiles; i++) {
+        const reader = new FileReader();
+
+        reader.onload = (e: any) => {
+          this.previews.push(e.target.result);
+        };
+
+        reader.readAsDataURL(this.selectedFiles[i]);
+      }
+    }
+  }
+
+  upload(idx: number, file: File): void {
+    if (file) {
+      this.uploadService.upload(file).subscribe({
+        next: (event: any) => {
+          const msg = 'Uploaded the file successfully: ' + file.name;
+          this.fileName = file.name;
+          this.message.push(msg);
+          this.imageInfos = this.uploadService.getFiles();
+        },
+        error: (err: any) => {
+          const msg = 'Could not upload the file: ' + file.name;
+          this.message.push(msg);
+        }});
+    }
+  }
+
+  uploadFiles(): void {
+    if (this.selectedFiles) {
+      for (let i = 0; i < this.selectedFiles.length; i++) {
+        this.upload(i, this.selectedFiles[i]);
+      }
+    }
   }
 
   updateData(): void {
@@ -317,6 +376,7 @@ export class ProductDialogComponent implements OnInit {
       cost: this.datcost,
       isStock: this.isStock,
       category: this.categoryid,
+      image: this.fileName,
       brand: this.brandid,
       active: this.isChecked,
       message: this.isUpdated,
@@ -342,6 +402,7 @@ export class ProductDialogComponent implements OnInit {
       isStock: this.isStock,
       category: this.categoryid,
       brand: this.brandid,
+      image: 'default.png',
       qoh: 0,
       active: this.isChecked,
       user: this.globals.userid

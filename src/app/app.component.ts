@@ -1,4 +1,4 @@
-import { Component, ViewChild, AfterViewInit, OnDestroy } from '@angular/core';
+import { Component, ViewChild, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
 import { Globals } from 'src/app/global';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
@@ -11,7 +11,7 @@ import { TokenStorageService } from 'src/app/services/token-storage.service';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.sass']
 })
-export class AppComponent {
+export class AppComponent implements OnInit, AfterViewInit{
   title = 'Soft Solution';
   isIU = false;
   isPU = false;
@@ -37,7 +37,7 @@ export class AppComponent {
   ){ 
     router.events.subscribe(event => {
       if(event instanceof NavigationEnd){
-        console.log(event.url);
+        //console.log(event.url);
         if(event.url=="/pos") this.wiggle();
         else this.wigglewiggle();
       }

@@ -22,14 +22,17 @@
 	</div>
 
 
-	<div class="flex60">
-       	<mat-grid-list cols="3" rowHeight="60pt">
+	<div class="flex50">
+       	<mat-grid-list cols="3" rowHeight="70pt">
       		<mat-grid-tile *ngFor="let product of products" [colspan]="1" [rowspan]="2">
         		<mat-card>
           			<mat-card-header>
-            			<mat-card-subtitle>{{product.description}}</mat-card-subtitle>
+            			<mat-card-subtitle>
+            				<span class="title">{{product.name}}</span>
+            			</mat-card-subtitle>
           			</mat-card-header>
             		<mat-card-content>
+            			<img mat-card-image class="imgs" src="http://localhost:8080/api/files/files/{{product.image}}"/>
                			<!--<img mat-card-image src="{{tile.data.imagen}}" alt="Photo of a Shiba Inu">-->
             		</mat-card-content>        
         		</mat-card>
@@ -37,5 +40,5 @@
         </mat-grid-list>
 	</div>
 
-	<div class="flex20">C</div>
+	<div class="flex30">C</div>
 </div>

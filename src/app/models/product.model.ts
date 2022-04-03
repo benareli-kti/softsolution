@@ -4,6 +4,7 @@ export class Product {
 	sku?: string;
 	name?: string;
 	description?: string;
+	image?: string;
     listprice?: number;
     botprice?: number;
     cost?: number;

@@ -1,5 +1,5 @@
 <div class="basic-container submit-form" fxLayout="column" fxLayoutAlign="space-between center" >
-<div class="width-100">
+<div class="width-100" style="overflow-y: scroll;">
   <div class="marginbot" fxLayout="row" fxLayoutAlign="space-between center">
     <mat-button-toggle-group class="active_btn" #group="matButtonToggleGroup" [(value)]="statusActive" (change)="onValChange(group.value)">
       <mat-button-toggle value="true">Active</mat-button-toggle>
@@ -7,42 +7,57 @@
     </mat-button-toggle-group>
 
     <mat-button-toggle-group class="active_btn margin_7" *ngIf="isNew" #group2="matButtonToggleGroup" [(value)]="datisstock" (change)="onStockChange(group2.value)">
-      <mat-button-toggle style="padding: 0pt 30pt;" value="true">Stock</mat-button-toggle>
-      <mat-button-toggle style="padding: 0pt 30pt;" value="false">Jasa</mat-button-toggle>
+      <mat-button-toggle class="paddingstock" value="true">Stock</mat-button-toggle>
+      <mat-button-toggle class="paddingstock" value="false">Jasa</mat-button-toggle>
     </mat-button-toggle-group>
 
     <mat-button-toggle-group class="active_btn margin_7" *ngIf="!isNew" disabled #group2="matButtonToggleGroup" [(value)]="datisstock" (change)="onStockChange(group2.value)">
-      <mat-button-toggle style="padding: 0pt 30pt;" value="true">Stock</mat-button-toggle>
-      <mat-button-toggle style="padding: 0pt 30pt;" value="false">Jasa</mat-button-toggle>
+      <mat-button-toggle class="paddingstock" value="true">Stock</mat-button-toggle>
+      <mat-button-toggle class="paddingstock" value="false">Jasa</mat-button-toggle>
     </mat-button-toggle-group>
 
     <button class="close_btn" mat-button (click)="closeDialog()">X</button>
   </div>
 
   <div class="flexfull">
-  <!--<div>
-    <input (change)="onFileSelect($event)" type="file" />
-  </div>
-  <div *ngIf="imageData">
-    <img [src]="imageData" />
-  </div>-->
-  <div class="flex35">
-   
-  </div>
+    <div class="flex35">
+      <div fxLayout="column" class="imagecont">
+        <div fxLayout="row" fxLayoutAlign="space-around start">
+          <ul *ngFor="let image of imageInfos | async" class="uldialog">
+            <li *ngIf="(image.name == oriimage)" class="uldialog">
+              <img src="{{ image.url }}" alt="{{ image.name }}" height="100px"/>
+            </li>
+          </ul>
+          <div><img style="max-height: 100px;" *ngFor='let preview of previews' [src]="preview" class="preview"></div>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="space-around start" style="margin-top:-5pt;">
+          <!--class="choosefile submit pink"-->
+          <input class="choosefile" type="file" accept="image/*" (change)="selectFiles($event)" />
+          <button class="save_btn" style="font-size:.8em;" [disabled]="!selectedFiles" (click)="uploadFiles()">Upload</button>
+        </div>
+      </div>
+    </div>
   
-  <mat-form-field class="input_field flex25 margin_7" hintLabel="Max 10 characters">
-    <input #input matInput maxlength="10" required placeholder="SKU" [(ngModel)]="datsku">
-    <mat-hint align="end">{{input.value?.length || 0}}/10</mat-hint>
-  </mat-form-field>
+    <div class="flex65 margin_7">
+      <div fxLayout="column">
+        <div class="flexfull">
+          <mat-form-field class="input_field flex50" hintLabel="Max 10 characters">
+            <input #input matInput maxlength="10" required placeholder="SKU" [(ngModel)]="datsku">
+            <mat-hint align="end">{{input.value?.length || 0}}/10</mat-hint>
+          </mat-form-field>
 
-  <mat-form-field class="input_field flex35 margin_7">
-    <input matInput required placeholder="Name" [(ngModel)]="datname">
-  </mat-form-field>
+          <mat-form-field class="input_field flex50 margin_7">
+            <input matInput required placeholder="Name" [(ngModel)]="datname">
+          </mat-form-field>
+        </div>
+        <mat-form-field class="input_field flex100">
+          <input matInput placeholder="Deskripsi" [(ngModel)]="datdesc">
+        </mat-form-field>
+      </div>
+    </div>
   </div>
 
-  <mat-form-field class="input_field flex100">
-    <input matInput placeholder="Deskripsi" [(ngModel)]="datdesc">
-  </mat-form-field>
+  
 
   <div class="flexfull">
   <mat-form-field class="input_field flex33">

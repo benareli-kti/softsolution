@@ -167,7 +167,6 @@ export class StockMoveDialogComponent implements OnInit {
       warehouse: this.warehouseid,
       qop: this.datqty
     }
-    console.log(qop);
     this.qopService.createUpdate(qop)
       .subscribe({
         next: (res) => {
