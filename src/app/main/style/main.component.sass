@@ -1,6 +1,9 @@
 //::ng-deep .mat-form-field-underline
   //display: none
 
+::-webkit-scrollbar
+  width: 0
+
 .width100
   width: 100%
 
@@ -48,7 +51,8 @@
   flex-direction: row
   flex-wrap: wrap
   text-align: center
-  width: calc(100vw - 190pt)
+  padding: 10pt
+  width: calc(100vw - 185pt)
   justify-content: space-between
 
 .flex-left
@@ -116,6 +120,7 @@ mat-button-toggle
 .table-container
   border-radius: 5pt
   overflow: hidden
+  margin-left: 10pt
   box-shadow: 5px 5px 20px 1px #dedede
 
 mat-paginator

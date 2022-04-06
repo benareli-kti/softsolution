@@ -5,6 +5,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoreModule } from '@ngrx/store';
+import { Ng2SearchPipeModule } from 'ng2-search-filter';
 
 import { LayoutModule } from '@angular/cdk/layout';
 import { FlexLayoutModule } from "@angular/flex-layout";
@@ -21,6 +22,7 @@ import { MatDividerModule } from "@angular/material/divider";
 import { MatTableModule } from "@angular/material/table";
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatGridListModule } from '@angular/material/grid-list';
@@ -47,6 +49,7 @@ import { PartnerComponent } from './main/partner/partner.component';
 import { PartnerDialogComponent } from './main/dialog/partner-dialog.component';
 import { StockMoveDialogComponent } from './main/dialog/stockmove-dialog.component';
 import { PosComponent } from './main/pos/pos.component';
+import { PosdetailDialogComponent } from './main/dialog/posdetail-dialog.component';
 
 @NgModule({
   declarations: [
@@ -66,7 +69,8 @@ import { PosComponent } from './main/pos/pos.component';
     PartnerComponent,
     PartnerDialogComponent,
     StockMoveDialogComponent,
-    PosComponent
+    PosComponent,
+    PosdetailDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -76,6 +80,8 @@ import { PosComponent } from './main/pos/pos.component';
     HttpClientModule,
     BrowserAnimationsModule,
     StoreModule,
+    Ng2SearchPipeModule,
+
     LayoutModule,
     FlexLayoutModule,
     MatToolbarModule,
@@ -91,6 +97,7 @@ import { PosComponent } from './main/pos/pos.component';
     MatTableModule,
     MatPaginatorModule,
     MatDialogModule,
+    MatSnackBarModule,
     MatSlideToggleModule,
     MatButtonToggleModule,
     MatGridListModule,

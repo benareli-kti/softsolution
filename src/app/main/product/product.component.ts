@@ -130,9 +130,7 @@ export class ProductComponent implements OnInit {
   }
 
   filter(): void {
-    console.log(this.filterCat);
     if(this.filterCat===''&&this.filterBrand===''){
-      console.log("KONTOL");
       this.retrieveProduct();
     }else if(this.filterCat===''){
       this.dataSource.data = this.products!

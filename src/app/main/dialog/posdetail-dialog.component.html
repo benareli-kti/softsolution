@@ -1,0 +1,73 @@
+<div class="basic-container submit-form" fxLayout="column" fxLayoutAlign="space-between center" >
+<div class="width-100">
+  <div class="marginbot" fxLayout="row" fxLayoutAlign="space-between center">
+    <h2>{{productname}}</h2>
+    <button class="close_btn" mat-button (click)="closeDialog()">X</button>
+  </div>
+
+  <div class="flexfull">
+    <div class="flex50">
+      <mat-form-field class="input_field">
+        <input matInput type="number" placeholder="Quantity" [(ngModel)]="data.qty">
+      </mat-form-field>
+      <div fxLayout="column">
+        <div fxLayout="row">
+          <button class="calc" (click)="press('1')">1</button>
+          <button class="calc" (click)="press('2')">2</button>
+          <button class="calc" (click)="press('3')">3</button>
+        </div>
+        <div fxLayout="row">
+          <button class="calc" (click)="press('4')">4</button>
+          <button class="calc" (click)="press('5')">5</button>
+          <button class="calc" (click)="press('6')">6</button>
+        </div>
+        <div fxLayout="row">
+          <button class="calc" (click)="press('7')">7</button>
+          <button class="calc" (click)="press('8')">8</button>
+          <button class="calc" (click)="press('9')">9</button>
+        </div>
+        <div fxLayout="row">
+          <button class="calc" (click)="press('.')">.</button>
+          <button class="calc" (click)="press('0')">0</button>
+          <button class="calc" (click)="press('X')">clear</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="flex50">
+      <mat-form-field class="input_field flex50 margin_7">
+        <input matInput type="number" placeholder="Price Unit" [(ngModel)]="data.price_unit">
+        <div class="alert" role="alert" *ngIf="bbigger">Tidak diijinkan!</div>
+      </mat-form-field>
+      <div fxLayout="column">
+        <div fxLayout="row">
+          <button class="calc" (click)="press2('1')">1</button>
+          <button class="calc" (click)="press2('2')">2</button>
+          <button class="calc" (click)="press2('3')">3</button>
+        </div>
+        <div fxLayout="row">
+          <button class="calc" (click)="press2('4')">4</button>
+          <button class="calc" (click)="press2('5')">5</button>
+          <button class="calc" (click)="press2('6')">6</button>
+        </div>
+        <div fxLayout="row">
+          <button class="calc" (click)="press2('7')">7</button>
+          <button class="calc" (click)="press2('8')">8</button>
+          <button class="calc" (click)="press2('9')">9</button>
+        </div>
+        <div fxLayout="row">
+          <button class="calc" (click)="press2('0')">0</button>
+          <button class="calc" (click)="press2('000')">000</button>
+          <button class="calc" (click)="press2('X')">clear</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="width-100" fxLayout="row" fxLayoutAlign="space-between center">
+  <div class="width-90">
+    <button mat-button [disabled]="isRes" class="save_btn" (click)="confirm()">Save</button>
+  </div>
+</div>
+</div>

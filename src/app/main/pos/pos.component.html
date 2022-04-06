@@ -1,44 +1,139 @@
 <div class="container">
-	<div fxLayout="column" class="flex20">
+	<div fxLayout="column" class="left-container">
+		<mat-form-field style="max-height: 40pt !important;">
+      		<input matInput type="text" class="form-control" placeholder="Search data" [(ngModel)]="term">
+      		<!--(keyup)="applyFilter($event)"-->
+    	</mat-form-field>
+		<button class="clear-filter" (click)="retrieveData()">Clear Filter</button>
+		<div class="filter">
 		Category
-		<ul class="list-group">
-      		<li class="list-group-item"
-        		*ngFor="let productcat of productcats; let i = index"
-        		[class.active]="i == currentIndex">
+		<ul>
+      		<li class="list-group-item category"
+        		*ngFor="let productcat of productcats; let i1 = index"
+        		[class.active]="i1 == currentIndex1"
+        		(click)="filterCategory(productcat, i1)">
       		<!--(click)="setActiveTutorial(tutorial, i)"-->
         	{{ productcat.description }}
       		</li>
     	</ul>
 
 		Brand
-		<ul class="list-group">
-      		<li class="list-group-item"
-        		*ngFor="let brand of brands; let i = index"
-        		[class.active]="i == currentIndex">
+		<ul>
+      		<li class="list-group-item category"
+        		*ngFor="let brand of brands; let i2 = index"
+        		[class.active]="i2 == currentIndex2"
+        		(click)="filterBrands(brand, i2)">
       		<!--(click)="setActiveTutorial(tutorial, i)"-->
         	{{ brand.description }}
       		</li>
     	</ul>
+    	</div>
 	</div>
 
-
-	<div class="flex50">
-       	<mat-grid-list cols="3" rowHeight="70pt">
-      		<mat-grid-tile *ngFor="let product of products" [colspan]="1" [rowspan]="2">
+	<!--cols="3"-->
+	<div class="center-container">
+       	<mat-grid-list 
+       		[cols]="cols"
+       		[rowHeight]="rowHeight">
+      		<mat-grid-tile *ngFor="let product of products | filter:term" [colspan]="1" [rowspan]="2" (click)="pukimai(product)">
         		<mat-card>
-          			<mat-card-header>
-            			<mat-card-subtitle>
-            				<span class="title">{{product.name}}</span>
-            			</mat-card-subtitle>
-          			</mat-card-header>
             		<mat-card-content>
-            			<img mat-card-image class="imgs" src="http://localhost:8080/api/files/files/{{product.image}}"/>
-               			<!--<img mat-card-image src="{{tile.data.imagen}}" alt="Photo of a Shiba Inu">-->
+            			<div class="mat-content">
+            				<div class="title">{{product.name}}</div>
+            				<img mat-card-image class="imgs" src="http://localhost:8080/api/files/files/{{product.image}}"/>
+               				<div class="price">Rp {{product.listprice | number}}</div>
+               			</div>
             		</mat-card-content>        
         		</mat-card>
          	</mat-grid-tile> 
         </mat-grid-list>
 	</div>
 
-	<div class="flex30">C</div>
+	<div class="right-container">
+		<div class="pos-number" *ngIf="isRightShow">
+			<div>
+				<div fxLayout="row" style="margin-top:-8pt;" fxLayoutAlign="space-around center">
+					<mat-form-field style="height:30pt; width:100pt;" class="input_field flex50 margin_7">
+						<mat-label>Customer</mat-label>
+    					<mat-select name="partnerString" (selectionChange)="selectedValue($event)" [(value)]="selectedPartner">
+      					<mat-option *ngFor="let partner of partners" [value]="partner.id" ngDefaultControl>
+        				{{ partner.name }}
+      					</mat-option>
+    					</mat-select>
+  					</mat-form-field>
+				</div>
+				<div class="discount">
+    				<div (click)="toggleCalc()" style="margin-top:3pt;">Discount</div>
+    				<div>
+    					<mat-button-toggle-group #group="matButtonToggleGroup" [(value)]="discType" (change)="onDiscChange(group.value)">
+  							<mat-button-toggle value="percent" aria-label="Percent">
+    						%
+  							</mat-button-toggle>
+  							<mat-button-toggle value="amount" aria-label="Amount">
+    						Rp
+  							</mat-button-toggle>
+						</mat-button-toggle-group>
+    				</div>
+    				<button class="discount-amount" (click)="toggleCalc()">{{disc | number}}</button>
+    			</div>
+    			<div fxLayout="column" class="calc-holder" *ngIf="isCalc">
+        			<div fxLayout="row">
+          				<button class="calc" (click)="press('1')">1</button>
+          				<button class="calc" (click)="press('2')">2</button>
+          				<button class="calc" (click)="press('3')">3</button>
+        			</div>
+        			<div fxLayout="row">
+          				<button class="calc" (click)="press('4')">4</button>
+          				<button class="calc" (click)="press('5')">5</button>
+          				<button class="calc" (click)="press('6')">6</button>
+        			</div>
+        			<div fxLayout="row">
+          				<button class="calc" (click)="press('7')">7</button>
+          				<button class="calc" (click)="press('8')">8</button>
+          				<button class="calc" (click)="press('9')">9</button>
+        			</div>
+        			<div fxLayout="row">
+          				<button class="calc" (click)="press('C')">clear</button>
+          				<button class="calc" (click)="press('0')">0</button>
+          				<button class="calc" (click)="toggleCalc()">X</button>
+        			</div>
+      			</div>
+				<div style="margin-top:7pt;height:285pt;overflow-y:scroll;">
+					<ul style="margin:0pt 3pt;">
+      					<li class="list-group-item" *ngFor="let order of orders; let i3 = index">
+      						<!--(click)="posDetailClick(i3)"-->
+      					<!--(click)="setActiveTutorial(tutorial, i)"-->
+      					<div fxLayout="row" fxLayoutAlign="space-between center">
+      						<div (click)="openPosDetail(i3)" fxLayout="column" class="flex60" style="padding-right:3pt;">
+        						{{ order.product_name }}
+        						<div>{{order.qty}} X {{order.price_unit}}</div>
+        					</div>
+        					<div (click)="openPosDetail(i3)" fxLayout="column" class="flex30">
+        						<div style="font-size:1.1em; text-align:right;padding-right:3pt;">{{order.subtotal | number}}</div>
+        					</div>
+        					<div fxLayout="column" class="flex10">
+        						<button class="add-btn" (click)="posDetailAdd(i3)">+</button>
+        						<button class="min-btn" (click)="posDetailMin(i3)">-</button>
+        					</div>
+        				</div>
+      					</li>
+    				</ul>
+    			</div>
+    		</div>
+    		
+    		<!--<div class="total">
+    			<div style="padding-top:5pt;">Total Rp.<b>{{total | number}}</b></div>
+    			<div class="paynow" style="margin-top:0pt">Pay</div>
+    		</div>-->
+		</div>
+
+		<div class="right-new" *ngIf="!isRightShow">
+			<button class="new-order" (click)="newOrder()"> New Order </button>
+		</div>
+	</div>
+	<div class="total">
+    	<div>Total<br/>Rp.<b>{{total | number}}</b></div>
+    	<div class="paynow" style="margin-top:0pt">PAY</div>
+    </div>
 </div>
+
