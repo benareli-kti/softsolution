@@ -37,6 +37,9 @@ export class WarehouseService {
   findAllActive(): Observable<Warehouse[]>{
     return this.http.get<Warehouse[]>(`${baseUrl}/active`);
   }
+  findMain(): Observable<Warehouse[]>{
+    return this.http.get<Warehouse[]>(`${baseUrl}/main`);
+  }
   findByDesc(name: any): Observable<Warehouse[]> {
     return this.http.get<Warehouse[]>(`${baseUrl}?name=${name}`);
   }

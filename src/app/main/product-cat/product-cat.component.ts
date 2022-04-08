@@ -9,6 +9,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort, Sort, SortDirection } from '@angular/material/sort';
 import { MatSelectChange } from '@angular/material/select';
 import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { DataFilter, filterOption } from 'src/app/models/datafilter';
 import { ProductcatDialogComponent } from '../dialog/productcat-dialog.component';
 //console.log(this.roles?.filter(role => role.name === "admin").map(role => role._id)); FUCKING HOLY GRAIL
@@ -46,6 +47,7 @@ export class ProductCatComponent implements OnInit {
  
   constructor(
     private globals: Globals,
+    private _snackBar: MatSnackBar,
     private logService: LogService,
     private productCatService: ProductCatService,
     private dialog: MatDialog
@@ -91,24 +93,29 @@ export class ProductCatComponent implements OnInit {
   }
 
   saveProductCat(): void {
-    const data = {
-      catid: this.productcatadd.catid,
-      description: this.productcatadd.description,
-      active: this.productcatadd.active,
-      user: this.globals.userid
-    };
-    this.productCatService.create(data)
-      .subscribe({
-        next: (res) => {
-          this.retrieveProductCat();
-          this.productcatadd = {
-            catid: '',
-            description: '',
-            active: true
-          };
-        },
-        error: (e) => console.error(e)
-      });
+    if(!this.productcatadd.catid || this.productcatadd.catid == null
+      || !this.productcatadd.description || this.productcatadd.description == null){
+      this._snackBar.open("Field (*) tidak boleh kosong!", "Tutup", {duration: 5000});
+    }else{
+      const data = {
+        catid: this.productcatadd.catid,
+        description: this.productcatadd.description,
+        active: this.productcatadd.active,
+        user: this.globals.userid
+      };
+      this.productCatService.create(data)
+        .subscribe({
+          next: (res) => {
+            this.retrieveProductCat();
+            this.productcatadd = {
+              catid: '',
+              description: '',
+              active: true
+            };
+          },
+          error: (e) => console.error(e)
+        });
+    }
   }
 
   /*applyTblFilter(filterValue: string) {

@@ -8,9 +8,10 @@
     <button class="close_btn" mat-button (click)="closeDialog()">X</button>
   </div>
 
-  <mat-form-field class="input_field input_50">
-    <input matInput placeholder="Description" [(ngModel)]="data.description">
-  </mat-form-field>
+  <div class="flex50">
+    <div class="descrip flex35">Name *</div>
+    <input class="inputs width-90" id="desc" required placeholder="Name" [(ngModel)]="data.description">
+  </div>
 </div>
 
 <div class="width-100" fxLayout="row" fxLayoutAlign="space-between center">

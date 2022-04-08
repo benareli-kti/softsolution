@@ -4,7 +4,7 @@ import { Observable, map, of } from 'rxjs';
 import { Posdetail } from '../models/posdetail.model';
 import { BaseURL } from 'src/app/baseurl';
 
-const baseUrl = BaseURL.BASE_URL + 'poss';
+const baseUrl = BaseURL.BASE_URL + 'posdetails';
 
 @Injectable({
   providedIn: 'root'

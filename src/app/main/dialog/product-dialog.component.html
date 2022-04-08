@@ -41,56 +41,65 @@
     <div class="flex65 margin_7">
       <div fxLayout="column">
         <div class="flexfull">
-          <mat-form-field class="input_field flex50" hintLabel="Max 10 characters">
-            <input #input matInput maxlength="10" required placeholder="SKU" [(ngModel)]="datsku">
-            <mat-hint align="end">{{input.value?.length || 0}}/10</mat-hint>
-          </mat-form-field>
+          <div class="holder flex50">
+            <div class="descrip">SKU</div>
+            <input class="inputs width-90" maxlength="10" required placeholder="SKU" [(ngModel)]="datsku">
+          </div>
 
-          <mat-form-field class="input_field flex50 margin_7">
-            <input matInput required placeholder="Name" [(ngModel)]="datname">
-          </mat-form-field>
+          <div class="holder flex50 margin_7">
+            <div class="descrip">Name *</div>
+            <input class="inputs width-90" required placeholder="Name" [(ngModel)]="datname">
+          </div>
         </div>
-        <mat-form-field class="input_field flex100">
-          <input matInput placeholder="Deskripsi" [(ngModel)]="datdesc">
-        </mat-form-field>
+        <br/>
+        <div class="holder">
+            <div class="descrip">Deskripsi</div>
+            <input class="inputs width-90" placeholder="Deskripsi" [(ngModel)]="datdesc">
+        </div>
       </div>
     </div>
   </div>
 
-  
-
   <div class="flexfull">
-  <mat-form-field class="input_field flex33">
-    <input matInput required placeholder="Harga Jual" type="number" [(ngModel)]="datlprice">
-  </mat-form-field>
+    <div class="flex50">
+      <div class="holder-row">
+        <div class="descrip flex30 harga">Harga Jual *</div>
+        <input class="inputs flex70" required placeholder="Harga Jual" type="number" [(ngModel)]="datlprice">
+      </div>
+      <div class="holder-row" style="margin-top:7pt;">
+        <div class="descrip flex30 harga">Harga Batas</div>
+        <input class="inputs flex70" placeholder="0" type="number" [(ngModel)]="datbprice">
+      </div>
+      <div class="alert" role="alert" *ngIf="bbigger">Harga Batas tidak bisa lebih besar!</div>
+      <div class="holder-row" style="margin-top:7pt;">
+        <div class="descrip flex30 harga">Cost</div>
+        <input class="inputs flex70" placeholder="0" type="number" [(ngModel)]="datcost">
+      </div>
+    </div>
 
-  <mat-form-field class="input_field flex33 margin_7">
-    <input matInput placeholder="Harga Batas" type="number" [(ngModel)]="datbprice">
-    <div class="alert" role="alert" *ngIf="bbigger">Harga Batas tidak bisa lebih besar!</div>
-  </mat-form-field>
+    <div class="flex50 holder margin_7">     
+      <mat-form-field class="input_field">
+        <mat-label class="descrip">Category *</mat-label>
+        <mat-select class="inputs" name="categoryString" (selectionChange)="selectedValue($event)" [(value)]="selectedCategory">
+          <mat-option *ngFor="let productcat of productcats" [value]="productcat.id" ngDefaultControl [(ngModel)]="productadd.category">
+          {{ productcat.description }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
 
-  <mat-form-field class="input_field flex33 margin_7">
-    <input matInput placeholder="Cost" type="number" [(ngModel)]="datcost">
-  </mat-form-field>
+      <mat-form-field class="input_field ">
+        <mat-label class="descrip">Brand</mat-label>
+        <mat-select name="brandString" class="inputs" (selectionChange)="selectedValue2($event)" [(value)]="selectedBrand">
+          <mat-option value=""> </mat-option>
+          <mat-option *ngFor="let brand of brands" [value]="brand.id" ngDefaultControl [(ngModel)]="productadd.brand">{{ brand.description }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
   </div>
 
   <div class="flexfull">
-  <mat-form-field class="input_field flex50">
-    <mat-label>Category</mat-label>
-    <mat-select required name="categoryString" (selectionChange)="selectedValue($event)" [(value)]="selectedCategory">
-      <mat-option *ngFor="let productcat of productcats" [value]="productcat.id" ngDefaultControl [(ngModel)]="productadd.category">
-        {{ productcat.description }}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
-
-  <mat-form-field class="input_field margin_7 flex50">
-    <mat-label>Brand</mat-label>
-    <mat-select name="brandString" (selectionChange)="selectedValue2($event)" [(value)]="selectedBrand">
-      <mat-option *ngFor="let brand of brands" [value]="brand.id" ngDefaultControl [(ngModel)]="productadd.brand">{{ brand.description }}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
+  
   </div>
 </div>
 

@@ -1,6 +1,8 @@
 import { Component, OnInit, Inject, Optional, Input } from '@angular/core';
 import { Globals } from 'src/app/global';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
+
 import { Warehouse } from 'src/app/models/warehouse.model';
 import { WarehouseService } from 'src/app/services/warehouse.service';
 import { Log } from 'src/app/models/log.model';
@@ -19,6 +21,7 @@ export class WarehouseDialogComponent implements OnInit {
   };
   isChecked = false;
   statusActive?: string;
+  isMain = false;
   isIU = false;
   isIM = false;
   isAdm = false;
@@ -32,6 +35,7 @@ export class WarehouseDialogComponent implements OnInit {
 
   constructor(
     public dialogRef: MatDialogRef<WarehouseDialogComponent>,
+    private _snackBar: MatSnackBar,
     private globals: Globals,
     private logService: LogService,
     private warehouseService: WarehouseService,
@@ -43,6 +47,9 @@ export class WarehouseDialogComponent implements OnInit {
         this.statusActive = 'true';
         this.isChecked = true;
         this.a = 0;
+        if (this.data.main == true){
+          this.isMain = true;
+        }
       } else {
         this.statusActive = 'false';
         this.isChecked = false;
@@ -69,7 +76,6 @@ export class WarehouseDialogComponent implements OnInit {
         next: (logPR) => {
           logPR = logPR.filter
           (dataPR => dataPR.warehouse === this.data.id)
-          console.log(logPR);
           this.log = logPR.length;
         },
         error: (e) => console.error(e)
@@ -92,29 +98,33 @@ export class WarehouseDialogComponent implements OnInit {
   }
 
   updateData(): void {
-    if (this.a+this.b==4){this.isUpdated = 'deactivate'};
-    if (this.a+this.b==3){this.isUpdated = 'activate'};
-    if (this.currName != this.data.name){
-      this.isUpdated = this.isUpdated + ", from " 
-      + this.currName + " to " + this.data.name;
+    if (!this.data.short || this.data.short == null || !this.data.name || this.data.name == null){
+      this._snackBar.open("Field (*) tidak boleh kosong!", "Tutup", {duration: 5000});
+    }else{
+      if (this.a+this.b==4){this.isUpdated = 'deactivate'};
+      if (this.a+this.b==3){this.isUpdated = 'activate'};
+      if (this.currName != this.data.name){
+        this.isUpdated = this.isUpdated + ", from " 
+        + this.currName + " to " + this.data.name;
+      }
+      if (this.currShort != this.data.short){
+        this.isUpdated = this.isUpdated + ", from " 
+        + this.currShort + " to " + this.data.short;
+      }
+      const data = {
+        short: this.data.short,
+        name: this.data.name,
+        active: this.isChecked,
+        message: this.isUpdated,
+        user: this.globals.userid
+      };
+      this.warehouseService.update(this.data.id, data)
+        .subscribe({
+          next: (res) => {
+            this.closeDialog();
+          },
+          error: (e) => console.error(e)
+        });
     }
-    if (this.currShort != this.data.short){
-      this.isUpdated = this.isUpdated + ", from " 
-      + this.currShort + " to " + this.data.short;
-    }
-    const data = {
-      short: this.data.short,
-      name: this.data.name,
-      active: this.isChecked,
-      message: this.isUpdated,
-      user: this.globals.userid
-    };
-    this.warehouseService.update(this.data.id, data)
-      .subscribe({
-        next: (res) => {
-          this.closeDialog();
-        },
-        error: (e) => console.error(e)
-      });
   }
 }

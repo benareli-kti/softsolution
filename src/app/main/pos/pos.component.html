@@ -12,7 +12,6 @@
         		*ngFor="let productcat of productcats; let i1 = index"
         		[class.active]="i1 == currentIndex1"
         		(click)="filterCategory(productcat, i1)">
-      		<!--(click)="setActiveTutorial(tutorial, i)"-->
         	{{ productcat.description }}
       		</li>
     	</ul>
@@ -23,7 +22,6 @@
         		*ngFor="let brand of brands; let i2 = index"
         		[class.active]="i2 == currentIndex2"
         		(click)="filterBrands(brand, i2)">
-      		<!--(click)="setActiveTutorial(tutorial, i)"-->
         	{{ brand.description }}
       		</li>
     	</ul>
@@ -50,15 +48,23 @@
 	</div>
 
 	<div class="right-container">
-		<div class="pos-number" *ngIf="isRightShow">
+		<div class="pos-number">
 			<div>
-				<div fxLayout="row" style="margin-top:-8pt;" fxLayoutAlign="space-around center">
-					<mat-form-field style="height:30pt; width:100pt;" class="input_field flex50 margin_7">
+				<div fxLayout="row" style="margin-top:-8pt; margin-left:10pt; margin-right:10pt" fxLayoutAlign="space-around center">
+					<mat-form-field style="height:30pt; width:90pt;" class="input_field flex50">
+    					<mat-select name="warehouseString" (selectionChange)="selectedValue2($event)" [(value)]="selectedWh">
+      						<mat-option *ngFor="let warehouse of warehouses" [value]="warehouse.id" ngDefaultControl>
+        					{{ warehouse.name }}
+      						</mat-option>
+    					</mat-select>
+  					</mat-form-field>
+					<mat-form-field style="height:30pt; width:90pt;" class="input_field flex50 margin_7">
 						<mat-label>Customer</mat-label>
     					<mat-select name="partnerString" (selectionChange)="selectedValue($event)" [(value)]="selectedPartner">
-      					<mat-option *ngFor="let partner of partners" [value]="partner.id" ngDefaultControl>
-        				{{ partner.name }}
-      					</mat-option>
+    						<mat-option value="null"> </mat-option>
+      						<mat-option *ngFor="let partner of partners" [value]="partner.id" ngDefaultControl>
+        					{{ partner.name }}
+      						</mat-option>
     					</mat-select>
   					</mat-form-field>
 				</div>
@@ -126,14 +132,10 @@
     			<div class="paynow" style="margin-top:0pt">Pay</div>
     		</div>-->
 		</div>
-
-		<div class="right-new" *ngIf="!isRightShow">
-			<button class="new-order" (click)="newOrder()"> New Order </button>
-		</div>
 	</div>
 	<div class="total">
     	<div>Total<br/>Rp.<b>{{total | number}}</b></div>
-    	<div class="paynow" style="margin-top:0pt">PAY</div>
+    	<div class="paynow" (click)="startPay()" style="margin-top:0pt">PAY</div>
     </div>
 </div>
 

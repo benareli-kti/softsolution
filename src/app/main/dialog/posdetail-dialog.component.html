@@ -7,9 +7,10 @@
 
   <div class="flexfull">
     <div class="flex50">
-      <mat-form-field class="input_field">
-        <input matInput type="number" placeholder="Quantity" [(ngModel)]="data.qty">
-      </mat-form-field>
+      <div class="holder">
+        <div class="descrip flexfull">Quantity</div>
+        <input class="flexfull inputs" type="number" placeholder="Quantity" [(ngModel)]="data.qty">
+      </div>
       <div fxLayout="column">
         <div fxLayout="row">
           <button class="calc" (click)="press('1')">1</button>
@@ -35,10 +36,10 @@
     </div>
 
     <div class="flex50">
-      <mat-form-field class="input_field flex50 margin_7">
-        <input matInput type="number" placeholder="Price Unit" [(ngModel)]="data.price_unit">
-        <div class="alert" role="alert" *ngIf="bbigger">Tidak diijinkan!</div>
-      </mat-form-field>
+      <div class="holder">
+        <div class="descrip flexfull">Price Unit</div>
+        <input class="flexfull inputs" type="number" placeholder="Price Unit" [(ngModel)]="data.price_unit">
+      </div>
       <div fxLayout="column">
         <div fxLayout="row">
           <button class="calc" (click)="press2('1')">1</button>

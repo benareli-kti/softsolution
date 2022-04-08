@@ -9,6 +9,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort, SortDirection } from '@angular/material/sort';
 import { MatSelectChange } from '@angular/material/select';
 import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { DataFilter, filterOption } from 'src/app/models/datafilter';
 import { WarehouseDialogComponent } from '../dialog/warehouse-dialog.component';
 
@@ -27,6 +28,7 @@ export class WarehouseComponent implements OnInit {
   warehouseadd: Warehouse = {
     name: '',
     short: '',
+    main: false,
     active: true
   };
   
@@ -46,6 +48,7 @@ export class WarehouseComponent implements OnInit {
  
   constructor(
     private globals: Globals,
+    private _snackBar: MatSnackBar,
     private warehouseService: WarehouseService,
     private logService: LogService,
     private dialog: MatDialog
@@ -91,24 +94,31 @@ export class WarehouseComponent implements OnInit {
   }
 
   saveWarehouse(): void {
-    const data = {
-      name: this.warehouseadd.name,
-      short: this.warehouseadd.short,
-      active: this.warehouseadd.active,
-      user: this.globals.userid
-    };
-    this.warehouseService.create(data)
-      .subscribe({
-        next: (res) => {
-          this.retrieveWarehouse();
-          this.warehouseadd = {
-            name: '',
-            short: '',
-            active: true
-          };
-        },
-        error: (e) => console.error(e)
-      });
+    if(!this.warehouseadd.short || this.warehouseadd.short == null
+      || !this.warehouseadd.name || this.warehouseadd.name == null){
+      this._snackBar.open("Field (*) tidak boleh kosong!", "Tutup", {duration: 5000});
+    }else{
+      const data = {
+        name: this.warehouseadd.name,
+        short: this.warehouseadd.short,
+        main: false,
+        active: this.warehouseadd.active,
+        user: this.globals.userid
+      };
+      this.warehouseService.create(data)
+        .subscribe({
+          next: (res) => {
+            this.retrieveWarehouse();
+            this.warehouseadd = {
+              name: '',
+              short: '',
+              main: false,
+              active: true
+            };
+          },
+          error: (e) => console.error(e)
+        });
+    }
   }
 
   applyFilter(event: Event) {

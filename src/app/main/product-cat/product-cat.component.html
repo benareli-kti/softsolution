@@ -2,15 +2,8 @@
 	<div class="flex-left">
 		<div *ngIf="isIM || isAdm" class="submit-form">
     		<div fxLayout="row">
-      			<mat-form-field hintLabel="Max 6 characters" class="input_field">
-          			<mat-label class="input_label">Category ID</mat-label>
-          			<input #input matInput maxlength="6" type="text" class="form-control" name="catid" [(ngModel)]="productcatadd.catid" required id="catid">
-                <mat-hint align="end">{{input.value?.length || 0}}/6</mat-hint>
-        		</mat-form-field>
-      			<mat-form-field class="input_field">
-          			<mat-label class="input_label">Description</mat-label>
-          			<input matInput type="text" class="form-control" name="description" [(ngModel)]="productcatadd.description" required id="description">
-        		</mat-form-field>
+            <input #input maxlength="6" type="text" class="inputs" name="catid" [(ngModel)]="productcatadd.catid" required id="catid" placeholder="Category ID * (max 6 char)">
+            <input style="margin-left: 9pt" type="text" class="inputs" name="description" [(ngModel)]="productcatadd.description" required id="description" placeholder="Name *">
             <div (click)="saveProductCat()" class="quick_add">
       			<button class="submit">Quick add</button></div>
     		</div>
@@ -19,10 +12,7 @@
 
 	<div class="flex-right">
     <div fxLayout="row">
-		<mat-form-field class="input_field max_search">
-      <input matInput type="text" class="form-control" placeholder="Search data" (keyup)="applyFilter($event)">
-            <!--[(ngModel)]="searchProdCat"-->
-    </mat-form-field>
+    <input type="text" class="inputs" placeholder="Search data" (keyup)="applyFilter($event)">
     <div *ngIf="isIM || isAdm" fxLayout="column">
       <button class="submit" style="font-size: .7em; margin-top:5pt" (click)="searchActive()">active</button>
       <button class="submit pink" style="font-size: .65em; margin-top:5pt" (click)="searchInactive()">inactive</button>

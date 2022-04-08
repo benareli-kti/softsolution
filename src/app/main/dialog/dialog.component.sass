@@ -1,3 +1,9 @@
+::ng-deep .mat-form-field-underline
+  display: none
+
+::-webkit-scrollbar
+  width: 0
+
 .basic-container
   width: 100%
   position: relative
@@ -27,6 +33,34 @@
   width: 100%
   font-size: 1em
   color: #121212
+
+.holder
+  display:flex
+  flex-direction: column
+
+.holder-row
+  display: flex
+  flex-direction: row
+  justify-content: space-between
+
+.descrip
+  color: #666
+  font-size: .9em
+
+.inputs
+  border: 0
+  border-bottom: 2px solid #333
+  padding: 1pt 3pt
+  background: none
+  font-size: 1em
+
+.inputs:focus
+  outline: none
+
+.harga
+  text-align: right
+  padding-top: 2pt
+  padding-right: 5pt
 
 .uldialog
   list-style-type: none
@@ -131,6 +165,19 @@ mat-table
   font-size: 1.1em
   font-weight: bold
 
+.payment-screen
+  width: 75%
+  margin: 0pt 10pt 10pt 0pt
+  padding: 10pt
+  font-size: 1.1em
+  border-radius: 10pt
+  box-shadow: inset 7px 0 30px -7px #dddddd
+  border: 1px solid #000
+
+.methods
+  width: 30%
+  height: 40pt
+
 input[type=file]::file-selector-button
   color: #fc466b
   padding: 4pt
@@ -169,20 +216,11 @@ input[type=file]::file-selector-button
   display: flex
   flex-direction: row
 
-$layout-breakpoint-small: 800px
-
-@media (max-width: $layout-breakpoint-small)
-  .flexfull
-    flex-direction: column
-
-  .margin_7
-    margin-left: 0pt
-
-  .paddingstock
-    padding: 0pt 10pt
-
 .flex100
   flex: 100%
+
+.flex70
+  flex: 70%
 
 .flex65
   flex: 65%
@@ -195,9 +233,26 @@ $layout-breakpoint-small: 800px
 
 .flex33
   flex: 33%
+
+.flex30
+  flex: 30%
   
 .flex25
   flex: 25%
 
 .padtop
   padding-top: 15pt
+
+$layout-breakpoint-small: 800px
+
+@media (max-width: $layout-breakpoint-small)
+  .flexfull
+    flex-direction: column
+    height: 75%
+    overflow: scroll
+
+  .margin_7
+    margin-left: 0pt
+
+  .paddingstock
+    padding: 0pt 10pt

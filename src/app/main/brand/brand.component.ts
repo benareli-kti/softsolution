@@ -9,6 +9,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort, SortDirection } from '@angular/material/sort';
 import { MatSelectChange } from '@angular/material/select';
 import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { DataFilter, filterOption } from 'src/app/models/datafilter';
 import { BrandDialogComponent } from '../dialog/brand-dialog.component';
 
@@ -45,6 +46,7 @@ export class BrandComponent implements OnInit {
  
   constructor(
     private globals: Globals,
+    private _snackBar: MatSnackBar,
     private brandService: BrandService,
     private logService: LogService,
     private dialog: MatDialog
@@ -90,33 +92,27 @@ export class BrandComponent implements OnInit {
   }
 
   saveBrand(): void {
-    const data = {
-      description: this.brandadd.description,
-      active: this.brandadd.active,
-      user: this.globals.userid
-    };
-    this.brandService.create(data)
-      .subscribe({
-        next: (res) => {
-          this.retrieveBrand();
-          this.brandadd = {
-            description: '',
-            active: true
-          };
-        },
-        error: (e) => console.error(e)
-      });
+    if(!this.brandadd.description || this.brandadd.description == null){
+      this._snackBar.open("Field (*) tidak boleh kosong!", "Tutup", {duration: 5000});
+    }else{
+      const data = {
+        description: this.brandadd.description,
+        active: this.brandadd.active,
+        user: this.globals.userid
+      };
+      this.brandService.create(data)
+        .subscribe({
+          next: (res) => {
+            this.retrieveBrand();
+            this.brandadd = {
+              description: '',
+              active: true
+            };
+          },
+          error: (e) => console.error(e)
+        });
+    }
   }
-
-  /*applyTblFilter(filterValue: string) {
-    this.dataSource.filter = this.selection.trim().toLowerCase()
-  }*/
-
-  /*applyTblFilter(ob:MatSelectChange,datafilter:DataFilter) {
-    this.filterDictionary.set(datafilter.name,ob.value);
-    var jsonString = JSON.stringify(Array.from(this.filterDictionary.entries()));
-    this.dataSource.filter = jsonString;
-  }*/
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;

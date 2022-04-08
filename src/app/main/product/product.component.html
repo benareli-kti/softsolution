@@ -9,10 +9,7 @@
 
 	<div class="flex-right">
     <div style="display: flex; flex-direction: row;">
-		<mat-form-field class="input_field max_search">
-      <input matInput type="text" class="form-control" placeholder="Search data" (keyup)="applyFilter($event)">
-            <!--[(ngModel)]="searchProdCat"-->
-    </mat-form-field>
+		<input type="text" class="inputs" placeholder="Search data" (keyup)="applyFilter($event)">
     <div (click)="toggleDisplay()" class="submit-form quick_add">
       <button class="submit">Filter</button>
     </div>

@@ -6,8 +6,10 @@ import { FormsModule, FormBuilder, FormGroup, FormControl } from '@angular/forms
 import { MatSelectChange, MatSelectModule } from '@angular/material/select';
 import { MatDialog } from '@angular/material/dialog';
 import { MatGridList } from '@angular/material/grid-list';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { PosdetailDialogComponent } from '../dialog/posdetail-dialog.component';
+import { PaymentDialogComponent } from '../dialog/payment-dialog.component';
 
 import { Id } from 'src/app/models/id.model';
 import { IdService } from 'src/app/services/id.service';
@@ -19,6 +21,8 @@ import { Brand } from 'src/app/models/brand.model';
 import { BrandService } from 'src/app/services/brand.service';
 import { Partner } from 'src/app/models/partner.model';
 import { PartnerService } from 'src/app/services/partner.service';
+import { Warehouse } from 'src/app/models/warehouse.model';
+import { WarehouseService } from 'src/app/services/warehouse.service';
 import { Pos } from 'src/app/models/pos.model';
 import { PosService } from 'src/app/services/pos.service';
 import { Posdetail } from 'src/app/models/posdetail.model';
@@ -33,9 +37,12 @@ export class PosComponent {
   products?: Product[];
   productcats?: Productcat[];
   brands?: Brand[];
+  warehouses?: Warehouse[];
   partners?: Partner[];
   pss?: Pos[];
   posdetails?: Posdetail[];
+  partnerid?: string;
+  warehouseid?: string;
   orders: Array<any> = [];
   cols: number;
   rowHeight: string;
@@ -71,7 +78,18 @@ export class PosComponent {
   };
   selectedPartnerControl = new FormControl(this.selectedPartner);
   selectedValue(event: MatSelectChange) {
-    //console.log(event.value);
+    this.partnerid = event.value;
+  }
+
+  //Select WH
+  selectedWh: string = "";
+  selectedData2: { valueWarehouse: string; textWarehouse: string } = {
+    valueWarehouse: "",
+    textWarehouse: ""
+  };
+  selectedWhControl = new FormControl(this.selectedWh);
+  selectedValue2(event: MatSelectChange) {
+    this.warehouseid = event.value;
   }
 
   //Grid
@@ -85,12 +103,14 @@ export class PosComponent {
 
   constructor(
     private router: Router,
+    private _snackBar: MatSnackBar,
     private dialog: MatDialog,
     private globals: Globals,
     private idService: IdService,
     private productService: ProductService,
     private productCatService: ProductCatService,
     private brandService: BrandService,
+    private warehouseService: WarehouseService,
     private partnerService: PartnerService,
     private posService: PosService,
     private posDetailService: PosdetailService,
@@ -133,6 +153,17 @@ export class PosComponent {
     this.productService.findAllActive()
       .subscribe(prod => {
         this.products = prod;
+    });
+
+    this.warehouseService.findAllActive()
+      .subscribe(wh => {
+        this.warehouses = wh;
+    });
+
+    this.warehouseService.findMain()
+      .subscribe(whm => {
+        this.selectedWh = whm[0].id;
+        this.warehouseid = whm[0].id;
     });
 
     this.partnerService.findAllActiveCustomer()
@@ -252,54 +283,134 @@ export class PosComponent {
       });
   }
 
-  newOrder(): void {
-    this.isRightShow = !this.isRightShow;
-    /*this.idService.getAll()
-      .subscribe({
-        next: (ids) => {
-          if(ids[0]!.pos_id! < 10) this.prefixes = '00000';
-          else if(ids[0]!.pos_id! < 100) this.prefixes = '0000';
-          else if(ids[0]!.pos_id! < 1000) this.prefixes = '000';
-          else if(ids[0]!.pos_id! < 10000) this.prefixes = '00';
-          else if(ids[0]!.pos_id! < 100000) this.prefixes = '0';
-          this.posid = "POSS"+new Date().getFullYear().toString().substr(-2)+
-          '0'+(new Date().getMonth() + 1).toString().slice(-2)+
-          this.prefixes+ids[0]!.pos_id!.toString();
-        },
-        error: (e) => console.error(e)
-    });*/
-  }
-
   pukimai(product: Product): void {
     let avail = false;
-    //if(this.posid){
-      for (let x=0; x < this.orders.length; x++){
-        if(product.id == this.orders[x].product){
-          avail = true;
-          let qtyold = this.orders[x].qty;
-          let subold = this.orders[x].subtotal;
-          let oIndx = this.orders.findIndex((obj => obj.product == product.id));
-          this.orders[oIndx].qty = qtyold + 1;
-          this.orders[oIndx].subtotal = subold + product.listprice;
-          this.subtotal = this.subtotal + product!.listprice!;
-          this.calculateTotal();
-        }
-      }
-      const data = {
-        order_id: this.posid,
-        qty: 1,
-        price_unit: product.listprice,
-        subtotal: product.listprice,
-        product: product.id,
-        product_name: product.name,
-        user: this.globals.userid
-      };
-      if (!avail){ 
+    for (let x=0; x < this.orders.length; x++){
+      if(product.id == this.orders[x].product){
+        avail = true;
+        let qtyold = this.orders[x].qty;
+        let subold = this.orders[x].subtotal;
+        let oIndx = this.orders.findIndex((obj => obj.product == product.id));
+        this.orders[oIndx].qty = qtyold + 1;
+        this.orders[oIndx].subtotal = subold + product.listprice;
         this.subtotal = this.subtotal + product!.listprice!;
-        this.orders.push(data);
         this.calculateTotal();
       }
-    //}
+    }
+    const data = {
+      order_id: this.posid,
+      qty: 1,
+      price_unit: product.listprice,
+      subtotal: product.listprice,
+      product: product.id,
+      product_name: product.name,
+      isStock: product.isStock,
+      user: this.globals.userid
+    };
+    if (!avail){ 
+      this.subtotal = this.subtotal + product!.listprice!;
+      this.orders.push(data);
+      this.calculateTotal();
+    }    
+  }
+
+  startPay(): void{
+    if(this.orders.length>0){
+      this.idService.getAll()
+        .subscribe({
+          next: (ids) => {
+            if(ids[0]!.pos_id! < 10) this.prefixes = '00000';
+            else if(ids[0]!.pos_id! < 100) this.prefixes = '0000';
+            else if(ids[0]!.pos_id! < 1000) this.prefixes = '000';
+            else if(ids[0]!.pos_id! < 10000) this.prefixes = '00';
+            else if(ids[0]!.pos_id! < 100000) this.prefixes = '0';
+            this.posid = "POSS"+new Date().getFullYear().toString().substr(-2)+
+            '0'+(new Date().getMonth() + 1).toString().slice(-2)+
+            this.prefixes+ids[0]!.pos_id!.toString();
+            //this.createPOS();
+            this.openPayment();
+          },
+          error: (e) => console.error(e)
+      });
+    }else{
+      this._snackBar.open("Order Kosong", "Tutup", {duration: 5000});
+    }
+  }
+
+  openPayment() {
+    const dialog = this.dialog.open(PaymentDialogComponent, {
+      width: '98%',
+      height: '90%',
+      disableClose: true,
+      data: {
+        order_id: this.posid,
+        subtotal: this.subtotal,
+        discount: this.discount,
+        total: this.total
+      }
+    })
+      .afterClosed()
+      .subscribe(res => {
+        /*this.subtotal = this.subtotal - this.orders[res.index].subtotal;
+        this.orders[res.index].qty = res.qty;
+        this.orders[res.index].price_unit = res.price_unit;
+        this.orders[res.index].subtotal = res.qty * res.price_unit;
+        this.subtotal = this.subtotal + this.orders[res.index].subtotal;
+        if(this.orders[res.index].qty == '0' || !this.orders[res.index].qty){
+          this.orders.splice(res.index, 1);}
+        this.calculateTotal();*/
+      });
+  }
+
+  createPOS(): void {
+    if(!this.partnerid || this.partnerid == 'null'){
+      const posdata = {
+        order_id: this.posid,
+        disc_type: this.discType,
+        discount: this.disc,
+        amount_untaxed: this.subtotal,
+        amount_total: this.total,
+        user: this.globals.userid
+      };
+      this.posService.create(posdata)
+        .subscribe({
+          next: (res) => {
+            this.rollingDetail(res.id);
+          },
+          error: (e) => console.error(e)
+        });
+    }
+  }
+
+  rollingDetail(orderid: string): void {
+    if(this.orders.length>0){
+      this.createDetail(orderid, this.orders[0].qty, this.orders[0].price_unit,
+        this.orders[0].subtotal, this.orders[0].product, this.orders[0].isStock.toString());
+    }else{
+      this.total = 0;
+    }
+  }
+
+  createDetail(orderid:string, qty:number, price_unit:number, 
+    subtotal:number, product:string, isStock:string): void {
+      const posdetail = {
+        ids: orderid,
+        order_id: this.posid,
+        qty: qty,
+        price_unit: price_unit,
+        subtotal: subtotal,
+        product: product,
+        isStock: isStock,
+        warehouse: this.warehouseid
+      };
+      this.posDetailService.create(posdetail)
+        .subscribe({
+          next: (res) => {
+            this.orders.splice(0, 1);
+            this.rollingDetail(orderid);
+          },
+          error: (e) => console.error(e)
+        });
   }
 
 }

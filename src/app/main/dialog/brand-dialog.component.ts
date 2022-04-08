@@ -1,6 +1,8 @@
 import { Component, OnInit, Inject, Optional, Input } from '@angular/core';
 import { Globals } from 'src/app/global';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
+
 import { Brand } from 'src/app/models/brand.model';
 import { BrandService } from 'src/app/services/brand.service';
 import { Log } from 'src/app/models/log.model';
@@ -30,6 +32,7 @@ export class BrandDialogComponent implements OnInit {
 
   constructor(
     public dialogRef: MatDialogRef<BrandDialogComponent>,
+    private _snackBar: MatSnackBar,
     private globals: Globals,
     private logService: LogService,
     private brandService: BrandService,
@@ -89,24 +92,28 @@ export class BrandDialogComponent implements OnInit {
   }
 
   updateData(): void {
-    if (this.a+this.b==4){this.isUpdated = 'deactivate'};
-    if (this.a+this.b==3){this.isUpdated = 'activate'};
-    if (this.currDescription != this.data.description){
-      this.isUpdated = this.isUpdated + " from " + this.currDescription + 
-      " to " + this.data.description;
+    if(!this.data.description || this.data.description == null){
+      this._snackBar.open("Field (*) tidak boleh kosong!", "Tutup", {duration: 5000});
+    }else{
+      if (this.a+this.b==4){this.isUpdated = 'deactivate'};
+      if (this.a+this.b==3){this.isUpdated = 'activate'};
+      if (this.currDescription != this.data.description){
+        this.isUpdated = this.isUpdated + " from " + this.currDescription + 
+        " to " + this.data.description;
+      }
+      const data = {
+        message: this.isUpdated,
+        description: this.data.description,
+        active: this.isChecked,
+        user: this.globals.userid
+      };
+      this.brandService.update(this.data.id, data)
+        .subscribe({
+          next: (res) => {
+            this.closeDialog();
+          },
+          error: (e) => console.error(e)
+        });
     }
-    const data = {
-      message: this.isUpdated,
-      description: this.data.description,
-      active: this.isChecked,
-      user: this.globals.userid
-    };
-    this.brandService.update(this.data.id, data)
-      .subscribe({
-        next: (res) => {
-          this.closeDialog();
-        },
-        error: (e) => console.error(e)
-      });
   }
 }

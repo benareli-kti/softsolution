@@ -50,6 +50,7 @@ import { PartnerDialogComponent } from './main/dialog/partner-dialog.component';
 import { StockMoveDialogComponent } from './main/dialog/stockmove-dialog.component';
 import { PosComponent } from './main/pos/pos.component';
 import { PosdetailDialogComponent } from './main/dialog/posdetail-dialog.component';
+import { PaymentDialogComponent } from './main/dialog/payment-dialog.component';
 
 @NgModule({
   declarations: [
@@ -70,7 +71,8 @@ import { PosdetailDialogComponent } from './main/dialog/posdetail-dialog.compone
     PartnerDialogComponent,
     StockMoveDialogComponent,
     PosComponent,
-    PosdetailDialogComponent
+    PosdetailDialogComponent,
+    PaymentDialogComponent
   ],
   imports: [
     BrowserModule,

@@ -9,6 +9,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { Log } from 'src/app/models/log.model';
 import { LogService } from 'src/app/services/log.service';
 import { FileUploadService } from 'src/app/services/file-upload.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { Product } from 'src/app/models/product.model';
 import { ProductService } from 'src/app/services/product.service';
@@ -125,6 +126,7 @@ export class ProductDialogComponent implements OnInit {
 
   constructor(
     public dialogRef: MatDialogRef<ProductDialogComponent>,
+    private _snackBar: MatSnackBar,
     private uploadService: FileUploadService,
     private productService: ProductService,
     private brandService: BrandService,
@@ -341,78 +343,90 @@ export class ProductDialogComponent implements OnInit {
   }
 
   updateData(): void {
-    if (this.a+this.b==4){this.isUpdated = 'deactivate'};
-    if (this.a+this.b==3){this.isUpdated = 'activate'};
-    if (this.datsku != this.orisku){
-      this.isUpdated = this.isUpdated + ", from " 
-      + this.orisku + " to " + this.datsku;
+    if (!this.datname || this.datname == null
+      || !this.datlprice || this.datlprice == null
+      || !this.selectedCategory || this.selectedCategory == null){
+      this._snackBar.open("Field (*) tidak boleh kosong!", "Tutup", {duration: 5000});
+    }else{
+      if (this.a+this.b==4){this.isUpdated = 'deactivate'};
+      if (this.a+this.b==3){this.isUpdated = 'activate'};
+      if (this.datsku != this.orisku){
+        this.isUpdated = this.isUpdated + ", from " 
+        + this.orisku + " to " + this.datsku;
+      }
+      if (this.datname != this.oriname){
+        this.isUpdated = this.isUpdated + ", from " 
+        + this.oriname + " to " + this.datname;
+      }
+      if (this.datdesc != this.oridesc){
+        this.isUpdated = this.isUpdated + ", from " 
+        + this.oridesc + " to " + this.datdesc;
+      }
+      if (this.datlprice != this.orilprice){
+        this.isUpdated = this.isUpdated + ", from " 
+        + this.orilprice + " to " + this.datlprice;
+      }
+      if (this.datbprice != this.oribprice){
+        this.isUpdated = this.isUpdated + ", from " 
+        + this.oribprice + " to " + this.datbprice;
+      }
+      if (this.datcost != this.oricost){
+        this.isUpdated = this.isUpdated + ", from " 
+        + this.oricost + " to " + this.datcost;
+      }
+      const dataProd = {
+        sku: this.datsku,
+        name: this.datname,
+        description: this.datdesc,
+        listprice: this.datlprice,
+        botprice: this.datbprice,
+        cost: this.datcost,
+        isStock: this.isStock,
+        category: this.categoryid,
+        image: this.fileName,
+        brand: this.brandid,
+        active: this.isChecked,
+        message: this.isUpdated,
+        user: this.globals.userid
+      };
+      this.productService.update(this.data, dataProd)
+        .subscribe({
+          next: (res) => {
+            this.closeDialog();
+          },
+          error: (e) => console.error(e)
+        });
     }
-    if (this.datname != this.oriname){
-      this.isUpdated = this.isUpdated + ", from " 
-      + this.oriname + " to " + this.datname;
-    }
-    if (this.datdesc != this.oridesc){
-      this.isUpdated = this.isUpdated + ", from " 
-      + this.oridesc + " to " + this.datdesc;
-    }
-    if (this.datlprice != this.orilprice){
-      this.isUpdated = this.isUpdated + ", from " 
-      + this.orilprice + " to " + this.datlprice;
-    }
-    if (this.datbprice != this.oribprice){
-      this.isUpdated = this.isUpdated + ", from " 
-      + this.oribprice + " to " + this.datbprice;
-    }
-    if (this.datcost != this.oricost){
-      this.isUpdated = this.isUpdated + ", from " 
-      + this.oricost + " to " + this.datcost;
-    }
-    const dataProd = {
-      sku: this.datsku,
-      name: this.datname,
-      description: this.datdesc,
-      listprice: this.datlprice,
-      botprice: this.datbprice,
-      cost: this.datcost,
-      isStock: this.isStock,
-      category: this.categoryid,
-      image: this.fileName,
-      brand: this.brandid,
-      active: this.isChecked,
-      message: this.isUpdated,
-      user: this.globals.userid
-    };
-    this.productService.update(this.data, dataProd)
-      .subscribe({
-        next: (res) => {
-          this.closeDialog();
-        },
-        error: (e) => console.error(e)
-      });
   }
 
   createData(): void {
-    const data = {
-      sku: this.datsku,
-      name: this.datname,
-      description: this.datdesc,
-      listprice: this.datlprice,
-      botprice: this.datbprice,
-      cost: this.datcost,
-      isStock: this.isStock,
-      category: this.categoryid,
-      brand: this.brandid,
-      image: 'default.png',
-      qoh: 0,
-      active: this.isChecked,
-      user: this.globals.userid
-    };
-    this.productService.create(data)
-      .subscribe({
-        next: (res) => {
-          this.closeDialog();
-        },
-        error: (e) => console.error(e)
-    });
+    if (!this.datname || this.datname == null
+      || !this.datlprice || this.datlprice == null
+      || !this.selectedCategory || this.selectedCategory == null){
+      this._snackBar.open("Field (*) tidak boleh kosong!", "Tutup", {duration: 5000});
+    }else{
+      const data = {
+        sku: this.datsku,
+        name: this.datname,
+        description: this.datdesc,
+        listprice: this.datlprice,
+        botprice: this.datbprice,
+        cost: this.datcost,
+        isStock: this.isStock,
+        category: this.categoryid,
+        brand: this.brandid,
+        image: 'default.png',
+        qoh: 0,
+        active: this.isChecked,
+        user: this.globals.userid
+      };
+      this.productService.create(data)
+        .subscribe({
+          next: (res) => {
+            this.closeDialog();
+          },
+          error: (e) => console.error(e)
+      });
+    }
   }
 }

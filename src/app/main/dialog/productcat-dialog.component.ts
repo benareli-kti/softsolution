@@ -1,6 +1,8 @@
 import { Component, OnInit, Inject, Optional, Input } from '@angular/core';
 import { Globals } from 'src/app/global';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
+
 import { Productcat } from 'src/app/models/productcat.model';
 import { ProductCatService } from 'src/app/services/product-cat.service';
 import { Log } from 'src/app/models/log.model';
@@ -32,6 +34,7 @@ export class ProductcatDialogComponent implements OnInit {
 
   constructor(
     public dialogRef: MatDialogRef<ProductcatDialogComponent>,
+    private _snackBar: MatSnackBar,
     private globals: Globals,
     private logService: LogService,
     private productCatService: ProductCatService,
@@ -91,30 +94,33 @@ export class ProductcatDialogComponent implements OnInit {
   }
 
   updateData(): void {
-    if (this.a+this.b==4){this.isUpdated = 'deactivate'};
-    if (this.a+this.b==3){this.isUpdated = 'activate'};
-    if (this.currDescription != this.data.description){
-      this.isUpdated = this.isUpdated + ", from " 
-      + this.currDescription + " to " + this.data.description;
+    if (!this.data.catid || this.data.catid == null || !this.data.description || this.data.description == null){
+      this._snackBar.open("Field (*) tidak boleh kosong!", "Tutup", {duration: 5000});
+    }else{
+      if (this.a+this.b==4){this.isUpdated = 'deactivate'};
+      if (this.a+this.b==3){this.isUpdated = 'activate'};
+      if (this.currDescription != this.data.description){
+        this.isUpdated = this.isUpdated + ", from " 
+        + this.currDescription + " to " + this.data.description;
+      }
+      if (this.currCatId != this.data.catid){
+        this.isUpdated = this.isUpdated + ", from " 
+        + this.currCatId + " to " + this.data.catid;
+      }
+      const data = {
+        catid: this.data.catid,
+        description: this.data.description,
+        active: this.isChecked,
+        message: this.isUpdated,
+        user: this.globals.userid
+      };
+      this.productCatService.update(this.data.id, data)
+        .subscribe({
+          next: (res) => {
+            this.closeDialog();
+          },
+          error: (e) => console.error(e)
+        });
     }
-    if (this.currCatId != this.data.catid){
-      this.isUpdated = this.isUpdated + ", from " 
-      + this.currCatId + " to " + this.data.catid;
-    }
-    const data = {
-      catid: this.data.catid,
-      description: this.data.description,
-      active: this.isChecked,
-      message: this.isUpdated,
-      user: this.globals.userid
-    };
-    this.productCatService.update(this.data.id, data)
-      .subscribe({
-        next: (res) => {
-          this.closeDialog();
-          
-        },
-        error: (e) => console.error(e)
-      });
   }
 }

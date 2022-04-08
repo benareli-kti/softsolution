@@ -2,10 +2,7 @@
 	<div class="flex-left">
 		<div *ngIf="isIM || isAdm" class="submit-form">
     		<div fxLayout="row">
-      			<mat-form-field class="input_field">
-          			<mat-label class="input_label">Brand</mat-label>
-          			<input matInput type="text" class="form-control" name="description" [(ngModel)]="brandadd.description" required id="description">
-        		</mat-form-field>
+            <input class="inputs" type="text" name="description" [(ngModel)]="brandadd.description" required id="description" placeholder="Brands *">
             <div (click)="saveBrand()" class="quick_add">
       			<button class="submit">Quick add</button></div>
     		</div>
@@ -14,10 +11,11 @@
 
 	<div class="flex-right">
     <div fxLayout="row">
-		<mat-form-field class="input_field max_search">
+      <input class="inputs" type="text" placeholder="Search data" (keyup)="applyFilter($event)">
+		<!--<mat-form-field class="input_field max_search">
       <input matInput type="text" class="form-control" placeholder="Search data" (keyup)="applyFilter($event)">
-            <!--[(ngModel)]="searchProdCat"-->
-    </mat-form-field>
+          
+    </mat-form-field>-->
     <div *ngIf="isIM || isAdm" fxLayout="column">
       <button class="submit" style="font-size: .7em; margin-top:5pt" (click)="searchActive()">active</button>
       <button class="submit pink" style="font-size: .65em; margin-top:5pt" (click)="searchInactive()">inactive</button>
