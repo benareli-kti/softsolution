@@ -101,7 +101,7 @@
         			<div fxLayout="row">
           				<button class="calc" (click)="press('C')">clear</button>
           				<button class="calc" (click)="press('0')">0</button>
-          				<button class="calc" (click)="toggleCalc()">X</button>
+          				<button class="calc" style="color:red;" (click)="toggleCalc()">close</button>
         			</div>
       			</div>
 				<div style="margin-top:7pt;height:285pt;overflow-y:scroll;">
@@ -134,8 +134,18 @@
 		</div>
 	</div>
 	<div class="total">
-    	<div>Total<br/>Rp.<b>{{total | number}}</b></div>
-    	<div class="paynow" (click)="startPay()" style="margin-top:0pt">PAY</div>
+		<div fxLayout="column" class="flex80">
+			<div fxLayout="row" fxLayoutAlign="space-around start">
+				<div style="color:#ddd;">Sub: <b>{{subtotal | number}}</b></div>
+				<div style="color:#ddd;">-</div>
+				<div *ngIf="isPercent" style="color:#ddd;">Disc: <b>{{disc | number}}%</b></div>
+				<div *ngIf="!isPercent" style="color:#ddd;">Disc: <b>{{disc | number}}</b></div>
+			</div>
+    		<div fxLayout="row" fxLayoutAlign="space-around start">
+    			<div class="total-text">Total  Rp.<b>{{total | number}}</b></div>
+    		</div>
+    	</div>
+    	<div class="paynow flex20" (click)="startPay()">PAY</div>
     </div>
 </div>
 

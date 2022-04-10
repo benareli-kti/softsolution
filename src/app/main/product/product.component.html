@@ -9,59 +9,47 @@
 
 	<div class="flex-right">
     <div style="display: flex; flex-direction: row;">
-		<input type="text" class="inputs" placeholder="Search data" (keyup)="applyFilter($event)">
-    <div (click)="toggleDisplay()" class="submit-form quick_add">
-      <button class="submit">Filter</button>
-    </div>
-    <div *ngIf="isIM || isAdm" fxLayout="column">
-      <button class="submit" style="font-size: .7em; margin-top:5pt" (click)="searchActive()">active</button>
-      <button class="submit pink" style="font-size: .65em; margin-top:5pt" (click)="searchInactive()">inactive</button>
-    </div>
+		  <input type="text" class="inputs" placeholder="Search data" (keyup)="applyFilter($event)">
+      <div (click)="toggleDisplay()" class="submit-form quick_add">
+        <button class="submit">Filter</button>
+      </div>
     </div>
 	</div>
 </div>
 
 <div fxLayout="row" fxLayoutAlign="space-around center" class="filtered" *ngIf="isShow">
-<mat-form-field>
-  <mat-label>Category</mat-label>
-  <mat-select name="categoryString" (selectionChange)="applyCatFilter($event)">
-  <mat-option value="">All</mat-option>
-  <mat-option *ngFor="let productcat of productcats" [value]="productcat.id" ngDefaultControl [(ngModel)]="filterCat">
+  <mat-form-field>
+    <mat-label>Category</mat-label>
+    <mat-select name="categoryString" (selectionChange)="applyCatFilter($event)">
+      <mat-option value="">All</mat-option>
+      <mat-option *ngFor="let productcat of productcats" [value]="productcat.id" ngDefaultControl [(ngModel)]="filterCat">
         {{ productcat.description }}
-  </mat-option>
-  </mat-select>
-</mat-form-field>
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
 
-<mat-form-field>
-  <mat-label>Brand</mat-label>
-  <mat-select name="brandString" (selectionChange)="applyBrandFilter($event)">
-  <mat-option value="">All</mat-option>
-  <mat-option *ngFor="let brand of brands" [value]="brand.id" ngDefaultControl [(ngModel)]="filterBrand">
+  <mat-form-field>
+    <mat-label>Brand</mat-label>
+    <mat-select name="brandString" (selectionChange)="applyBrandFilter($event)">
+      <mat-option value="">All</mat-option>
+      <mat-option *ngFor="let brand of brands" [value]="brand.id" ngDefaultControl [(ngModel)]="filterBrand">
         {{ brand.description }}
-  </mat-option>
-  </mat-select>
-</mat-form-field>
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <div *ngIf="isIM || isAdm" fxLayout="column">
+    <button class="submit" style="font-size: .7em; margin-top:5pt" (click)="searchActive()">active</button>
+    <button class="submit pink" style="font-size: .65em; margin-top:5pt" (click)="searchInactive()">inactive</button>
+  </div>
 </div>
 
 <div class="table-container">
 <mat-table #table [dataSource]="dataSource" class="mat-table">
-  <!--<ng-container matColumnDef="sku">
-    <th class="th-style" fxFlex="10%" mat-header-cell *matHeaderCellDef>ID</th>
-    <td class="tr-style" fxFlex="10%" mat-cell *matCellDef="let products">
-      <a (click)="openDialog(products.id)">{{products.sku}}</a>
-    </td>
-  </ng-container>-->
   <ng-container matColumnDef="name">
-    <th class="th-style" fxFlex="15%" mat-header-cell *matHeaderCellDef>Nama</th>
-    <td class="tr-style" fxFlex="15%" mat-cell *matCellDef="let products">
+    <th class="th-style" fxFlex="65%" mat-header-cell *matHeaderCellDef>Nama</th>
+    <td class="tr-style" fxFlex="65%" mat-cell *matCellDef="let products">
       <a (click)="openDialog(products.id)">
         <span *ngIf="products.active==false" class="inactive">&nbsp;&nbsp;</span>{{products.name}}</a>
-    </td>
-  </ng-container>
-  <ng-container matColumnDef="description">
-    <th class="th-style" fxFlex="50%" mat-header-cell *matHeaderCellDef>Deskripsi</th>
-    <td class="tr-style" fxFlex="50%" mat-cell *matCellDef="let products">
-      <a (click)="openDialog(products.id)">{{products.description}}</a>
     </td>
   </ng-container>
   <ng-container matColumnDef="qty">

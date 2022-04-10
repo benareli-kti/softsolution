@@ -75,6 +75,26 @@
         <div class="descrip flex30 harga">Cost</div>
         <input class="inputs flex70" placeholder="0" type="number" [(ngModel)]="datcost">
       </div>
+      <div class="holder-row" style="margin-top:7pt;">
+        <div class="descrip flex25 harga">Pajak Masuk</div>
+        <div class="flex25">
+          <select class="inputs" [(ngModel)]="taxInString">
+            <option value=""></option>
+            <option *ngFor="let tax of taxs" [value]="tax.id">
+            {{ tax.name }}
+            </option>
+          </select>
+        </div>
+        <div class="descrip flex25 harga">Pajak Keluar</div>
+        <div class="flex25">
+          <select class="inputs" [(ngModel)]="taxOutString">
+            <option value=""></option>
+            <option *ngFor="let tax of taxs" [value]="tax.id">
+            {{ tax.name }}
+            </option>
+          </select>
+        </div>
+      </div>
     </div>
 
     <div class="flex50 holder margin_7">     

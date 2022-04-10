@@ -23,6 +23,7 @@ export class BrandComponent implements OnInit {
   isIU = false;
   isIM = false;
   isAdm = false;
+  isShow = false;
   
   //Add
   brandadd: Brand = {
@@ -54,6 +55,10 @@ export class BrandComponent implements OnInit {
 
   ngOnInit(): void {
     this.checkRole();
+  }
+
+  toggleDisplay() {
+    this.isShow = !this.isShow;
   }
 
   checkRole(): void {

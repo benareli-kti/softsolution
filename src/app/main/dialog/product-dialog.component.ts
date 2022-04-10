@@ -17,6 +17,8 @@ import { Productcat } from 'src/app/models/productcat.model';
 import { ProductCatService } from 'src/app/services/product-cat.service';
 import { Brand } from 'src/app/models/brand.model';
 import { BrandService } from 'src/app/services/brand.service';
+import { Tax } from 'src/app/models/tax.model';
+import { TaxService } from 'src/app/services/tax.service';
 import { Qop } from 'src/app/models/qop.model';
 import { QopService } from 'src/app/services/qop.service';
 
@@ -45,6 +47,8 @@ export class ProductDialogComponent implements OnInit {
   orilprice?: number;
   oribprice?: number;
   oricost?: number;
+  oritaxin?: string;
+  oritaxout?: string;
   oriimage?: string;
 
   imageData: string;
@@ -66,6 +70,7 @@ export class ProductDialogComponent implements OnInit {
   products?: Product[];
   productcats?: Productcat[];
   brands?: Brand[];
+  taxs?: Tax[];
   categoryid?: any;
   brandid?: any;
 
@@ -80,6 +85,8 @@ export class ProductDialogComponent implements OnInit {
     description: '',
     category: '',
     brand: '',
+    taxin: '',
+    taxout: '',
     isStock: true,
     active: true
   };
@@ -106,6 +113,9 @@ export class ProductDialogComponent implements OnInit {
     this.brandid = event.value;
   }
 
+  taxInString?: string;
+  taxOutString?: string;
+
   //Table
   qops?: Qop[]; 
   displayedColumns: string[] = 
@@ -131,6 +141,7 @@ export class ProductDialogComponent implements OnInit {
     private productService: ProductService,
     private brandService: BrandService,
     private productCatService: ProductCatService,
+    private taxService: TaxService,
     private qopService: QopService,
     private globals: Globals,
     private logService: LogService,
@@ -187,6 +198,8 @@ export class ProductDialogComponent implements OnInit {
         this.oribprice = prod.botprice;
         this.datcost = prod.cost;
         this.oricost = prod.cost;
+        this.oritaxin = prod.taxin;
+        this.oritaxout = prod.taxout;
         this.oriimage = prod.image;
         if (prod.active == true){
           this.statusActive = 'true';
@@ -206,14 +219,18 @@ export class ProductDialogComponent implements OnInit {
         }
         if (prod.category){
           this.selectedCategory = prod.category._id;
+          this.categoryid = prod.category._id;
         }else{
           this.selectedCategory = "";
         }
         if (prod.brand){
           this.selectedBrand = prod.brand._id;
+          this.brandid = prod.brand._id;
         }else{
           this.selectedBrand = "";
         }
+        this.taxInString = prod.taxin;
+        this.taxOutString = prod.taxout;
     });
   }
 
@@ -250,6 +267,14 @@ export class ProductDialogComponent implements OnInit {
       .subscribe({
         next: (dataB) => {
           this.brands = dataB;
+        },
+        error: (e) => console.error(e)
+      });
+
+    this.taxService.getAll()
+      .subscribe({
+        next: (tax) => {
+          this.taxs = tax;
         },
         error: (e) => console.error(e)
       });
@@ -348,9 +373,10 @@ export class ProductDialogComponent implements OnInit {
       || !this.selectedCategory || this.selectedCategory == null){
       this._snackBar.open("Field (*) tidak boleh kosong!", "Tutup", {duration: 5000});
     }else{
-      if (this.a+this.b==4){this.isUpdated = 'deactivate'};
-      if (this.a+this.b==3){this.isUpdated = 'activate'};
-      if (this.datsku != this.orisku){
+      if(!this.fileName){this.fileName = this.oriimage!};
+      if(this.a+this.b==4){this.isUpdated = 'deactivate'};
+      if(this.a+this.b==3){this.isUpdated = 'activate'};
+      if(this.datsku != this.orisku){
         this.isUpdated = this.isUpdated + ", from " 
         + this.orisku + " to " + this.datsku;
       }
@@ -374,6 +400,18 @@ export class ProductDialogComponent implements OnInit {
         this.isUpdated = this.isUpdated + ", from " 
         + this.oricost + " to " + this.datcost;
       }
+      if (this.taxInString != this.oritaxin){
+        this.isUpdated = this.isUpdated + ", from " 
+        + this.oritaxin + " to " + this.taxInString;
+      }
+      if (this.taxOutString != this.oritaxout){
+        this.isUpdated = this.isUpdated + ", from " 
+        + this.oritaxout + " to " + this.taxOutString;
+      }
+      if (this.fileName != this.oriimage){
+        this.isUpdated = this.isUpdated + ", from " 
+        + this.oriimage + " to " + this.fileName;
+      }
       const dataProd = {
         sku: this.datsku,
         name: this.datname,
@@ -383,6 +421,8 @@ export class ProductDialogComponent implements OnInit {
         cost: this.datcost,
         isStock: this.isStock,
         category: this.categoryid,
+        taxin: this.taxInString,
+        taxout: this.taxOutString,
         image: this.fileName,
         brand: this.brandid,
         active: this.isChecked,
@@ -415,6 +455,8 @@ export class ProductDialogComponent implements OnInit {
         isStock: this.isStock,
         category: this.categoryid,
         brand: this.brandid,
+        taxin: this.taxInString,
+        taxout: this.taxOutString,
         image: 'default.png',
         qoh: 0,
         active: this.isChecked,

@@ -1,6 +1,6 @@
 <div *ngIf="isLoggedIn">
   <mat-toolbar color="primary">
-    <div fxLayout="row" class="fullW" fxLayoutAlign="space-between center" *ngIf="sidenav.mode === 'over'">
+    <div fxLayout="row" class="fullW" fxLayoutAlign="start center" *ngIf="sidenav.mode === 'over'">
       <button mat-icon-button style="color: #3f5efb; fill: #3f5efb;" (click)="sidenav.toggle()">
         <mat-icon *ngIf="!sidenav.opened">
             menu
@@ -9,11 +9,15 @@
             close
         </mat-icon>
       </button>
+      <div *ngIf="sidenav.mode === 'over'">
+        <span style="margin-left:10px; color:#444444;">{{rute}}</span>
+      </div>
     </div>
     <div fxLayout="row" class="fullW" fxLayoutAlign="space-between center" *ngIf="sidenav.mode === 'side'">
       <div fxLayout="row" fxLayoutAlign="start center">
         <img src="/assets/img/s.png" width="45" [routerLink]="['/']">
         <span class="text-gradient" style="margin-left:10px;">Soft Solution</span>
+        <span style="margin-left:10px; color:#444444;">{{rute}}</span>
       </div>
       <div>
         <div fxLayout="row" fxLayoutAlign="end center">

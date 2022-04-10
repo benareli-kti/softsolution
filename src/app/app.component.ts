@@ -13,6 +13,10 @@ import { TokenStorageService } from 'src/app/services/token-storage.service';
 })
 export class AppComponent implements OnInit, AfterViewInit{
   title = 'Soft Solution';
+
+  layPOS = false;
+  maxWidth = false;
+
   isIU = false;
   isPU = false;
   isTU = false;
@@ -22,6 +26,8 @@ export class AppComponent implements OnInit, AfterViewInit{
   isProductShow = false;
   isPartnerShow = false;
   isTransacShow = false;
+
+  rute?: string;
 
   @ViewChild(MatSidenav) sidenav!: MatSidenav;
 
@@ -38,8 +44,15 @@ export class AppComponent implements OnInit, AfterViewInit{
     router.events.subscribe(event => {
       if(event instanceof NavigationEnd){
         //console.log(event.url);
-        if(event.url=="/pos") this.wiggle();
-        else this.wigglewiggle();
+        this.rute = event.url;
+        if(event.url=="/pos"){
+          this.layPOS = true;
+          this.wiggle();
+        }
+        else{
+          this.layPOS = false;
+          this.wiggle();
+        }
       }
     })
   }
@@ -75,11 +88,15 @@ export class AppComponent implements OnInit, AfterViewInit{
       .observe(['(max-width: 800px)'])
       .subscribe((res) => {
         if (res.matches) {
-          this.sidenav.mode = 'over';
-          this.sidenav.close();
+          this.maxWidth = true;
+          this.wiggle();
+          //this.sidenav.mode = 'over';
+          //this.sidenav.close();
         } else {
-          this.sidenav.mode = 'side';
-          this.sidenav.open();
+          this.maxWidth = false;
+          this.wiggle();
+          //this.sidenav.mode = 'side';
+          //this.sidenav.open();
         }
       });
   }
@@ -94,8 +111,21 @@ export class AppComponent implements OnInit, AfterViewInit{
   }
 
   wiggle() {
-    this.sidenav.mode = 'over';
-    this.sidenav.close();
+    //this.sidenav.mode = 'over';
+    //this.sidenav.close();
+    if(this.layPOS && this.maxWidth){
+      this.sidenav.mode = 'over';
+      this.sidenav.close();
+    }else if(!this.layPOS && this.maxWidth){
+      this.sidenav.mode = 'over';
+      this.sidenav.close();
+    }else if(this.layPOS && !this.maxWidth){
+      this.sidenav.mode = 'over';
+      this.sidenav.close();
+    }else if (!this.layPOS && !this.maxWidth){
+      this.sidenav.mode = 'side';
+      this.sidenav.open();
+    }
   }
 
   wigglewiggle() {

@@ -23,6 +23,7 @@ export class WarehouseComponent implements OnInit {
   isIU = false;
   isIM = false;
   isAdm = false;
+  isShow = false;
   
   //Add
   warehouseadd: Warehouse = {
@@ -56,6 +57,10 @@ export class WarehouseComponent implements OnInit {
 
   ngOnInit(): void {
     this.checkRole();
+  }
+  
+  toggleDisplay() {
+    this.isShow = !this.isShow;
   }
 
   checkRole(): void {

@@ -10,6 +10,8 @@ export class Product {
     cost?: number;
     isStock?: boolean;
 	category?: any;
+	taxin?: any;
+	taxout?: any;
 	brand?: any;
 	active?: boolean;
 }

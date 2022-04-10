@@ -30,12 +30,12 @@
         <div fxLayout="row">
           <button class="calc" (click)="press('.')">.</button>
           <button class="calc" (click)="press('0')">0</button>
-          <button class="calc" (click)="press('X')">clear</button>
+          <button class="calc" style="color:maroon;" (click)="press('X')">clear</button>
         </div>
       </div>
     </div>
 
-    <div class="flex50">
+    <div class="flex50 margin_7">
       <div class="holder">
         <div class="descrip flexfull">Price Unit</div>
         <input class="flexfull inputs" type="number" placeholder="Price Unit" [(ngModel)]="data.price_unit">
@@ -59,7 +59,7 @@
         <div fxLayout="row">
           <button class="calc" (click)="press2('0')">0</button>
           <button class="calc" (click)="press2('000')">000</button>
-          <button class="calc" (click)="press2('X')">clear</button>
+          <button class="calc" style="color:maroon;" (click)="press2('X')">clear</button>
         </div>
       </div>
     </div>

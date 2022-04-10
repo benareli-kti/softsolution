@@ -23,6 +23,7 @@ export class ProductCatComponent implements OnInit {
   isIU = false;
   isIM = false;
   isAdm = false;
+  isShow = false;
   
   //Add
   productcatadd: Productcat = {
@@ -55,6 +56,10 @@ export class ProductCatComponent implements OnInit {
 
   ngOnInit(): void {
     this.checkRole();
+  }
+
+  toggleDisplay() {
+    this.isShow = !this.isShow;
   }
 
   checkRole(): void {

@@ -42,7 +42,7 @@ export class ProductComponent implements OnInit {
 
   //Table
   displayedColumns: string[] = 
-  ['name', 'description', 'qty', 'listprice',
+  ['name', 'qty', 'listprice',
   'category', 'brand', 'stock'];
   dataSource = new MatTableDataSource<Product>();
   @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;

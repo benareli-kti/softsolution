@@ -61,6 +61,7 @@ export class PosComponent {
   currentIndex2 = -1;
   currentIndex3 = -1;
   subtotal = 0;
+  tax = 0;
   discount = 0;
   total = 0;
 
@@ -228,10 +229,10 @@ export class PosComponent {
 
   calculateTotal() {
     if(Number(this.disc)>0 || !this.disc){
-      if(!this.isPercent) this.total = this.subtotal - Number(this.disc);
-      else this.total = this.subtotal - (Number(this.disc)/100*this.subtotal);
+      if(!this.isPercent) this.total = this.subtotal - Number(this.disc) + this.tax;
+      else this.total = this.subtotal - (Number(this.disc)/100*this.subtotal) + this.tax;
     }else{
-      this.total = this.subtotal;
+      this.total = this.subtotal + this.tax;
     }
   }
 
@@ -242,7 +243,9 @@ export class PosComponent {
     let pu = this.orders[index].price_unit;
     this.orders[index].qty = qtyold + 1;
     this.orders[index].subtotal = subold + pu;
+    this.orders[index].taxes = this.orders[index].tax / 100 * this.orders[index].subtotal;
     this.subtotal = this.subtotal + pu;
+    this.tax = this.tax + (this.orders[index].tax / 100 * pu);
     this.calculateTotal();
   }
 
@@ -253,7 +256,9 @@ export class PosComponent {
     let pu = this.orders[index].price_unit;
     this.orders[index].qty = qtyold - 1;
     this.orders[index].subtotal = subold - pu;
+    this.orders[index].taxes = this.orders[index].tax / 100 * this.orders[index].subtotal;
     this.subtotal = this.subtotal - pu;
+    this.tax = this.tax - (this.orders[index].tax / 100 * pu)
     if(qtyold==1) this.orders.splice(index, 1);
     this.calculateTotal();
   }
@@ -272,11 +277,14 @@ export class PosComponent {
     })
       .afterClosed()
       .subscribe(res => {
+        this.tax = this.tax - this.orders[res.index].taxes;
         this.subtotal = this.subtotal - this.orders[res.index].subtotal;
         this.orders[res.index].qty = res.qty;
         this.orders[res.index].price_unit = res.price_unit;
         this.orders[res.index].subtotal = res.qty * res.price_unit;
+        this.orders[res.index].taxes = this.orders[res.index].tax / 100 * this.orders[res.index].subtotal;
         this.subtotal = this.subtotal + this.orders[res.index].subtotal;
+        this.tax = this.tax + this.orders[res.index].taxes;
         if(this.orders[res.index].qty == '0' || !this.orders[res.index].qty){
           this.orders.splice(res.index, 1);}
         this.calculateTotal();
@@ -293,7 +301,9 @@ export class PosComponent {
         let oIndx = this.orders.findIndex((obj => obj.product == product.id));
         this.orders[oIndx].qty = qtyold + 1;
         this.orders[oIndx].subtotal = subold + product.listprice;
+        this.orders[oIndx].taxes = this.orders[oIndx].tax / 100 * this.orders[oIndx].subtotal;
         this.subtotal = this.subtotal + product!.listprice!;
+        this.tax = this.tax + (this.orders[oIndx].tax / 100 * product!.listprice!);
         this.calculateTotal();
       }
     }
@@ -304,11 +314,15 @@ export class PosComponent {
       subtotal: product.listprice,
       product: product.id,
       product_name: product.name,
+      tax: product.taxout.tax,
+      taxes: product.taxout.tax/100 * product!.listprice!,
       isStock: product.isStock,
       user: this.globals.userid
     };
-    if (!avail){ 
+    console.log(data);
+    if (!avail){
       this.subtotal = this.subtotal + product!.listprice!;
+      this.tax = this.tax + product.taxout.tax/100 * product!.listprice!;
       this.orders.push(data);
       this.calculateTotal();
     }    
@@ -351,14 +365,7 @@ export class PosComponent {
     })
       .afterClosed()
       .subscribe(res => {
-        /*this.subtotal = this.subtotal - this.orders[res.index].subtotal;
-        this.orders[res.index].qty = res.qty;
-        this.orders[res.index].price_unit = res.price_unit;
-        this.orders[res.index].subtotal = res.qty * res.price_unit;
-        this.subtotal = this.subtotal + this.orders[res.index].subtotal;
-        if(this.orders[res.index].qty == '0' || !this.orders[res.index].qty){
-          this.orders.splice(res.index, 1);}
-        this.calculateTotal();*/
+        console.log(res);
       });
   }
 

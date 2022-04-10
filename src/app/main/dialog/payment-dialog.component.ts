@@ -97,12 +97,62 @@ export class PaymentDialogComponent implements OnInit {
 
   press(key: string) {
     if(this.pay1s){
+      if(key=='X'){ 
+        this.payment='';
+        key='0';
+      }else if(key=='1k'){
+        this.payment=(Number(this.payment)+1000).toString();
+        key='';
+      }else if(key=='2k'){
+        this.payment=(Number(this.payment)+2000).toString();
+        key='';
+      }else if(key=='5k'){
+        this.payment=(Number(this.payment)+5000).toString();
+        key='';
+      }else if(key=='10k'){
+        this.payment=(Number(this.payment)+10000).toString();
+        key='';
+      }else if(key=='20k'){
+        this.payment=(Number(this.payment)+20000).toString();
+        key='';
+      }else if(key=='50k'){
+        this.payment=(Number(this.payment)+50000).toString();
+        key='';
+      }else if(key=='100k'){
+        this.payment=(Number(this.payment)+100000).toString();
+        key='';
+      }
       if(this.payment == '0'){
         this.payment = '';
       }
       this.payment += key;
       this.countChange();
     }else{
+      if(key=='X'){ 
+        this.payment2='';
+        key='0';
+      }else if(key=='1k'){
+        this.payment2=(Number(this.payment2)+1000).toString();
+        key='';
+      }else if(key=='2k'){
+        this.payment2=(Number(this.payment2)+2000).toString();
+        key='';
+      }else if(key=='5k'){
+        this.payment2=(Number(this.payment2)+5000).toString();
+        key='';
+      }else if(key=='10k'){
+        this.payment2=(Number(this.payment2)+10000).toString();
+        key='';
+      }else if(key=='20k'){
+        this.payment2=(Number(this.payment2)+20000).toString();
+        key='';
+      }else if(key=='50k'){
+        this.payment2=(Number(this.payment2)+50000).toString();
+        key='';
+      }else if(key=='100k'){
+        this.payment2=(Number(this.payment2)+100000).toString();
+        key='';
+      }
       if(this.payment2 == '0'){
         this.payment2 = '';
       }
@@ -116,6 +166,17 @@ export class PaymentDialogComponent implements OnInit {
     if (this.changeNum>=0) this.colorchange = '#009B77';
     else this.colorchange = 'red';
     this.change = this.changeNum.toString();
-    
+  }
+
+  confirm() {
+    if(this.changeNum>=0){
+      this.dialogRef.close({
+        payment1:this.payment,
+        payment2: this.payment2,
+        pay1Type: this.pay1Type,
+        pay2Type: this.pay2Type,
+        change: this.change
+      })
+    }
   }
 }

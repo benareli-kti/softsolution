@@ -4,7 +4,7 @@
     		<div fxLayout="row">
             <input class="inputs" type="text" name="description" [(ngModel)]="brandadd.description" required id="description" placeholder="Brands *">
             <div (click)="saveBrand()" class="quick_add">
-      			<button class="submit">Quick add</button></div>
+      			<button class="submit">Add</button></div>
     		</div>
   		</div>
 	</div>
@@ -12,16 +12,18 @@
 	<div class="flex-right">
     <div fxLayout="row">
       <input class="inputs" type="text" placeholder="Search data" (keyup)="applyFilter($event)">
-		<!--<mat-form-field class="input_field max_search">
-      <input matInput type="text" class="form-control" placeholder="Search data" (keyup)="applyFilter($event)">
-          
-    </mat-form-field>-->
-    <div *ngIf="isIM || isAdm" fxLayout="column">
-      <button class="submit" style="font-size: .7em; margin-top:5pt" (click)="searchActive()">active</button>
-      <button class="submit pink" style="font-size: .65em; margin-top:5pt" (click)="searchInactive()">inactive</button>
-    </div>
+      <div (click)="toggleDisplay()" class="submit-form quick_add">
+        <button class="submit">Filter</button>
+      </div>
     </div>
 	</div>
+</div>
+
+<div fxLayout="row" fxLayoutAlign="space-around center" class="filtered" *ngIf="isShow">
+  <div *ngIf="isIM || isAdm" fxLayout="column">
+    <button class="submit" style="font-size: .7em; margin-top:5pt" (click)="searchActive()">active</button>
+    <button class="submit pink" style="font-size: .65em; margin-top:5pt" (click)="searchInactive()">inactive</button>
+  </div>
 </div>
 
 <div class="table-container">

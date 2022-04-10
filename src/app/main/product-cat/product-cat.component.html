@@ -5,20 +5,26 @@
             <input #input maxlength="6" type="text" class="inputs" name="catid" [(ngModel)]="productcatadd.catid" required id="catid" placeholder="Category ID * (max 6 char)">
             <input style="margin-left: 9pt" type="text" class="inputs" name="description" [(ngModel)]="productcatadd.description" required id="description" placeholder="Name *">
             <div (click)="saveProductCat()" class="quick_add">
-      			<button class="submit">Quick add</button></div>
+      			<button class="submit">Add</button></div>
     		</div>
   		</div>
 	</div>
 
 	<div class="flex-right">
     <div fxLayout="row">
-    <input type="text" class="inputs" placeholder="Search data" (keyup)="applyFilter($event)">
-    <div *ngIf="isIM || isAdm" fxLayout="column">
-      <button class="submit" style="font-size: .7em; margin-top:5pt" (click)="searchActive()">active</button>
-      <button class="submit pink" style="font-size: .65em; margin-top:5pt" (click)="searchInactive()">inactive</button>
-    </div>
+      <input type="text" class="inputs" placeholder="Search data" (keyup)="applyFilter($event)">
+      <div (click)="toggleDisplay()" class="submit-form quick_add">
+        <button class="submit">Filter</button>
+      </div>
     </div>
 	</div>
+</div>
+
+<div fxLayout="row" fxLayoutAlign="space-around center" class="filtered" *ngIf="isShow">
+  <div *ngIf="isIM || isAdm" fxLayout="column">
+    <button class="submit" style="font-size: .7em; margin-top:5pt" (click)="searchActive()">active</button>
+    <button class="submit pink" style="font-size: .65em; margin-top:5pt" (click)="searchInactive()">inactive</button>
+  </div>
 </div>
 
 <div class="table-container">
