@@ -35,7 +35,6 @@ import { LoginComponent } from './landing/login/login.component';
 import { HomeComponent } from './main/home/home.component';
 
 import { authInterceptorProviders } from './_helpers/auth.interceptor';
-import { ProfileComponent } from './main/profile/profile.component';
 import { RegisterComponent } from './landing/register/register.component';
 import { ProductCatComponent } from './main/product-cat/product-cat.component';
 import { ProductcatDialogComponent } from './main/dialog/productcat-dialog.component';
@@ -51,13 +50,15 @@ import { StockMoveDialogComponent } from './main/dialog/stockmove-dialog.compone
 import { PosComponent } from './main/pos/pos.component';
 import { PosdetailDialogComponent } from './main/dialog/posdetail-dialog.component';
 import { PaymentDialogComponent } from './main/dialog/payment-dialog.component';
+import { PosSessionComponent } from './main/pos-session/pos-session.component';
+import { SettingComponent } from './backend/setting/setting.component';
+import { ProfileComponent } from './backend/profile/profile.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     HomeComponent,
-    ProfileComponent,
     RegisterComponent,
     ProductCatComponent,
     ProductcatDialogComponent,
@@ -72,7 +73,10 @@ import { PaymentDialogComponent } from './main/dialog/payment-dialog.component';
     StockMoveDialogComponent,
     PosComponent,
     PosdetailDialogComponent,
-    PaymentDialogComponent
+    PaymentDialogComponent,
+    PosSessionComponent,
+    SettingComponent,
+    ProfileComponent
   ],
   imports: [
     BrowserModule,

@@ -10,14 +10,14 @@
         </mat-icon>
       </button>
       <div *ngIf="sidenav.mode === 'over'">
-        <span style="margin-left:10px; color:#444444;">{{rute}}</span>
+        <span class="rute">{{rute}}</span>
       </div>
     </div>
     <div fxLayout="row" class="fullW" fxLayoutAlign="space-between center" *ngIf="sidenav.mode === 'side'">
       <div fxLayout="row" fxLayoutAlign="start center">
         <img src="/assets/img/s.png" width="45" [routerLink]="['/']">
         <span class="text-gradient" style="margin-left:10px;">Soft Solution</span>
-        <span style="margin-left:10px; color:#444444;">{{rute}}</span>
+        <span class="rute">{{rute}}</span>
       </div>
       <div>
         <div fxLayout="row" fxLayoutAlign="end center">
@@ -36,7 +36,10 @@
             <img src="/assets/img/s.png" width="45" [routerLink]="['/']">
             <span class="text-gradient" style="margin-left:10px;">Soft Solution</span>
           </div>
-          <button mat-button class="menu-button" [routerLink]="'/pos'" *ngIf="isLoggedIn">
+          <button mat-button class="menu-button" [routerLink]="'/pos'" *ngIf="isLoggedIn && !pos_shift && isTU">
+            <span>POS</span>
+          </button>
+          <button mat-button class="menu-button" [routerLink]="'/pos-session'" *ngIf="isLoggedIn && pos_shift && isTU">
             <span>POS</span>
           </button>
           <button mat-button class="menu-button" (click)="toggleProduct()" *ngIf="isLoggedIn && isIU">
@@ -63,12 +66,15 @@
           </button>
         </div>
         <div *ngIf="sidenav.mode === 'side'" >
-          <button mat-button class="menu-button" [routerLink]="'/partner'" *ngIf="isLoggedIn && isAdm">
+          <button mat-button class="menu-button" [routerLink]="'/setting'" *ngIf="isLoggedIn && isAdm">
             <span>Setting</span>
           </button>
         </div>
         <div *ngIf="sidenav.mode === 'over'" class="profile2">
           <div fxLayout="column" fxLayoutAlign="center center">
+          <button mat-button class="menu-button" [routerLink]="'/setting'" *ngIf="isLoggedIn && isAdm">
+            <span>Setting</span>
+          </button>
           <a mat-button class="text-gradient" [routerLink]="'/profile'"> {{ username }} </a>
           <a mat-button class="fullW logout-btn text-gradient" (click)="logout()"> Log Out </a>
         </div>

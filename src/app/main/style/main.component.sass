@@ -1,9 +1,46 @@
 //::ng-deep .mat-form-field-underline
   //display: none
+@import url('https://fonts.googleapis.com/css2?family=Aleo:wght@300;400;700&display=swap')
 @import url('https://fonts.googleapis.com/css2?family=Anek+Bangla:wght@300;600;800&display=swap')
 
 ::-webkit-scrollbar
   width: 0
+
+@mixin gradient-text($angle: 45deg, $color: #3f5efb, $pink: #fc466b, $amount: 0%)
+  color: $color
+  background: -webkit-linear-gradient($angle, $color, adjust-hue($pink, $amount))
+  -webkit-text-fill-color: transparent
+  -webkit-background-clip: text
+  display: inline-block
+
+.flexfull
+  width: 100%
+  display: flex
+  flex-direction: row
+
+.flex100
+  flex: 100%
+
+.flex70
+  flex: 70%
+
+.flex65
+  flex: 65%
+
+.flex50
+  flex: 50%
+
+.flex35
+  flex: 35%
+
+.flex33
+  flex: 33%
+
+.flex30
+  flex: 30%
+  
+.flex25
+  flex: 25%
 
 .width100
   width: 100%
@@ -29,6 +66,9 @@
 .text-left
   text-align: left
 
+.text-right
+  text-align: right
+
 .max_action
   max-width: 35pt
   text-align: center
@@ -42,6 +82,9 @@
 .padtop
   padding-top: 7pt
 
+.text11
+  font-size: 1.1em
+
 .filtered
   padding-top: 3pt
   height:43pt !important
@@ -51,6 +94,16 @@
   flex-direction: row
   flex-wrap: wrap
   text-align: center
+  padding: 10pt
+  width: calc(100vw - 185pt)
+  justify-content: space-between
+  font-family: 'Anek Bangla', sans-serif
+
+.flex-vertical
+  display: flex
+  flex-direction: column
+  flex-wrap: wrap
+  text-align:center
   padding: 10pt
   width: calc(100vw - 185pt)
   justify-content: space-between
@@ -69,6 +122,7 @@
 
 .inputs
   border: 0
+  width: 90%
   border-bottom: 2px solid #333
   padding: 1pt 3pt
   background: none
@@ -78,7 +132,10 @@
 
 .section-setting
   margin-top: 7pt
-  border-bottom: 1px solid #cbcbcb
+  border-bottom: 2px solid #888888
+
+.global-setting
+  border-bottom: 2px solid #888888
   
 .submit
   color: #3f5efb
@@ -89,6 +146,41 @@
 
 .pink
   color: #fc466b
+
+.setting-title
+  font-size: 1.4em
+  font-weight: 400
+  border-bottom: 2px solid #cbcbcb
+  padding: 0pt 9pt
+
+.btn-rainbow
+  background: linear-gradient(45deg, #3f5efb 0%, #fc466b 100%)
+  border: 0
+  border-radius: 7pt
+  padding: 2px
+  display: inline-flex
+  justify-content: center
+  align-items: center
+
+.btn-white
+  border: 0
+  background: #fff
+  padding: 4pt 10pt
+  border-radius: 6pt
+  display: inline-flex
+  justify-content: center
+  align-items: center
+
+.btn-gradient
+  border: 0
+  font-size: 1.1em
+  font-family: 'Aleo', serif
+  font-weight: 400
+  text-transform: uppercase
+  letter-spacing: 1pt
+
+.text-gradient
+  @include gradient-text
 
 .add_stock
   color: #3f5efb
@@ -180,3 +272,5 @@ $layout-breakpoint-small: 800px
   .flex-container
     width: calc(100vw - 60pt)
     background: white
+  .text-right
+    text-align: left

@@ -5,6 +5,10 @@ import { BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
 import { MatSidenav } from '@angular/material/sidenav';
 
 import { TokenStorageService } from 'src/app/services/token-storage.service';
+import { Setting } from 'src/app/models/setting.model';
+import { SettingService } from 'src/app/services/setting.service';
+import { User } from 'src/app/models/user.model';
+import { User2Service } from 'src/app/services/user2.service';
 
 @Component({
   selector: 'app-root',
@@ -23,6 +27,8 @@ export class AppComponent implements OnInit, AfterViewInit{
   isAdm = false;
   isPOS = false;
 
+  pos_shift?: boolean;
+
   isProductShow = false;
   isPartnerShow = false;
   isTransacShow = false;
@@ -38,18 +44,55 @@ export class AppComponent implements OnInit, AfterViewInit{
     private router: Router,
     private route : ActivatedRoute,
     private globals: Globals,
+    private user2Service: User2Service,
+    private settingService: SettingService,
     public breakpointObserver: BreakpointObserver,
     private tokenStorageService: TokenStorageService
   ){ 
     router.events.subscribe(event => {
       if(event instanceof NavigationEnd){
-        //console.log(event.url);
-        this.rute = event.url;
+        this.rute = 'Soft Solution';
         if(event.url=="/pos"){
+          this.rute = 'POS';
           this.layPOS = true;
           this.wiggle();
-        }
-        else{
+        }else if(event.url=="/pos-session"){
+          //if(this.globals.pos_open) this.router.navigate(['/pos-session']);
+          this.rute = this.rute + ' | Session';
+          this.layPOS = true;
+          this.wiggle();
+        }else if(event.url=="/partner"){
+          //if(this.globals.pos_open) this.router.navigate(['/pos-session']);
+          this.rute = this.rute + ' | Partner';
+          this.layPOS = false;
+          this.wiggle();
+        }else if(event.url=="/warehouse"){
+          //if(this.globals.pos_open) this.router.navigate(['/pos-session']);
+          this.rute = this.rute + ' | Warehouse';
+          this.layPOS = false;
+          this.wiggle();
+        }else if(event.url=="/product"){
+          //if(this.globals.pos_open) this.router.navigate(['/pos-session']);
+          this.rute = this.rute + ' | Product';
+          this.layPOS = false;
+          this.wiggle();
+        }else if(event.url=="/productcategory"){
+          //if(this.globals.pos_open) this.router.navigate(['/pos-session']);
+          this.rute = this.rute + ' | Product Category';
+          this.layPOS = false;
+          this.wiggle();
+        }else if(event.url=="/brand"){
+          //if(this.globals.pos_open) this.router.navigate(['/pos-session']);
+          this.rute = this.rute + ' | Brand';
+          this.layPOS = false;
+          this.wiggle();
+        }else if(event.url=="/setting"){
+          //if(this.globals.pos_open) this.router.navigate(['/pos-session']);
+          this.rute = this.rute + ' | Global Setting';
+          this.layPOS = false;
+          this.wiggle();
+        }else{
+          //if(this.globals.pos_open) this.router.navigate(['/pos-session']);
           this.layPOS = false;
           this.wiggle();
         }
@@ -62,12 +105,21 @@ export class AppComponent implements OnInit, AfterViewInit{
     if (this.isLoggedIn) {
       const user = this.tokenStorageService.getUser();
       this.roles = user.roles;
-      //this.showAdminBoard = this.roles.includes('ROLE_ADMIN');
       this.username = user.username;
       this.globals.username = user.username;
       this.globals.userid = user.id;
       this.globals.roles = user.roles;
-      this.checkRole();
+      this.settingService.getAll()
+        .subscribe(setting => {
+          this.globals.pos_shift = setting[0].pos_shift;
+          this.pos_shift = setting[0].pos_shift;
+          if(this.globals.pos_shift){
+            this.user2Service.get(user.id)
+              .subscribe(users => {
+                this.checkRole();
+              })
+          }else{ this.checkRole(); }
+        });
     }
     else{
       this.router.navigate(['/login']);

@@ -4,6 +4,13 @@
 ::-webkit-scrollbar
 	width: 0
 
+@mixin gradient-text($angle: 45deg, $color: #3f5efb, $pink: #fc466b, $amount: 0%)
+	color: $color
+	background: -webkit-linear-gradient($angle, $color, adjust-hue($pink, $amount))
+	-webkit-text-fill-color: transparent
+	-webkit-background-clip: text
+	display: inline-block
+
 body
 	font-family: 'Anak Bangla', sans-serif
 	
@@ -28,12 +35,11 @@ body
 	color: #3f5efb
 	color: white
 
-@mixin gradient-text($angle: 45deg, $color: #3f5efb, $pink: #fc466b, $amount: 0%)
-	color: $color
-	background: -webkit-linear-gradient($angle, $color, adjust-hue($pink, $amount))
-	-webkit-text-fill-color: transparent
-	-webkit-background-clip: text
-	display: inline-block
+.rute
+	font-family: 'Aleo', serif
+	font-weight: 300
+	margin-left: 10px
+	color: #444444
 
 .text-gradient
 	@include gradient-text

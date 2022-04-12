@@ -8,4 +8,8 @@ export class Globals{
     userid?: string;
     roles?: string[];
     isPOS?: boolean;
+    pos_shift?: boolean;
+    pos_open?: boolean;
+    pos_session?: string;
+    pos_session_id?: string;
 }

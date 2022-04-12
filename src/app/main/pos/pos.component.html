@@ -1,5 +1,8 @@
 <div class="container">
 	<div fxLayout="column" class="left-container">
+		<div >
+			<button class="session" *ngIf="pos_open" [routerLink]="'/pos-session'">Back to Session</button>
+		</div>
 		<mat-form-field style="max-height: 40pt !important;">
       		<input matInput type="text" class="form-control" placeholder="Search data" [(ngModel)]="term">
       		<!--(keyup)="applyFilter($event)"-->

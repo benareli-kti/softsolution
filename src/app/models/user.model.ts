@@ -3,4 +3,5 @@ export class User {
 	username?: string;
 	password?: string;
 	roles?: any;
+	pos_open?: boolean;
 }

@@ -26,6 +26,9 @@
   </div>
 </div>
 
+<input type="file" (change)="onFileChange($event)" />
+<div id="output"></div>
+
 <div class="table-container">
 <mat-table #table [dataSource]="dataSource">
   <ng-container matColumnDef="name">

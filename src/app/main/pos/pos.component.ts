@@ -23,10 +23,14 @@ import { Partner } from 'src/app/models/partner.model';
 import { PartnerService } from 'src/app/services/partner.service';
 import { Warehouse } from 'src/app/models/warehouse.model';
 import { WarehouseService } from 'src/app/services/warehouse.service';
+import { Possession } from 'src/app/models/possession.model';
+import { PossessionService } from 'src/app/services/possession.service';
 import { Pos } from 'src/app/models/pos.model';
 import { PosService } from 'src/app/services/pos.service';
 import { Posdetail } from 'src/app/models/posdetail.model';
 import { PosdetailService } from 'src/app/services/posdetail.service';
+import { Payment } from 'src/app/models/payment.model';
+import { PaymentService } from 'src/app/services/payment.service';
 
 @Component({
   selector: 'app-pos',
@@ -71,6 +75,12 @@ export class PosComponent {
 
   isRightShow = false;
 
+  //pos session
+  pos_open = false;
+  session: string='';
+  session_id: string='';
+  sess_id?: string;
+
   //Select Partner
   selectedPartner: string = "";
   selectedData1: { valuePartner: string; textPartner: string } = {
@@ -113,11 +123,22 @@ export class PosComponent {
     private brandService: BrandService,
     private warehouseService: WarehouseService,
     private partnerService: PartnerService,
+    private possessionService: PossessionService,
     private posService: PosService,
     private posDetailService: PosdetailService,
+    private paymentService: PaymentService
   ) {}
 
   ngOnInit(): void {
+    this.possessionService.getUserOpen(this.globals.userid)
+      .subscribe(abc => {
+        if(abc.length>0 && !this.globals.pos_open) this.router.navigate(['/pos-session']);
+      })
+    if(this.globals.pos_open){
+      this.pos_open = true;
+      this.session = this.globals!.pos_session!;
+      this.session_id = this.globals!.pos_session_id!;
+    }
     this.retrieveData();
     this.checkRole();
     if(window.innerWidth>=1024){this.cols = 4; this.rowHeight = "65pt";}
@@ -319,7 +340,6 @@ export class PosComponent {
       isStock: product.isStock,
       user: this.globals.userid
     };
-    console.log(data);
     if (!avail){
       this.subtotal = this.subtotal + product!.listprice!;
       this.tax = this.tax + product.taxout.tax/100 * product!.listprice!;
@@ -338,11 +358,21 @@ export class PosComponent {
             else if(ids[0]!.pos_id! < 1000) this.prefixes = '000';
             else if(ids[0]!.pos_id! < 10000) this.prefixes = '00';
             else if(ids[0]!.pos_id! < 100000) this.prefixes = '0';
+            let x = ids[0]!.pos_id!;
             this.posid = "POSS"+new Date().getFullYear().toString().substr(-2)+
             '0'+(new Date().getMonth() + 1).toString().slice(-2)+
             this.prefixes+ids[0]!.pos_id!.toString();
             //this.createPOS();
-            this.openPayment();
+            const pos_ids = {
+              pos_id: x + 1
+            };
+            this.idService.update(ids[0].id, pos_ids)
+              .subscribe({
+                next: (res) => {
+                  this.openPayment();
+                },
+                error: (e) => console.error(e)
+              });
           },
           error: (e) => console.error(e)
       });
@@ -365,19 +395,53 @@ export class PosComponent {
     })
       .afterClosed()
       .subscribe(res => {
-        console.log(res);
+        this.paying(res);
       });
   }
 
-  createPOS(): void {
-    if(!this.partnerid || this.partnerid == 'null'){
+  paying(res: any): void {
+    if(Number(res.payment1)==0) res.pay1Type = null;
+    if(Number(res.payment2)==0) res.pay2Type = null;
+    if(!this.globals.pos_session_id || this.globals.pos_session_id == null
+      || this.globals.pos_session_id==''){ this.sess_id = "null" }
+      else{ this.sess_id = this.globals.pos_session_id};
+    const payments = {
+      session: this.sess_id,
+      order_id: this.posid,
+      amount_total: this.total,
+      payment1: res.payment1,
+      pay1method: res.pay1Type,
+      payment2: res.payment2,
+      pay2method: res.pay2Type,
+      change: res.change,
+      changeMethod: "tunai"
+    };
+    this.paymentService.create(payments)
+      .subscribe({
+        next: (res) => {
+          this.createPOS(res.id);
+        },
+        error: (e) => console.error(e)
+      })
+  }
+
+  createPOS(payment: any): void {
+    if(!this.partnerid || this.partnerid == null
+      || this.partnerid=='') this.partnerid = "null";
+    if(!this.globals.pos_session_id || this.globals.pos_session_id == null
+      || this.globals.pos_session_id==''){ this.sess_id = "null" }
+      else{ this.sess_id = this.globals.pos_session_id};
+    if(!this.tax || this.tax==null) this.tax = 0;
       const posdata = {
         order_id: this.posid,
         disc_type: this.discType,
         discount: this.disc,
+        amount_tax: this.tax,
         amount_untaxed: this.subtotal,
         amount_total: this.total,
-        user: this.globals.userid
+        user: this.globals.userid,
+        payment: payment,
+        session: this.sess_id
       };
       this.posService.create(posdata)
         .subscribe({
@@ -386,7 +450,7 @@ export class PosComponent {
           },
           error: (e) => console.error(e)
         });
-    }
+    
   }
 
   rollingDetail(orderid: string): void {
@@ -395,6 +459,9 @@ export class PosComponent {
         this.orders[0].subtotal, this.orders[0].product, this.orders[0].isStock.toString());
     }else{
       this.total = 0;
+      this.subtotal = 0;
+      this.discount = 0;
+      this.tax = 0;
     }
   }
 
@@ -408,7 +475,8 @@ export class PosComponent {
         subtotal: subtotal,
         product: product,
         isStock: isStock,
-        warehouse: this.warehouseid
+        warehouse: this.warehouseid,
+        user: this.globals.userid
       };
       this.posDetailService.create(posdetail)
         .subscribe({

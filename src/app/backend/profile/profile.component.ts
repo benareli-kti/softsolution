@@ -9,7 +9,7 @@ import { User2Service } from 'src/app/services/user2.service';
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
-  styleUrls: ['../style/main.component.sass']
+  styleUrls: ['../../main/style/main.component.sass']
 })
 export class ProfileComponent implements OnInit {
   currentUser: any;

@@ -1,0 +1,41 @@
+<div class="flex-vertical global-setting">
+  <div fxLayout="row" fxLayoutAlign="space-between center">
+  	<span class="setting-title">System Setting</span>
+  	<div class="btn-rainbow">
+  		<div class="btn-white">
+  			<button class="btn-gradient text-gradient" (click)="save1()">Save</button>
+  		</div>
+  	</div>
+  </div>
+  <div class="flexfull">
+    <div class="flex33 text-right">Company / Store Name : </div>
+    <input class="inputs text11" type="text" name="company" required placeholder="Company Name" [(ngModel)]="comp_name">
+    <!--[(ngModel)]="brandadd.description"-->
+  </div>
+  <div class="flexfull">
+    <div class="flex33 text-right">Address : </div>
+    <input class="inputs text11" type="text" name="address" required placeholder="Address" [(ngModel)]="comp_addr">
+  </div>
+  <div class="flexfull">
+    <div class="flex33 text-right">Phone : </div>
+    <input class="inputs text11" type="text" name="phone" required placeholder="Phone" [(ngModel)]="comp_phone">
+  </div>
+  <div class="flexfull">
+    <div class="flex33 text-right">Email : </div>
+    <input class="inputs text11" type="text" name="email" required placeholder="Email" [(ngModel)]="comp_email">
+  </div>
+</div>
+
+<div class="flex-vertical global-setting">
+  <div fxLayout="row" fxLayoutAlign="space-between center">
+  	<span class="setting-title">POS Setting</span>
+  	<div class="btn-rainbow">
+  		<div class="btn-white">
+  			<button class="btn-gradient text-gradient" (click)="save2()">Save</button>
+  		</div>
+  	</div>
+  </div>
+  <div class="flex-left width33 text-left">
+    <mat-slide-toggle class="padtop" [(ngModel)]="pos_shift" (change)="onPosShift($event.checked)">Using Shift</mat-slide-toggle>
+  </div>
+</div>
