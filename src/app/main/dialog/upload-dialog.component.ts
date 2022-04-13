@@ -48,6 +48,7 @@ export class UploadDialogComponent implements OnInit {
         this.a = 1;
       }*/
     //this.currDescription = this.data.description;
+    this.datas = [{data: "Sample1"},{data: "Sample2"}]
     this.checkRole();
     this.getAllData();
   }
@@ -74,7 +75,7 @@ export class UploadDialogComponent implements OnInit {
     fileReader.readAsBinaryString(event.target.files[0]);
     fileReader.onload = (event) => {
       let workbook = XLSX.read(event.target?.result,{type:'binary'});
-      let sheets = 0;
+      /*let sheets = 0;
       workbook.SheetNames.every(sheet => {
         this.datas = XLSX.utils.sheet_to_json(workbook.Sheets[sheet]);
         sheets = sheets + 1
@@ -82,7 +83,11 @@ export class UploadDialogComponent implements OnInit {
           return true;
         }
         else return false;
-      })
+      })*/
+      let wsname = workbook.SheetNames[0];
+      let ws: XLSX.WorkSheet = workbook.Sheets[wsname];
+      this.datas = XLSX.utils.sheet_to_json(ws);
+      console.log(this.datas);
     }
   }
 

@@ -6,6 +6,11 @@
   </div>
   <input type="file" id="file-upload" name="fileUpload" accept=".xls,.xlsx" (change)="onFileChange($event)" />
   <div class="alert">{{message}}</div>
+  <table style="border:1; color: black;">
+    <tr *ngFor="let row of datas">
+      <td *ngFor="let val or row">{{val}}</td>
+    </tr>
+  </table>
 </div>
 
 <div class="width-100" fxLayout="row" fxLayoutAlign="space-between center">
