@@ -27,9 +27,11 @@ export class UploadDialogComponent implements OnInit {
   isAdm = false;
   isRes = false;
   checker = 0;
+  alerted = false;
 
   //Data
   indexes: Array<any> = [];
+  emptys: Array<any> = [];
   brands?: Brand[];
   productcats?: Productcat[];
   warehouses?: Warehouse[];
@@ -68,7 +70,7 @@ export class UploadDialogComponent implements OnInit {
       this.data1 = [["code","name"], ["CUST1","John Doe"], 
         ["CUST2","Jane Doe"]];
     }
-  
+    this.alerted = false;
     this.checkRole();
     this.getAllData();
   }
@@ -126,21 +128,26 @@ export class UploadDialogComponent implements OnInit {
   }
 
   startSequence(): void {
+    console.log(this.datas);
     if(this.data=="brand"){
       let index = this.brands!.findIndex(a => a.description === this.datas[this.checker].description);
       if(index!=-1) this.indexes.push(this.checker + 1);
+      if(this.datas[this.checker].description==''||this.datas[this.checker].description==null) this.emptys.push(this.checker + 1);
       this.checkers();
     }else if(this.data=="product category"){
       let index = this.productcats!.findIndex(a => a.description === this.datas[this.checker].description);
       if(index!=-1) this.indexes.push(this.checker + 1);
+      if(this.datas[this.checker].description==''||this.datas[this.checker].description==null) this.emptys.push(this.checker + 1);
       this.checkers();  
     }else if(this.data=="warehouse"){
       let index = this.warehouses!.findIndex(a => a.name === this.datas[this.checker].name);
       if(index!=-1) this.indexes.push(this.checker + 1);
+      if(this.datas[this.checker].name==''||this.datas[this.checker].name==null) this.emptys.push(this.checker + 1);
       this.checkers();  
     }else if(this.data=="partner"){
       let index = this.partners!.findIndex(a => a.name === this.datas[this.checker].name);
       if(index!=-1) this.indexes.push(this.checker + 1);
+      if(this.datas[this.checker].name==''||this.datas[this.checker].name==null) this.emptys.push(this.checker + 1);
       this.checkers();  
     }
   }
@@ -149,9 +156,10 @@ export class UploadDialogComponent implements OnInit {
     this.checker = this.checker+1;
     if(this.checker == this.datas.length) {
       this.checker = 0;
-      if(this.indexes.length>0){
-        console.log(this.indexes);
-        this.message = "Line " + this.indexes + " existed";
+      if(this.indexes.length>0||this.emptys.length>0){
+        this.alerted = true;
+        this.message = "Line " + this.indexes + " existed!";
+        if(this.emptys.length>0) this.message = this.message + "\n" + "Line " + this.emptys + " empty!";
       }else{
         this.insertMany();
       }
@@ -162,6 +170,7 @@ export class UploadDialogComponent implements OnInit {
   }
 
   insertMany(): void {
+    this.alerted = false;
     if(this.data=="brand"){
       this.brandService.createMany(this.globals.userid, this.datas)
         .subscribe(dat => {this.closeDialog();})

@@ -5,7 +5,8 @@
     <button class="close_btn" mat-button (click)="closeDialog()">X</button>
   </div>
   <input type="file" id="file-upload" name="fileUpload" accept=".xls,.xlsx" (change)="onFileChange($event)" />
-  <div class="alert">{{message}}</div>
+  <div *ngIf="alerted" class="alert" style="padding:7pt 3pt; font-size:1em;">{{message}}</div>
+  <br/>
   <div>{{sample}}</div>
   <table class="sjs-table">
     <tr *ngFor="let row of data1">
