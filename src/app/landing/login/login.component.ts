@@ -80,11 +80,10 @@ export class LoginComponent implements OnInit {
     const { username, password } = this.form;
     this.authService.register(username, password).subscribe({
       next: data => {
-        console.log(data);
         this.isSuccessful = true;
         this.isSignUpFailed = false;
         const dataRole = {
-          roles: this.listRoles,
+          roles: this.listRoles
         };
         this.user2Service.update(data._id, dataRole)
           .subscribe({

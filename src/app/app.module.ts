@@ -37,22 +37,24 @@ import { HomeComponent } from './main/home/home.component';
 import { authInterceptorProviders } from './_helpers/auth.interceptor';
 import { RegisterComponent } from './landing/register/register.component';
 import { ProductCatComponent } from './main/product-cat/product-cat.component';
-import { ProductcatDialogComponent } from './main/dialog/productcat-dialog.component';
 import { BrandComponent } from './main/brand/brand.component';
-import { BrandDialogComponent } from './main/dialog/brand-dialog.component';
 import { ProductComponent } from './main/product/product.component';
-import { ProductDialogComponent } from './main/dialog/product-dialog.component';
 import { WarehouseComponent } from './main/warehouse/warehouse.component';
-import { WarehouseDialogComponent } from './main/dialog/warehouse-dialog.component';
 import { PartnerComponent } from './main/partner/partner.component';
-import { PartnerDialogComponent } from './main/dialog/partner-dialog.component';
-import { StockMoveDialogComponent } from './main/dialog/stockmove-dialog.component';
 import { PosComponent } from './main/pos/pos.component';
-import { PosdetailDialogComponent } from './main/dialog/posdetail-dialog.component';
-import { PaymentDialogComponent } from './main/dialog/payment-dialog.component';
 import { PosSessionComponent } from './main/pos-session/pos-session.component';
 import { SettingComponent } from './backend/setting/setting.component';
 import { ProfileComponent } from './backend/profile/profile.component';
+
+import { BrandDialogComponent } from './main/dialog/brand-dialog.component';
+import { ProductDialogComponent } from './main/dialog/product-dialog.component';
+import { ProductcatDialogComponent } from './main/dialog/productcat-dialog.component';
+import { WarehouseDialogComponent } from './main/dialog/warehouse-dialog.component';
+import { PartnerDialogComponent } from './main/dialog/partner-dialog.component';
+import { StockMoveDialogComponent } from './main/dialog/stockmove-dialog.component';
+import { PosdetailDialogComponent } from './main/dialog/posdetail-dialog.component';
+import { PaymentDialogComponent } from './main/dialog/payment-dialog.component';
+import { UploadDialogComponent } from './main/dialog/upload-dialog.component';
 
 @NgModule({
   declarations: [
@@ -76,7 +78,8 @@ import { ProfileComponent } from './backend/profile/profile.component';
     PaymentDialogComponent,
     PosSessionComponent,
     SettingComponent,
-    ProfileComponent
+    ProfileComponent,
+    UploadDialogComponent
   ],
   imports: [
     BrowserModule,

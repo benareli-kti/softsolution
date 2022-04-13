@@ -12,7 +12,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { DataFilter, filterOption } from 'src/app/models/datafilter';
 import { BrandDialogComponent } from '../dialog/brand-dialog.component';
-import * as XLSX from 'xlsx';
+import { UploadDialogComponent } from '../dialog/upload-dialog.component';
 
 @Component({
   selector: 'app-brand',
@@ -90,25 +90,6 @@ export class BrandComponent implements OnInit {
     }
   }
 
-  onFileChange(ev: any) {
-    /*let jsonData = null;
-    const reader = new FileReader();
-    const file = ev.target.files[0];
-    reader.onload = (event) => {
-      const data = reader.result;
-      let workBook = XLSX.read(data, { type: 'binary' });
-      jsonData = workBook.SheetNames.reduce((initial, name) => {
-        const sheet = workBook.Sheets[name];
-        initial[name] = XLSX.utils.sheet_to_json(sheet);
-        return initial;
-      }, {});
-      const dataString = JSON.stringify(jsonData);
-      //document.getElementById('output').innerHTML = dataString.slice(0, 300).concat("...");
-      //this.setDownload(dataString);
-    }
-    reader.readAsBinaryString(file);*/
-  }
-
   searchActive(): void {
     this.dataSource.data = this.brands!.filter(role => role.active === true);
   }
@@ -150,6 +131,17 @@ export class BrandComponent implements OnInit {
       height: '90%',
       disableClose: true,
       data: row
+    })
+      .afterClosed()
+      .subscribe(() => this.retrieveBrand());
+  }
+
+  openUpload() {
+    const dialog = this.dialog.open(UploadDialogComponent, {
+      width: '98%',
+      height: '90%',
+      disableClose: true,
+      data: "brand"
     })
       .afterClosed()
       .subscribe(() => this.retrieveBrand());

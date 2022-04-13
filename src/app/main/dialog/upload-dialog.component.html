@@ -1,0 +1,16 @@
+<div class="basic-container submit-form" fxLayout="column" fxLayoutAlign="space-between center" >
+<div class="width-100">
+  <div class="marginbot" fxLayout="row" fxLayoutAlign="space-between center">
+    <div><h2>Upload Data - {{data | uppercase}}</h2></div>
+    <button class="close_btn" mat-button (click)="closeDialog()">X</button>
+  </div>
+  <input type="file" id="file-upload" name="fileUpload" accept=".xls,.xlsx" (change)="onFileChange($event)" />
+  <div class="alert">{{message}}</div>
+</div>
+
+<div class="width-100" fxLayout="row" fxLayoutAlign="space-between center">
+  <div class="width-100">
+    <button mat-button [disabled]="isRes" class="save_btn" (click)="updateData()">Upload</button>
+  </div>
+</div>
+</div>

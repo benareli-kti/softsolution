@@ -23,11 +23,8 @@
   <div *ngIf="isIM || isAdm" fxLayout="column">
     <button class="submit" style="font-size: .7em; margin-top:5pt" (click)="searchActive()">active</button>
     <button class="submit pink" style="font-size: .65em; margin-top:5pt" (click)="searchInactive()">inactive</button>
-  </div>
+  </div>      
 </div>
-
-<input type="file" (change)="onFileChange($event)" />
-<div id="output"></div>
 
 <div class="table-container">
 <mat-table #table [dataSource]="dataSource">
@@ -51,5 +48,7 @@
   ></tr>
 </mat-table>
 </div>
-
-<mat-paginator [pageSizeOptions]="[10, 20, 50, 100]" showFirstLastButtons></mat-paginator>
+<div fxLayout="row" fxLayoutAlign="space-between center">
+  <button class="btn-gradient text-gradient upload" (click)="openUpload()">Upload</button>
+  <mat-paginator [pageSizeOptions]="[10, 20, 50, 100]" showFirstLastButtons></mat-paginator>
+</div>
