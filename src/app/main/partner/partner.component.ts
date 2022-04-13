@@ -8,6 +8,7 @@ import { MatSelectChange } from '@angular/material/select';
 import { MatDialog } from '@angular/material/dialog';
 import { DataFilter, filterOption } from 'src/app/models/datafilter';
 import { PartnerDialogComponent } from '../dialog/partner-dialog.component';
+import { UploadDialogComponent } from '../dialog/upload-dialog.component';
 
 @Component({
   selector: 'app-partner',
@@ -91,6 +92,17 @@ export class PartnerComponent implements OnInit {
       width: '98%',
       height: '90%',
       disableClose: true,
+    })
+      .afterClosed()
+      .subscribe(() => this.retrievePartner());
+  }
+
+  openUpload() {
+    const dialog = this.dialog.open(UploadDialogComponent, {
+      width: '98%',
+      height: '90%',
+      disableClose: true,
+      data: "partner"
     })
       .afterClosed()
       .subscribe(() => this.retrievePartner());

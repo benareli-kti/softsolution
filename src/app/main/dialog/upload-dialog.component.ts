@@ -6,6 +6,14 @@ import * as XLSX from 'xlsx';
 
 import { Brand } from 'src/app/models/brand.model';
 import { BrandService } from 'src/app/services/brand.service';
+import { Productcat } from 'src/app/models/productcat.model';
+import { ProductCatService } from 'src/app/services/product-cat.service';
+import { Warehouse } from 'src/app/models/warehouse.model';
+import { WarehouseService } from 'src/app/services/warehouse.service';
+import { Partner } from 'src/app/models/partner.model';
+import { PartnerService } from 'src/app/services/partner.service';
+
+type AOA = any[][];
 
 @Component({
   selector: 'app-brand-upload',
@@ -23,8 +31,13 @@ export class UploadDialogComponent implements OnInit {
   //Data
   indexes: Array<any> = [];
   brands?: Brand[];
+  productcats?: Productcat[];
+  warehouses?: Warehouse[];
+  partners?: Partner[];
 
   //XLSX
+  sample: string = 'Sample Data';
+  data1?: AOA;
   message!: string;
   datas!: any;
   converted!: string;
@@ -35,20 +48,27 @@ export class UploadDialogComponent implements OnInit {
     private _snackBar: MatSnackBar,
     private globals: Globals,
     private brandService: BrandService,
+    private productCatService: ProductCatService,
+    private warehouseService: WarehouseService,
+    private partnerService: PartnerService,
     @Inject(MAT_DIALOG_DATA) public data: any,
   ){}
 
 
   ngOnInit() {
-    //if (this.data) console.log(this.data);
-    /*if (this.data.active == true){
-      } else {
-        this.statusActive = 'false';
-        this.isChecked = false;
-        this.a = 1;
-      }*/
-    //this.currDescription = this.data.description;
-    this.datas = [{data: "Sample1"},{data: "Sample2"}]
+    if(this.data=="brand"){
+      this.data1 = [["description"], ["brand 1"], ["brand 2"], ["brand 3"]];
+    }else if(this.data=="product category"){
+      this.data1 = [["catid","description"], ["ID001","category 1"], 
+        ["ID002","category 2"], ["ID003","category 3"]];
+    }else if(this.data=="warehouse"){
+      this.data1 = [["short","name"], ["WH1","Warehouse 1"], 
+        ["WH2","Warehouse 2"], ["WH3","Warehouse 3"]];
+    }else if(this.data=="partner"){
+      this.data1 = [["code","name"], ["CUST1","John Doe"], 
+        ["CUST2","Jane Doe"]];
+    }
+  
     this.checkRole();
     this.getAllData();
   }
@@ -57,6 +77,18 @@ export class UploadDialogComponent implements OnInit {
     this.brandService.findAllActive()
       .subscribe(brand => {
         this.brands = brand;
+      })
+    this.productCatService.findAllActive()
+      .subscribe(prodcat => {
+        this.productcats = prodcat;
+      })
+    this.warehouseService.findAllActive()
+      .subscribe(wh => {
+        this.warehouses = wh;
+      })
+    this.partnerService.findAllActive()
+      .subscribe(partner => {
+        this.partners = partner;
       })
   }
 
@@ -71,6 +103,7 @@ export class UploadDialogComponent implements OnInit {
   }
 
   onFileChange(event: any) {
+    this.sample = '';
     const fileReader = new FileReader();
     fileReader.readAsBinaryString(event.target.files[0]);
     fileReader.onload = (event) => {
@@ -86,15 +119,30 @@ export class UploadDialogComponent implements OnInit {
       })*/
       let wsname = workbook.SheetNames[0];
       let ws: XLSX.WorkSheet = workbook.Sheets[wsname];
-      this.datas = XLSX.utils.sheet_to_json(ws);
+      this.datas = XLSX.utils.sheet_to_json(ws, {raw:true});
+      this.data1 = <AOA>(XLSX.utils.sheet_to_json(ws, { header: 1 }));
       console.log(this.datas);
     }
   }
 
-  startBrand(): void {
-    let index = this.brands!.findIndex(a => a.description === this.datas[this.checker].description);
-    if(index!=-1) this.indexes.push(this.checker + 1);
-    this.checkers();  
+  startSequence(): void {
+    if(this.data=="brand"){
+      let index = this.brands!.findIndex(a => a.description === this.datas[this.checker].description);
+      if(index!=-1) this.indexes.push(this.checker + 1);
+      this.checkers();
+    }else if(this.data=="product category"){
+      let index = this.productcats!.findIndex(a => a.description === this.datas[this.checker].description);
+      if(index!=-1) this.indexes.push(this.checker + 1);
+      this.checkers();  
+    }else if(this.data=="warehouse"){
+      let index = this.warehouses!.findIndex(a => a.name === this.datas[this.checker].name);
+      if(index!=-1) this.indexes.push(this.checker + 1);
+      this.checkers();  
+    }else if(this.data=="partner"){
+      let index = this.partners!.findIndex(a => a.name === this.datas[this.checker].name);
+      if(index!=-1) this.indexes.push(this.checker + 1);
+      this.checkers();  
+    }
   }
 
   checkers(): void {
@@ -105,17 +153,28 @@ export class UploadDialogComponent implements OnInit {
         console.log(this.indexes);
         this.message = "Line " + this.indexes + " existed";
       }else{
-        this.insertManyBrand();
+        this.insertMany();
       }
     }
-    else this.startBrand();
+    else {
+      this.startSequence();
+    }
   }
 
-  insertManyBrand(): void {
-    this.brandService.createMany(this.globals.userid, this.datas)
-      .subscribe(dat => {
-        this.closeDialog();
-      })
+  insertMany(): void {
+    if(this.data=="brand"){
+      this.brandService.createMany(this.globals.userid, this.datas)
+        .subscribe(dat => {this.closeDialog();})
+    }else if(this.data=="product category"){
+      this.productCatService.createMany(this.globals.userid, this.datas)
+        .subscribe(dat => {this.closeDialog();})
+    }else if(this.data=="warehouse"){
+      this.warehouseService.createMany(this.globals.userid, this.datas)
+        .subscribe(dat => {this.closeDialog();})
+    }else if(this.data=="partner"){
+      this.partnerService.createMany(this.globals.userid, this.datas)
+        .subscribe(dat => {this.closeDialog();})
+    }
   }
 
   closeDialog() {
@@ -123,6 +182,6 @@ export class UploadDialogComponent implements OnInit {
   }
 
   updateData(): void {
-    if(this.data=="brand") this.startBrand();
+    this.startSequence();
   }
 }

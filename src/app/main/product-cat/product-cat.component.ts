@@ -12,6 +12,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { DataFilter, filterOption } from 'src/app/models/datafilter';
 import { ProductcatDialogComponent } from '../dialog/productcat-dialog.component';
+import { UploadDialogComponent } from '../dialog/upload-dialog.component';
+
 //console.log(this.roles?.filter(role => role.name === "admin").map(role => role._id)); FUCKING HOLY GRAIL
 @Component({
   selector: 'app-product-cat',
@@ -139,6 +141,17 @@ export class ProductCatComponent implements OnInit {
       height: '90%',
       disableClose: true,
       data: row
+    })
+      .afterClosed()
+      .subscribe(() => this.retrieveProductCat());
+  }
+
+  openUpload() {
+    const dialog = this.dialog.open(UploadDialogComponent, {
+      width: '98%',
+      height: '90%',
+      disableClose: true,
+      data: "product category"
     })
       .afterClosed()
       .subscribe(() => this.retrieveProductCat());

@@ -12,6 +12,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { DataFilter, filterOption } from 'src/app/models/datafilter';
 import { WarehouseDialogComponent } from '../dialog/warehouse-dialog.component';
+import { UploadDialogComponent } from '../dialog/upload-dialog.component';
 
 @Component({
   selector: 'app-warehouse',
@@ -137,6 +138,17 @@ export class WarehouseComponent implements OnInit {
       height: '90%',
       disableClose: true,
       data: row
+    })
+      .afterClosed()
+      .subscribe(() => this.retrieveWarehouse());
+  }
+
+  openUpload() {
+    const dialog = this.dialog.open(UploadDialogComponent, {
+      width: '98%',
+      height: '90%',
+      disableClose: true,
+      data: "warehouse"
     })
       .afterClosed()
       .subscribe(() => this.retrieveWarehouse());
