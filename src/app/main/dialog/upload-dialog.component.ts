@@ -30,6 +30,8 @@ export class UploadDialogComponent implements OnInit {
   isRes = false;
   checker = 0;
   alerted = false;
+  success = false;
+  btntxt?: string="Upload";
 
   //Data
   indexes: Array<any> = [];
@@ -42,8 +44,10 @@ export class UploadDialogComponent implements OnInit {
 
   //XLSX
   sample: string = 'Sample Data';
+  filename: string = 'SoftSolution.xlsx';
   data1?: AOA;
   message!: string;
+  msgsuccess!: string;
   datas!: any;
   converted!: string;
   type!: string;
@@ -74,10 +78,12 @@ export class UploadDialogComponent implements OnInit {
       this.data1 = [["code","name","phone","customer","supplier"], ["CUST1","John Doe","0813","ya",""], 
         ["CUST2","Jane Doe","0817","ya","ya"],["CUST3","Jack Doe","0855","","ya"]];
     }else if(this.data=="product"){
-      this.data1 = [["sku","name","description","listprice","botprice","cost","category","brand","taxin","taxout"], 
-      ["PROD001","Book 1","","100000","","70000","category 1","brand 1","11","11"], 
-      ["PROD002","Book 2","","90000","87500","60000","category 1","brand 2","11","11"]];
+      this.data1 = [["sku","name","description","type","listprice","botprice","cost","category","brand","taxin","taxout"], 
+      ["PROD001","Book 1","Author Mr X","barang","100000","","70000","category 1","brand 1","11","11"], 
+      ["PROD002","Book 2","","barang","90000","87500","60000","category 1","brand 2","11","11"],
+      ["SERV001","Servis 1","Servis Buku","jasa","50000","","","category 1","","",""]];
     }
+    this.success = false;
     this.alerted = false;
     this.checkRole();
     this.getAllData();
@@ -163,6 +169,7 @@ export class UploadDialogComponent implements OnInit {
     }else if(this.data=="product"){
       let index = this.products!.findIndex(a => a.name === this.datas[this.checker].name);
       if(index!=-1) this.indexes.push(this.checker + 1);
+      if(this.datas[this.checker].category==''||this.datas[this.checker].category==null) this.emptys.push(this.checker + 1);
       if(this.datas[this.checker].name==''||this.datas[this.checker].name==null) this.emptys.push(this.checker + 1);
       this.checkers();  
     }
@@ -187,25 +194,34 @@ export class UploadDialogComponent implements OnInit {
 
   insertMany(): void {
     this.alerted = false;
+    this.success = false;
     if(this.data=="brand"){
       this.brandService.createMany(this.globals.userid, this.datas)
         .subscribe(dat => {
-          console.log(dat);  
-          //this.closeDialog();
-        }, error => {console.log(error.error[0])})
+          this.success=true; this.msgsuccess="Data Uploaded!"
+        }, error => {this.alerted=true;this.message="Line "+error.error[0]+" duplicated!"})
     }else if(this.data=="product category"){
       this.productCatService.createMany(this.globals.userid, this.datas)
-        .subscribe(dat => {this.closeDialog();})
+        .subscribe(dat => {
+          this.success=true; this.msgsuccess="Data Uploaded!"
+        }, error => {this.alerted=true;this.message="Line "+error.error[0]+" duplicated!"})
     }else if(this.data=="warehouse"){
       this.warehouseService.createMany(this.globals.userid, this.datas)
-        .subscribe(dat => {this.closeDialog();})
+        .subscribe(dat => {
+          this.success=true; this.msgsuccess="Data Uploaded!"
+        }, error => {this.alerted=true;this.message="Line "+error.error[0]+" duplicated!"})
     }else if(this.data=="partner"){
       this.partnerService.createMany(this.globals.userid, this.datas)
-        .subscribe(dat => {this.closeDialog();})
+        .subscribe(dat => {
+          this.success=true; this.msgsuccess="Data Uploaded!"
+        }, error => {this.alerted=true;this.message="Line "+error.error[0]+" duplicated!"})
     }else if(this.data=="product"){
       this.productService.createMany(this.globals.userid, this.datas)
-        .subscribe(dat => {this.closeDialog();})
+        .subscribe(dat => {
+          this.success=true; this.msgsuccess="Data Uploaded!"
+        }, error => {this.alerted=true;this.message="Line "+error.error[0]+" duplicated!"})
     }
+    this.btntxt="Close";
   }
 
   closeDialog() {
@@ -213,9 +229,16 @@ export class UploadDialogComponent implements OnInit {
   }
 
   updateData(): void {
-    this.message = '';
-    this.indexes=[];
-    this.emptys=[];
-    this.startSequence();
+    if(this.alerted||this.success){
+      this.closeDialog();
+    }else{
+      this.msgsuccess='';
+      this.message='';
+      this.indexes=[];
+      this.emptys=[];
+      this.startSequence();
+    }
   }
+
+  
 }

@@ -6,6 +6,7 @@
   </div>
   <input type="file" id="file-upload" name="fileUpload" accept=".xls,.xlsx" (change)="onFileChange($event)" />
   <div *ngIf="alerted" class="alert" style="padding:7pt 3pt; font-size:1em;">{{message}}</div>
+  <div *ngIf="success" class="success" style="padding:7pt 3pt; font-size:1em;">{{msgsuccess}}</div>
   <br/>
   <div>{{sample}}</div>
   <table class="sjs-table">
@@ -19,7 +20,7 @@
 
 <div class="width-100" fxLayout="row" fxLayoutAlign="space-between center">
   <div class="width-100">
-    <button mat-button [disabled]="isRes" class="save_btn" (click)="updateData()">Upload</button>
+    <button mat-button [disabled]="isRes" class="save_btn" (click)="updateData()">{{btntxt}}</button>
   </div>
 </div>
 </div>
