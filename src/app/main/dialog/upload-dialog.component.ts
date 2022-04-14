@@ -190,10 +190,9 @@ export class UploadDialogComponent implements OnInit {
     if(this.data=="brand"){
       this.brandService.createMany(this.globals.userid, this.datas)
         .subscribe(dat => {
-          console.log(dat);
-          if(dat.status==500){console.log(dat.error[0])}
+          console.log(dat);  
           //this.closeDialog();
-      })
+        }, error => {console.log(error.error[0])})
     }else if(this.data=="product category"){
       this.productCatService.createMany(this.globals.userid, this.datas)
         .subscribe(dat => {this.closeDialog();})
