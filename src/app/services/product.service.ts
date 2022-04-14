@@ -25,6 +25,9 @@ export class ProductService {
   create(data: any): Observable<any> {
     return this.http.post(baseUrl, data);
   }
+  createMany(user: any, data: any): Observable<any> {
+    return this.http.post(`${baseUrl}/many?user=${user}`, data);
+  }
   update(id: any, data: any): Observable<any> {
     return this.http.put(`${baseUrl}/${id}`, data);
   }

@@ -16,6 +16,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { DataFilter, filterOption } from 'src/app/models/datafilter';
 import { ProductDialogComponent } from '../dialog/product-dialog.component';
 import { StockMoveDialogComponent } from '../dialog/stockmove-dialog.component';
+import { UploadDialogComponent } from '../dialog/upload-dialog.component';
 
 @Component({
   selector: 'app-product',
@@ -183,6 +184,17 @@ export class ProductComponent implements OnInit {
       width: '98%',
       height: '90%',
       disableClose: true,
+    })
+      .afterClosed()
+      .subscribe(() => this.retrieveProduct());
+  }
+
+  openUpload() {
+    const dialog = this.dialog.open(UploadDialogComponent, {
+      width: '98%',
+      height: '90%',
+      disableClose: true,
+      data: "product"
     })
       .afterClosed()
       .subscribe(() => this.retrieveProduct());

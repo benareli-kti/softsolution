@@ -8,6 +8,8 @@ import { Brand } from 'src/app/models/brand.model';
 import { BrandService } from 'src/app/services/brand.service';
 import { Productcat } from 'src/app/models/productcat.model';
 import { ProductCatService } from 'src/app/services/product-cat.service';
+import { Product } from 'src/app/models/product.model';
+import { ProductService } from 'src/app/services/product.service';
 import { Warehouse } from 'src/app/models/warehouse.model';
 import { WarehouseService } from 'src/app/services/warehouse.service';
 import { Partner } from 'src/app/models/partner.model';
@@ -16,7 +18,7 @@ import { PartnerService } from 'src/app/services/partner.service';
 type AOA = any[][];
 
 @Component({
-  selector: 'app-brand-upload',
+  selector: 'app-upload-dialog',
   templateUrl: './upload-dialog.component.html',
   styleUrls: ['./dialog.component.sass']
 })
@@ -36,6 +38,7 @@ export class UploadDialogComponent implements OnInit {
   productcats?: Productcat[];
   warehouses?: Warehouse[];
   partners?: Partner[];
+  products?: Product[];
 
   //XLSX
   sample: string = 'Sample Data';
@@ -51,6 +54,7 @@ export class UploadDialogComponent implements OnInit {
     private globals: Globals,
     private brandService: BrandService,
     private productCatService: ProductCatService,
+    private productService: ProductService,
     private warehouseService: WarehouseService,
     private partnerService: PartnerService,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -67,8 +71,12 @@ export class UploadDialogComponent implements OnInit {
       this.data1 = [["short","name"], ["WH1","Warehouse 1"], 
         ["WH2","Warehouse 2"], ["WH3","Warehouse 3"]];
     }else if(this.data=="partner"){
-      this.data1 = [["code","name"], ["CUST1","John Doe"], 
-        ["CUST2","Jane Doe"]];
+      this.data1 = [["code","name","phone","customer","supplier"], ["CUST1","John Doe","0813","ya",""], 
+        ["CUST2","Jane Doe","0817","ya","ya"],["CUST3","Jack Doe","0855","","ya"]];
+    }else if(this.data=="product"){
+      this.data1 = [["sku","name","description","listprice","botprice","cost","category","brand","taxin","taxout"], 
+      ["PROD001","Book 1","","100000","","70000","category 1","brand 1","11","11"], 
+      ["PROD002","Book 2","","90000","87500","60000","category 1","brand 2","11","11"]];
     }
     this.alerted = false;
     this.checkRole();
@@ -91,6 +99,10 @@ export class UploadDialogComponent implements OnInit {
     this.partnerService.findAllActive()
       .subscribe(partner => {
         this.partners = partner;
+      })
+    this.productService.findAllActive()
+      .subscribe(product => {
+        this.products = product;
       })
   }
 
@@ -123,12 +135,11 @@ export class UploadDialogComponent implements OnInit {
       let ws: XLSX.WorkSheet = workbook.Sheets[wsname];
       this.datas = XLSX.utils.sheet_to_json(ws, {raw:true});
       this.data1 = <AOA>(XLSX.utils.sheet_to_json(ws, { header: 1 }));
-      console.log(this.datas);
+      //console.log(this.datas);
     }
   }
 
   startSequence(): void {
-    console.log(this.datas);
     if(this.data=="brand"){
       let index = this.brands!.findIndex(a => a.description === this.datas[this.checker].description);
       if(index!=-1) this.indexes.push(this.checker + 1);
@@ -146,6 +157,11 @@ export class UploadDialogComponent implements OnInit {
       this.checkers();  
     }else if(this.data=="partner"){
       let index = this.partners!.findIndex(a => a.name === this.datas[this.checker].name);
+      if(index!=-1) this.indexes.push(this.checker + 1);
+      if(this.datas[this.checker].name==''||this.datas[this.checker].name==null) this.emptys.push(this.checker + 1);
+      this.checkers();  
+    }else if(this.data=="product"){
+      let index = this.products!.findIndex(a => a.name === this.datas[this.checker].name);
       if(index!=-1) this.indexes.push(this.checker + 1);
       if(this.datas[this.checker].name==''||this.datas[this.checker].name==null) this.emptys.push(this.checker + 1);
       this.checkers();  
@@ -173,7 +189,11 @@ export class UploadDialogComponent implements OnInit {
     this.alerted = false;
     if(this.data=="brand"){
       this.brandService.createMany(this.globals.userid, this.datas)
-        .subscribe(dat => {this.closeDialog();})
+        .subscribe(dat => {
+          console.log(dat);
+          if(dat.status==500){console.log(dat.error[0])}
+          //this.closeDialog();
+      })
     }else if(this.data=="product category"){
       this.productCatService.createMany(this.globals.userid, this.datas)
         .subscribe(dat => {this.closeDialog();})
@@ -183,6 +203,9 @@ export class UploadDialogComponent implements OnInit {
     }else if(this.data=="partner"){
       this.partnerService.createMany(this.globals.userid, this.datas)
         .subscribe(dat => {this.closeDialog();})
+    }else if(this.data=="product"){
+      this.productService.createMany(this.globals.userid, this.datas)
+        .subscribe(dat => {this.closeDialog();})
     }
   }
 
@@ -191,6 +214,9 @@ export class UploadDialogComponent implements OnInit {
   }
 
   updateData(): void {
+    this.message = '';
+    this.indexes=[];
+    this.emptys=[];
     this.startSequence();
   }
 }
