@@ -31,6 +31,9 @@ import { Posdetail } from 'src/app/models/posdetail.model';
 import { PosdetailService } from 'src/app/services/posdetail.service';
 import { Payment } from 'src/app/models/payment.model';
 import { PaymentService } from 'src/app/services/payment.service';
+import { BaseURL } from 'src/app/baseurl';
+
+const baseUrl = BaseURL.BASE_URL;
 
 @Component({
   selector: 'app-pos',
