@@ -33,8 +33,6 @@ import { Payment } from 'src/app/models/payment.model';
 import { PaymentService } from 'src/app/services/payment.service';
 import { BaseURL } from 'src/app/baseurl';
 
-const baseUrl = BaseURL.BASE_URL;
-
 @Component({
   selector: 'app-pos',
   templateUrl: './pos.component.html',
@@ -53,6 +51,8 @@ export class PosComponent {
   orders: Array<any> = [];
   cols: number;
   rowHeight: string;
+
+  baseUrl = BaseURL.BASE_URL;
 
   //disc
   isCalc = false;
