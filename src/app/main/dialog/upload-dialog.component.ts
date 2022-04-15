@@ -128,20 +128,11 @@ export class UploadDialogComponent implements OnInit {
     fileReader.readAsBinaryString(event.target.files[0]);
     fileReader.onload = (event) => {
       let workbook = XLSX.read(event.target?.result,{type:'binary'});
-      /*let sheets = 0;
-      workbook.SheetNames.every(sheet => {
-        this.datas = XLSX.utils.sheet_to_json(workbook.Sheets[sheet]);
-        sheets = sheets + 1
-        if(sheets==0) {
-          return true;
-        }
-        else return false;
-      })*/
-      let wsname = workbook.SheetNames[0];
-      let ws: XLSX.WorkSheet = workbook.Sheets[wsname];
+      //let wsname = workbook.SheetNames[0];
+      //let wsname = XLSX.read(event.target?.result,{type:'binary'}).SheetNames[0];
+      let ws: XLSX.WorkSheet = workbook.Sheets[XLSX.read(event.target?.result,{type:'binary'}).SheetNames[0]];
       this.datas = XLSX.utils.sheet_to_json(ws, {raw:true});
       this.data1 = <AOA>(XLSX.utils.sheet_to_json(ws, { header: 1 }));
-      //console.log(this.datas);
     }
   }
 
