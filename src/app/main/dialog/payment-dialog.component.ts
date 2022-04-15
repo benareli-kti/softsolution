@@ -69,10 +69,18 @@ export class PaymentDialogComponent implements OnInit {
 
   onPay1Change(val: string) {
     this.pay1Type = val;
+    if(val=="bank"){
+      this.payment = this.data.total.toString();
+      this.countChange();
+    }
   }
 
   onPay2Change(val: string) {
     this.pay2Type = val;
+    if(val=="bank"){
+      this.payment2 = this.data.total.toString();
+      this.countChange();
+    }
   }
 
   pay1(): void {

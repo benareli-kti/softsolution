@@ -314,6 +314,8 @@ export class PosComponent {
 
   pukimai(product: Product): void {
     let avail = false;
+    let taxes = 0;
+    if(product.taxout) taxes = product.taxout.tax;
     for (let x=0; x < this.orders.length; x++){
       if(product.id == this.orders[x].product){
         avail = true;
@@ -335,14 +337,14 @@ export class PosComponent {
       subtotal: product.listprice,
       product: product.id,
       product_name: product.name,
-      tax: product.taxout.tax,
-      taxes: product.taxout.tax/100 * product!.listprice!,
+      tax: taxes,
+      taxes: taxes/100 * product!.listprice!,
       isStock: product.isStock,
       user: this.globals.userid
     };
     if (!avail){
       this.subtotal = this.subtotal + product!.listprice!;
-      this.tax = this.tax + product.taxout.tax/100 * product!.listprice!;
+      this.tax = this.tax + taxes/100 * product!.listprice!;
       this.orders.push(data);
       this.calculateTotal();
     }    
