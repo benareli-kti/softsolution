@@ -210,7 +210,8 @@ export class UploadDialogComponent implements OnInit {
       this.productService.createMany(this.globals.userid, this.datas)
         .subscribe(dat => {
           this.success=true; this.msgsuccess="Data Uploaded!"
-        }, error => {this.alerted=true;this.message="Line "+error.error[0]+" duplicated/skipped(Category no match)!"})
+        }, error => {console.log(error.error);
+          this.alerted=true;this.message="Line "+error.error[0]+" duplicated/skipped(Category no match)!"})
     }
     this.btntxt="Close";
   }
