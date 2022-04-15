@@ -44,6 +44,7 @@ export class ProductDialogComponent implements OnInit {
   orisku?: string;
   oriname?: string;
   oridesc?: string;
+  oribarc?: string;
   orilprice?: number;
   oribprice?: number;
   oricost?: number;
@@ -57,6 +58,7 @@ export class ProductDialogComponent implements OnInit {
   datsku?: string;
   datname?: string;
   datdesc?: string;
+  datbarcode?: string;
   datlprice?: number;
   datbprice?: number;
   datcost?: number;
@@ -192,6 +194,8 @@ export class ProductDialogComponent implements OnInit {
         this.oriname = prod.name;
         this.datdesc = prod.description;
         this.oridesc = prod.description;
+        this.datbarcode = prod.barcode;
+        this.oribarc = prod.barcode;
         this.datlprice = prod.listprice;
         this.orilprice = prod.listprice;
         this.datbprice = prod.botprice;
@@ -388,6 +392,10 @@ export class ProductDialogComponent implements OnInit {
         this.isUpdated = this.isUpdated + ", from " 
         + this.oridesc + " to " + this.datdesc;
       }
+      if (this.datbarcode != this.oribarc){
+        this.isUpdated = this.isUpdated + ", from " 
+        + this.oribarc + " to " + this.datbarcode;
+      }
       if (this.datlprice != this.orilprice){
         this.isUpdated = this.isUpdated + ", from " 
         + this.orilprice + " to " + this.datlprice;
@@ -416,6 +424,7 @@ export class ProductDialogComponent implements OnInit {
         sku: this.datsku,
         name: this.datname,
         description: this.datdesc,
+        barcode: this.datbarcode,
         listprice: this.datlprice,
         botprice: this.datbprice,
         cost: this.datcost,
@@ -449,6 +458,7 @@ export class ProductDialogComponent implements OnInit {
         sku: this.datsku,
         name: this.datname,
         description: this.datdesc,
+        barcode: this.datbarcode,
         listprice: this.datlprice,
         botprice: this.datbprice,
         cost: this.datcost,
