@@ -40,6 +40,7 @@ import { BaseURL } from 'src/app/baseurl';
 })
 export class PosComponent {
   products?: Product[];
+  oriprods?: Product[];
   productcats?: Productcat[];
   brands?: Brand[];
   warehouses?: Warehouse[];
@@ -178,6 +179,7 @@ export class PosComponent {
     this.productService.findAllActive()
       .subscribe(prod => {
         this.products = prod;
+        this.oriprods = this.products;
     });
 
     this.warehouseService.findAllActive()
@@ -214,6 +216,12 @@ export class PosComponent {
         .filter(prod => 
           prod.brand?._id === brand.id
       );
+  }
+
+  clearFilter(): void{
+    this.products = this.oriprods;
+    this.currentIndex1 = -1;
+    this.currentIndex2 = -1;
   }
 
   toggleCalc(): void {
