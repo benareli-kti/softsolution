@@ -43,7 +43,6 @@ export class LoginComponent implements OnInit {
       .subscribe(user2 => {
         if (user2.length == 0){
           this.LogOrReg = false;
-          console.log("NEW SYSTEM!")
         }
     });
     if (this.tokenStorage.getToken()) {
@@ -58,47 +57,47 @@ export class LoginComponent implements OnInit {
 
   onSubmit(): void {
     if (this.LogOrReg){
-    const { username, password } = this.form;
-    this.authService.login(username, password).subscribe({
-      next: data => {
-        this.tokenStorage.saveToken(data.accessToken);
-        this.tokenStorage.saveUser(data);
-        this.isLoginFailed = false;
-        this.isLoggedIn = true;
-        this.roles = this.tokenStorage.getUser().roles;
-        this.reloadPage();
-      },
-      error: err => {
-        this.errorMessage = err.error.message;
-        this.isLoginFailed = true;
+      const { username, password } = this.form;
+      this.authService.login(username, password).subscribe({
+        next: data => {
+          this.tokenStorage.saveToken(data.accessToken);
+          this.tokenStorage.saveUser(data);
+          this.isLoginFailed = false;
+          this.isLoggedIn = true;
+          this.roles = this.tokenStorage.getUser().roles;
+          this.reloadPage();
+        },
+        error: err => {
+          this.errorMessage = err.error.message;
+          this.isLoginFailed = true;
+        }
+      });
+    }else{
+      for(let x=0;x<this.roless!.length;x++){
+        this.listRoles.push(this.roless![x]._id);
       }
-    });
-  }else{
-    for(let x=0;x<this.roless!.length;x++){
-      this.listRoles.push(this.roless![x]._id);
+      const { username, password } = this.form;
+      this.authService.register(username, password).subscribe({
+        next: data => {
+          this.isSuccessful = true;
+          this.isSignUpFailed = false;
+          const dataRole = {
+            roles: this.listRoles
+          };
+          this.user2Service.update(data._id, dataRole)
+            .subscribe({
+              next: (res) => {this.reloadPage();
+              },error: (e) => console.error(e)
+          });
+        },
+        error: err => {
+          this.errorMessage = err.error.message;
+          this.isSignUpFailed = true;
+        }
+      });
     }
-    const { username, password } = this.form;
-    this.authService.register(username, password).subscribe({
-      next: data => {
-        this.isSuccessful = true;
-        this.isSignUpFailed = false;
-        const dataRole = {
-          roles: this.listRoles
-        };
-        this.user2Service.update(data._id, dataRole)
-          .subscribe({
-            next: (res) => {this.reloadPage();
-            },error: (e) => console.error(e)
-        });
-        
-      },
-      error: err => {
-        this.errorMessage = err.error.message;
-        this.isSignUpFailed = true;
-      }
-    });
   }
-  }
+  
   reloadPage(): void {
     window.location.reload();
   }

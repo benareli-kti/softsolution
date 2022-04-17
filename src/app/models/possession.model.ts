@@ -1,6 +1,7 @@
 export class Possession {
 	id?: any;
 	session_id?: string;
+    store?: string;
     time_open?: Date;
     time_close?: Date;
     shift?: number;

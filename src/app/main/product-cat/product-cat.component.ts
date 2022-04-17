@@ -102,7 +102,7 @@ export class ProductCatComponent implements OnInit {
   saveProductCat(): void {
     if(!this.productcatadd.catid || this.productcatadd.catid == null
       || !this.productcatadd.description || this.productcatadd.description == null){
-      this._snackBar.open("Field (*) tidak boleh kosong!", "Tutup", {duration: 5000});
+      this._snackBar.open("Isian (*) tidak boleh kosong!", "Tutup", {duration: 5000});
     }else{
       const data = {
         catid: this.productcatadd.catid,

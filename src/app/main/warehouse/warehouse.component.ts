@@ -102,7 +102,7 @@ export class WarehouseComponent implements OnInit {
   saveWarehouse(): void {
     if(!this.warehouseadd.short || this.warehouseadd.short == null
       || !this.warehouseadd.name || this.warehouseadd.name == null){
-      this._snackBar.open("Field (*) tidak boleh kosong!", "Tutup", {duration: 5000});
+      this._snackBar.open("Isian (*) tidak boleh kosong!", "Tutup", {duration: 5000});
     }else{
       const data = {
         name: this.warehouseadd.name,

@@ -17,6 +17,8 @@ import { Productcat } from 'src/app/models/productcat.model';
 import { ProductCatService } from 'src/app/services/product-cat.service';
 import { Brand } from 'src/app/models/brand.model';
 import { BrandService } from 'src/app/services/brand.service';
+import { Partner } from 'src/app/models/partner.model';
+import { PartnerService } from 'src/app/services/partner.service';
 import { Tax } from 'src/app/models/tax.model';
 import { TaxService } from 'src/app/services/tax.service';
 import { Qop } from 'src/app/models/qop.model';
@@ -51,6 +53,8 @@ export class ProductDialogComponent implements OnInit {
   oritaxin?: string;
   oritaxout?: string;
   oriimage?: string;
+  orimin?: number;
+  orimax?: number;
 
   imageData: string;
 
@@ -63,6 +67,8 @@ export class ProductDialogComponent implements OnInit {
   datbprice?: number;
   datcost?: number;
   datisstock?: string;
+  datmin?: number;
+  datmax?: number;
   statusActive?: string;
   isIU = false;
   isIM = false;
@@ -72,9 +78,11 @@ export class ProductDialogComponent implements OnInit {
   products?: Product[];
   productcats?: Productcat[];
   brands?: Brand[];
+  partners?: Partner[];
   taxs?: Tax[];
   categoryid?: any;
   brandid?: any;
+  partnerid?: any;
 
   a = 0; b = 0;
   isUpdated = 'update';
@@ -86,6 +94,7 @@ export class ProductDialogComponent implements OnInit {
     name: '',
     description: '',
     category: '',
+    supplier: '',
     brand: '',
     taxin: '',
     taxout: '',
@@ -113,6 +122,17 @@ export class ProductDialogComponent implements OnInit {
   selectedBrandControl = new FormControl(this.selectedBrand);
   selectedValue2(event: MatSelectChange) {
     this.brandid = event.value;
+  }
+
+  //Select Brand
+  selectedPartner: string = "";
+  selectedData3: { valuePartner: string; textPartner: string } = {
+    valuePartner: "",
+    textPartner: ""
+  };
+  selectedPartnerControl = new FormControl(this.selectedPartner);
+  selectedValue3(event: MatSelectChange) {
+    this.partnerid = event.value;
   }
 
   taxInString?: string;
@@ -143,6 +163,7 @@ export class ProductDialogComponent implements OnInit {
     private productService: ProductService,
     private brandService: BrandService,
     private productCatService: ProductCatService,
+    private partnerService: PartnerService,
     private taxService: TaxService,
     private qopService: QopService,
     private globals: Globals,
@@ -202,6 +223,10 @@ export class ProductDialogComponent implements OnInit {
         this.oribprice = prod.botprice;
         this.datcost = prod.cost;
         this.oricost = prod.cost;
+        this.datmin = prod.min;
+        this.orimin = prod.min;
+        this.datmax = prod.max;
+        this.orimax = prod.max;
         this.oritaxin = prod.taxin;
         this.oritaxout = prod.taxout;
         this.oriimage = prod.image;
@@ -232,6 +257,12 @@ export class ProductDialogComponent implements OnInit {
           this.brandid = prod.brand._id;
         }else{
           this.selectedBrand = "";
+        }
+        if (prod.supplier){
+          this.selectedPartner = prod.supplier._id;
+          this.partnerid = prod.supplier._id;
+        }else{
+          this.selectedPartner = "";
         }
         this.taxInString = prod.taxin;
         this.taxOutString = prod.taxout;
@@ -287,6 +318,14 @@ export class ProductDialogComponent implements OnInit {
       .subscribe({
         next: (dataQop) => {
           this.dataSource.data = dataQop;
+        },
+        error: (e) => console.error(e)
+      })
+
+    this.partnerService.findAllActiveSupplier()
+      .subscribe({
+        next: (dataSup) => {
+          this.partners = dataSup;
         },
         error: (e) => console.error(e)
       })
@@ -416,6 +455,14 @@ export class ProductDialogComponent implements OnInit {
         this.isUpdated = this.isUpdated + ", from " 
         + this.oritaxout + " to " + this.taxOutString;
       }
+      if (this.datmin != this.orimin){
+        this.isUpdated = "Min:" + this.isUpdated + ", from " 
+        + this.orimin + " to " + this.datmin;
+      }
+      if (this.datmax != this.orimax){
+        this.isUpdated = "Max:" + this.isUpdated + ", from " 
+        + this.orimax + " to " + this.datmax;
+      }
       if (this.fileName != this.oriimage){
         this.isUpdated = this.isUpdated + ", from " 
         + this.oriimage + " to " + this.fileName;
@@ -434,6 +481,9 @@ export class ProductDialogComponent implements OnInit {
         taxout: this.taxOutString,
         image: this.fileName,
         brand: this.brandid,
+        min: this.datmin,
+        max: this.datmax,
+        supplier: this.partnerid,
         active: this.isChecked,
         message: this.isUpdated,
         user: this.globals.userid
@@ -469,6 +519,9 @@ export class ProductDialogComponent implements OnInit {
         taxout: this.taxOutString,
         image: 'default.png',
         qoh: 0,
+        min: this.datmin,
+        max: this.datmax,
+        supplier: this.partnerid,
         active: this.isChecked,
         user: this.globals.userid
       };

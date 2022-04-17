@@ -2,20 +2,20 @@
 <div class="width-100">
   <div class="marginbot" fxLayout="row" fxLayoutAlign="space-between center">
     <mat-button-toggle-group class="active_btn" #group="matButtonToggleGroup" *ngIf="!isMain" [(value)]="statusActive" (change)="onValChange(group.value)">
-      <mat-button-toggle value="true">Active</mat-button-toggle>
-      <mat-button-toggle value="false">Not Active</mat-button-toggle>
+      <mat-button-toggle value="true">Aktif</mat-button-toggle>
+      <mat-button-toggle value="false">Nonaktif</mat-button-toggle>
     </mat-button-toggle-group>
 
     <mat-button-toggle-group class="active_btn" #group="matButtonToggleGroup" *ngIf="isMain" disabled [(value)]="statusActive" (change)="onValChange(group.value)">
-      <mat-button-toggle value="true">Active</mat-button-toggle>
-      <mat-button-toggle value="false">Not Active</mat-button-toggle>
+      <mat-button-toggle value="true">Aktif</mat-button-toggle>
+      <mat-button-toggle value="false">Nonaktif</mat-button-toggle>
     </mat-button-toggle-group>
     <button class="close_btn" mat-button (click)="closeDialog()">X</button>
   </div>
 
   <div class="flexfull">
-    <div class="descrip flex50">Short Code *</div>
-    <div class="descrip flex50 margin_7">Name *</div>
+    <div class="descrip flex50">Kode *</div>
+    <div class="descrip flex50 margin_7">Nama *</div>
   </div>
   <div class="flexfull">
     <input class="inputs flex50" required maxlength="6" placeholder="Short" [(ngModel)]="data.short">
@@ -25,7 +25,7 @@
 
 <div class="width-100" fxLayout="row" fxLayoutAlign="space-between center">
   <div class="width-90">
-    <button mat-button [disabled]="isRes" class="save_btn" (click)="updateData()">Save</button>
+    <button mat-button [disabled]="isRes" class="save_btn" (click)="updateData()">Simpan</button>
   </div>
   <div class="width-10"><button class="log_btn" [(ngModel)]="log"><mat-icon>message</mat-icon> {{log}}</button></div>
 </div>

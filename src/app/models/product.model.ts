@@ -9,6 +9,9 @@ export class Product {
     listprice?: number;
     botprice?: number;
     cost?: number;
+    min?: number;
+    max?: number;
+    supplier?: any;
     isStock?: boolean;
 	category?: any;
 	taxin?: any;

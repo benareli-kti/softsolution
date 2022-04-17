@@ -23,6 +23,8 @@ import { Partner } from 'src/app/models/partner.model';
 import { PartnerService } from 'src/app/services/partner.service';
 import { Warehouse } from 'src/app/models/warehouse.model';
 import { WarehouseService } from 'src/app/services/warehouse.service';
+import { Store } from 'src/app/models/store.model';
+import { StoreService } from 'src/app/services/store.service';
 import { Possession } from 'src/app/models/possession.model';
 import { PossessionService } from 'src/app/services/possession.service';
 import { Pos } from 'src/app/models/pos.model';
@@ -45,6 +47,7 @@ export class PosComponent {
   brands?: Brand[];
   warehouses?: Warehouse[];
   partners?: Partner[];
+  stores?: Store[];
   pss?: Pos[];
   posdetails?: Posdetail[];
   partnerid?: string;
@@ -97,14 +100,16 @@ export class PosComponent {
   }
 
   //Select WH
-  selectedWh: string = "";
-  selectedData2: { valueWarehouse: string; textWarehouse: string } = {
-    valueWarehouse: "",
-    textWarehouse: ""
+  selectedStore: string = "";
+  selectedData2: { valueStore: string; textStore: string } = {
+    valueStore: "",
+    textStore: ""
   };
-  selectedWhControl = new FormControl(this.selectedWh);
+  selectedStoreControl = new FormControl(this.selectedStore);
   selectedValue2(event: MatSelectChange) {
-    this.warehouseid = event.value;
+    //this.warehouseid = event.value;
+    this.storeService.get(event.value)
+      .subscribe(sw => {this.warehouseid=sw.warehouse._id;})
   }
 
   //Grid
@@ -126,6 +131,7 @@ export class PosComponent {
     private productCatService: ProductCatService,
     private brandService: BrandService,
     private warehouseService: WarehouseService,
+    private storeService: StoreService,
     private partnerService: PartnerService,
     private possessionService: PossessionService,
     private posService: PosService,
@@ -187,10 +193,14 @@ export class PosComponent {
         this.warehouses = wh;
     });
 
-    this.warehouseService.findMain()
-      .subscribe(whm => {
-        this.selectedWh = whm[0].id;
-        this.warehouseid = whm[0].id;
+    this.storeService.findAllActive()
+      .subscribe(store => {
+        this.stores = store;
+        this.selectedStore = store[0].id;
+        this.storeService.get(store[0].id)
+          .subscribe(sw => {
+            this.warehouseid=sw.warehouse._id;
+          })
     });
 
     this.partnerService.findAllActiveCustomer()

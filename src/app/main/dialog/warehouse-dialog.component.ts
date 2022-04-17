@@ -99,7 +99,7 @@ export class WarehouseDialogComponent implements OnInit {
 
   updateData(): void {
     if (!this.data.short || this.data.short == null || !this.data.name || this.data.name == null){
-      this._snackBar.open("Field (*) tidak boleh kosong!", "Tutup", {duration: 5000});
+      this._snackBar.open("Isian (*) tidak boleh kosong!", "Tutup", {duration: 5000});
     }else{
       if (this.a+this.b==4){this.isUpdated = 'deactivate'};
       if (this.a+this.b==3){this.isUpdated = 'activate'};

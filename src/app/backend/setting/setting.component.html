@@ -39,3 +39,52 @@
     <mat-slide-toggle class="padtop" [(ngModel)]="pos_shift" (change)="onPosShift($event.checked)">Using Shift</mat-slide-toggle>
   </div>
 </div>
+
+<div class="flex-vertical global-setting">
+  <div fxLayout="row" fxLayoutAlign="space-between center">
+    <span class="setting-title">Store Setting</span>
+    <!--<div class="btn-rainbow">
+      <div class="btn-white">
+        <button class="btn-gradient text-gradient" (click)="save2()">Save</button>
+      </div>
+    </div>-->
+  </div>
+  <div class="flex-left width100 text-left">
+    <div class="table-container">
+      <mat-table #table [dataSource]="dataSource" class="mat-table">
+        <ng-container matColumnDef="name">
+          <th class="th-style" fxFlex="50%" mat-header-cell *matHeaderCellDef>Name</th>
+          <td class="tr-style" fxFlex="50%" mat-cell *matCellDef="let stores">
+            <span *ngIf="stores.active==false" class="inactive">&nbsp;&nbsp;</span>
+            {{stores.store_name}}</td>
+        </ng-container>
+        <ng-container matColumnDef="address">
+          <th class="th-style" fxFlex="50%" mat-header-cell *matHeaderCellDef>Address</th>
+          <td class="tr-style" fxFlex="50%" mat-cell *matCellDef="let stores">
+            <span *ngIf="stores.active==false" class="inactive">&nbsp;&nbsp;</span>
+            {{stores.store_addr}}</td>
+        </ng-container>
+        <ng-container matColumnDef="phone">
+          <th class="th-style" fxFlex="25%" mat-header-cell *matHeaderCellDef>Phone</th>
+          <td class="tr-style" fxFlex="25%" mat-cell *matCellDef="let stores">
+            <span *ngIf="stores.active==false" class="inactive">&nbsp;&nbsp;</span>
+            {{stores.store_phone}}</td>
+        </ng-container>
+        <ng-container matColumnDef="warehouse">
+          <th class="th-style" fxFlex="35%" mat-header-cell *matHeaderCellDef>Warehouse</th>
+          <td class="tr-style" fxFlex="35%" mat-cell *matCellDef="let stores">
+            <span *ngIf="stores.active==false" class="inactive">&nbsp;&nbsp;</span>
+            {{stores.warehouse.name}}</td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns;" class="tableHeader"></tr>
+        <tr mat-row class="tableRow" 
+            *matRowDef="let row; columns: displayedColumns;"
+            
+        ></tr>
+        <!--(click)="openDialog(row)"
+            [class.active]="clickedRows == row"-->
+      </mat-table>
+      </div>
+  </div>
+</div>

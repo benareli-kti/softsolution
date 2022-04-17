@@ -99,7 +99,7 @@ export class BrandComponent implements OnInit {
 
   saveBrand(): void {
     if(!this.brandadd.description || this.brandadd.description == null){
-      this._snackBar.open("Field (*) tidak boleh kosong!", "Tutup", {duration: 5000});
+      this._snackBar.open("Isian (*) tidak boleh kosong!", "Tutup", {duration: 5000});
     }else{
       const data = {
         description: this.brandadd.description,

@@ -54,6 +54,7 @@ import { StockMoveDialogComponent } from './main/dialog/stockmove-dialog.compone
 import { PosdetailDialogComponent } from './main/dialog/posdetail-dialog.component';
 import { PaymentDialogComponent } from './main/dialog/payment-dialog.component';
 import { UploadDialogComponent } from './main/dialog/upload-dialog.component';
+import { PurchaseComponent } from './main/purchase/purchase.component';
 
 @NgModule({
   declarations: [
@@ -78,7 +79,8 @@ import { UploadDialogComponent } from './main/dialog/upload-dialog.component';
     PosSessionComponent,
     SettingComponent,
     ProfileComponent,
-    UploadDialogComponent
+    UploadDialogComponent,
+    PurchaseComponent
   ],
   imports: [
     BrowserModule,

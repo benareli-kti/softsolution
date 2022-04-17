@@ -1,6 +1,6 @@
 <div class="container">
 	<div fxLayout="column" class="left-container">
-		Closed Session
+		Sesi Selesai
 		<ul>
       		<li class="list-group-item category"
         		*ngFor="let posessiondone of posessiondones; let i1 = index"
@@ -15,10 +15,18 @@
     	</ul>
 	</div>
 	<div fxLayout="column" class="center-container">
-		<div *ngIf="opened" fxLayout="row" fxLayoutAlign="start center">Session Name : <h2 style="margin-left:3pt">{{possession}}</h2></div>
-		<div *ngIf="!opened" fxLayout="row">
+		<div *ngIf="opened" fxLayout="row" fxLayoutAlign="start center">Nama Sesi : <h2 style="margin-left:3pt">{{possession}}</h2></div>
+		<div fxLayout="column">
+			Store
+			<select [disabled]="opened" class="inputs" style="width:100%;font-size:1em;" [(ngModel)]="storeString">
+            	<option *ngFor="let store of stores" [value]="store.id">
+            	{{ store.store_name }}
+            	</option>
+          	</select>
+		</div>
+		<div *ngIf="!opened" fxLayout="row" style="margin-top:8pt;">
 			<div class="flex33">
-				Starting Balance
+				Saldo Awal
 				<button class="inputs inputs-session" (click)="toggleCalc()">{{startB | number}}</button>
 				<div fxLayout="column" class="calc-holder" style="right:50%;" *ngIf="isCalc">
         			<div fxLayout="row">
@@ -53,17 +61,17 @@
 				</mat-button-toggle-group>
       		</div>
       		<div class="flex33 margin_7">
-      			User
+      			Pengguna
       			<div class="inputs">{{user}}</div>
       		</div>
       	</div>
       	<div *ngIf="opened" fxLayout="row">
 			<div class="flex33">
-				Starting Balance
+				Saldo Awal
 				<button class="inputs inputs-session" (click)="toggleCalc()">{{startB | number}}</button>
       		</div>
       		<div class="flex33 margin_7" style="text-align:center;">
-      			User : {{user}}<br/>
+      			Pengguna : {{user}}<br/>
       			Shift
       			<mat-button-toggle-group [disabled]="opened" #group="matButtonToggleGroup" [(value)]="shiftSelect" (change)="onShiftChange(group.value)">
   					<mat-button-toggle value="1" aria-label="1">1</mat-button-toggle>
@@ -74,45 +82,45 @@
       		</div>
       		<div class="flex33 margin_7">
       			<div class="flex33 margin_7">
-					Ending Balance
+					Saldo Akhir
 					<div class="inputs inputs-session">{{endingB | number}}</div>
 				</div>
       		</div>
       	</div>
-		<button class="new-order margin-top" (click)="opening()" *ngIf="!opened">New Session</button>
+		<button class="new-order margin-top" (click)="opening()" *ngIf="!opened">Buka Sesi Baru</button>
 		<br/>
 		<div *ngIf="opened">
 			<div fxLayout="row" class="flexfull">
 				<div class="flex50">
-					Transaction
-      				<div class="inputs inputs-session">{{transaction}} Transaksi</div>
+					Jumlah Transaksi
+      				<div class="inputs inputs-session">{{transaction}}</div>
 				</div>
 				<div class="flex50 margin_7">
-					Amount Total
+					Total (Rp)
       				<div class="inputs inputs-session">{{amount_total | number}}</div>
 				</div>
 			</div><br/>
 			<div fxLayout="row" class="flexfull">
 				<div class="flex33">
-					Amount Untaxed
+					Total sebelum pajak (Rp)
       				<div class="inputs inputs-session">{{amount_untaxed | number}}</div>
 				</div>
 				<div class="flex33 margin_7">
-					Amount Tax
+					Pajak (Rp)
       				<div class="inputs inputs-session">{{amount_tax | number}}</div>
 				</div>
 				<div class="flex33 margin_7">
-					Discount
+					Diskon (Rp)
 					<div class="inputs inputs-session">{{discount | number}}</div>
 				</div>
 			</div><br/>
 			<div fxLayout="row">
 				<div class="flex33">
-					Money In
+					Uang Masuk
       				<div class="inputs inputs-session">{{money_in | number}}</div>
 				</div>
 				<div class="flex33 margin_7">
-					Money Out
+					Uang Keluar
       				<div class="inputs inputs-session">{{money_out | number}}</div>
 				</div>
 				<div class="flex33 margin_7">
@@ -122,10 +130,10 @@
 			</div>
 			<div fxLayout="row" *ngIf="isOpen">
 				<div class="flex50" style="text-align:center;">
-					<button class="new-order margin-top" (click)="openPOS()">to POS</button>
+					<button class="new-order margin-top" (click)="openPOS()">buka POS</button>
 				</div>
 				<div class="flex50 margin_7" style="text-align:center;">
-					<button class="new-order margin-top" (click)="closing()">Close</button>
+					<button class="new-order margin-top" (click)="closing()">Tutup Sesi</button>
 				</div>
 			</div>
 		</div>

@@ -1,9 +1,7 @@
 <div class="flex-container">
 	<div class="flex-left">
 		<div (click)="openQuickAdd()" class="submit-form quick_add">
-    		<button class="submit">
-        Quick add
-        </button>
+    		<button class="submit">Tambah</button>
   		</div>
 	</div>
 
@@ -15,7 +13,7 @@
 <div class="table-container">
 <mat-table #table [dataSource]="dataSource" class="mat-table">
   <ng-container matColumnDef="code">
-    <th class="th-style" fxFlex="25%" mat-header-cell *matHeaderCellDef>Code</th>
+    <th class="th-style" fxFlex="25%" mat-header-cell *matHeaderCellDef>Kode</th>
     <td class="tr-style" fxFlex="25%" mat-cell *matCellDef="let partners">
       {{partners.code}}
     </td>
@@ -27,7 +25,7 @@
     </td>
   </ng-container>
   <ng-container matColumnDef="phone">
-    <th class="th-style" fxFlex="25%" mat-header-cell *matHeaderCellDef>Phone</th>
+    <th class="th-style" fxFlex="25%" mat-header-cell *matHeaderCellDef>Telephone/HP</th>
     <td class="tr-style" fxFlex="25%" mat-cell *matCellDef="let partners">
       {{partners.phone}}
     </td>
@@ -43,6 +41,6 @@
 </div>
 
 <div fxLayout="row" fxLayoutAlign="space-between center">
-  <button class="btn-gradient text-gradient upload" (click)="openUpload()">Upload</button>
+  <button class="btn-gradient text-gradient upload" (click)="openUpload()">Unggah</button>
   <mat-paginator [pageSizeOptions]="[10, 20, 50, 100]" showFirstLastButtons></mat-paginator>
 </div>

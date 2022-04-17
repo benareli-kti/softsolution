@@ -2,10 +2,10 @@
 	<div class="flex-left">
 		<div *ngIf="isIM || isAdm" class="submit-form">
     		<div fxLayout="row">
-            <input #input maxlength="6" type="text" class="inputs" name="short" [(ngModel)]="warehouseadd.short" required id="short" placeholder="Short Code *">
-            <input style="margin-left:9pt;" type="text" class="inputs" name="name" [(ngModel)]="warehouseadd.name" required id="name" placeholder="Name *">
+            <input #input maxlength="6" type="text" class="inputs" name="short" [(ngModel)]="warehouseadd.short" required id="short" placeholder="Kode *">
+            <input style="margin-left:9pt;" type="text" class="inputs" name="name" [(ngModel)]="warehouseadd.name" required id="name" placeholder="Nama *">
             <div (click)="saveWarehouse()" class="quick_add">
-      			<button class="submit">Add</button></div>
+      			<button class="submit">Tambah</button></div>
     		</div>
   		</div>
 	</div>
@@ -22,21 +22,21 @@
 
 <div fxLayout="row" fxLayoutAlign="space-around center" class="filtered" *ngIf="isShow">
   <div *ngIf="isIM || isAdm" fxLayout="column">
-    <button class="submit" style="font-size: .7em; margin-top:5pt" (click)="searchActive()">active</button>
-    <button class="submit pink" style="font-size: .65em; margin-top:5pt" (click)="searchInactive()">inactive</button>
+    <button class="submit" style="font-size: .7em; margin-top:5pt" (click)="searchActive()">aktif</button>
+    <button class="submit pink" style="font-size: .65em; margin-top:5pt" (click)="searchInactive()">nonaktif</button>
   </div>
 </div>
 
 <div class="table-container">
 <mat-table #table [dataSource]="dataSource" class="mat-table">
   <ng-container matColumnDef="short">
-    <th class="th-style" fxFlex="25%" mat-header-cell *matHeaderCellDef>ID</th>
+    <th class="th-style" fxFlex="25%" mat-header-cell *matHeaderCellDef>Kode</th>
     <td class="tr-style" fxFlex="25%" mat-cell *matCellDef="let warehouses">
       <span *ngIf="warehouses.active==false" class="inactive">&nbsp;&nbsp;</span>
       {{warehouses.short}}</td>
   </ng-container>
   <ng-container matColumnDef="name">
-    <th class="th-style" fxFlex="50%" mat-header-cell *matHeaderCellDef>Name</th>
+    <th class="th-style" fxFlex="50%" mat-header-cell *matHeaderCellDef>Nama</th>
     <td class="tr-style" fxFlex="50%" mat-cell *matCellDef="let warehouses">{{warehouses.name}}</td>
   </ng-container>
 
@@ -50,6 +50,6 @@
 </div>
 
 <div fxLayout="row" fxLayoutAlign="space-between center">
-  <button class="btn-gradient text-gradient upload" (click)="openUpload()">Upload</button>
+  <button class="btn-gradient text-gradient upload" (click)="openUpload()">Unggah</button>
   <mat-paginator [pageSizeOptions]="[10, 20, 50, 100]" showFirstLastButtons></mat-paginator>
 </div>

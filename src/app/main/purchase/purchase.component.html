@@ -1,0 +1,66 @@
+<div class="flex-container">
+	<div class="flex-left">
+		<div *ngIf="isTM || isAdm" class="submit-form">
+    		<div fxLayout="row">
+            <div (click)="addPurchase()" class="quick_add">
+      			<button class="submit">Add</button></div>
+    		</div>
+  		</div>
+	</div>
+
+	<div class="flex-right">
+    <div fxLayout="row">
+      <input class="inputs" type="text" placeholder="Search data" (keyup)="applyFilter($event)">
+      <div (click)="toggleDisplay()" class="submit-form quick_add">
+        <button class="submit">Filter</button>
+      </div>
+    </div>
+	</div>
+</div>
+
+<div fxLayout="row" fxLayoutAlign="space-around center" class="filtered" *ngIf="isShow">
+  <div *ngIf="isTM || isAdm" fxLayout="column">
+    
+  </div>      
+</div>
+
+<div class="flex-container">
+  <div fxLayout="row" class="width100" fxLayoutAlign="space-between start">
+  	<div class="flex50 text-left">
+  	  <div fxLayout="column">
+  	    <div fxLayout="row">
+  	      <div class="flex30">Supplier</div>
+  	      <div class="flex70">
+  	        <select class="inputs" [(ngModel)]="supplierString">
+      		  <option *ngFor="let partner of partners" [value]="partner.id">
+          	    {{ partner.name }}
+        	  </option>
+      		</select>
+  	      </div>
+  	   	</div>
+  	  </div>
+  	  <div fxLayout="column">
+  	    <div fxLayout="row">
+  	      <div class="flex30">Gudang</div>
+  	      <div class="flex70">
+  	        <select class="inputs" [(ngModel)]="warehouseString">
+      		  <option *ngFor="let warehouse of warehouses" [value]="warehouse.id">
+          	    {{ warehouse.name }}
+        	  </option>
+      		</select>
+  	      </div>
+  	   	</div>
+  	  </div>
+  	</div>
+  	<div class="flex50 text-left">
+  	  <div fxLayout="column">
+  	    <div fxLayout="row">
+  	      <div class="flex30">Date</div>
+  	      <div class="flex70">
+  	        <input type="date" class="inputs"/>
+  	      </div>
+  	   	</div>
+  	  </div>
+  	</div>
+  </div>
+</div>

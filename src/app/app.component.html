@@ -42,6 +42,13 @@
           <button mat-button class="menu-button" [routerLink]="'/pos-session'" *ngIf="isLoggedIn && pos_shift && isTU">
             <span>POS</span>
           </button>
+          <button mat-button class="menu-button" (click)="toggleTransac()" *ngIf="isLoggedIn && isIU">
+            <span>Transaction</span>
+          </button>
+          <button mat-button class="menu-button" [routerLink]="'/purchase'" *ngIf="isLoggedIn && isTransacShow">
+            <mat-icon class="mat-icon">keyboard_arrow_right</mat-icon>
+            <span>Purchase</span>
+          </button>
           <button mat-button class="menu-button" (click)="toggleProduct()" *ngIf="isLoggedIn && isIU">
             <span>Product</span>
           </button>

@@ -12,6 +12,8 @@ import { Id } from 'src/app/models/id.model';
 import { IdService } from 'src/app/services/id.service';
 import { Possession } from 'src/app/models/possession.model';
 import { PossessionService } from 'src/app/services/possession.service';
+import { Store } from 'src/app/models/store.model';
+import { StoreService } from 'src/app/services/store.service';
 import { Pos } from 'src/app/models/pos.model';
 import { PosService } from 'src/app/services/pos.service';
 
@@ -36,11 +38,13 @@ export class PosSessionComponent implements OnInit {
   money_in?: number=0;
   bank?: number=0;
   money_out?: number=0;
+  storeString?: string;
 
   possession?: string;
   prefixes?: string;
 
   posessiondones?: Possession[];
+  stores?: Store[];
 
   constructor(
     private router: Router,
@@ -49,6 +53,7 @@ export class PosSessionComponent implements OnInit {
     private globals: Globals,
     private idService: IdService,
     private possessionService: PossessionService,
+    private storeService: StoreService,
     private posService: PosService,
   ) { }
 
@@ -57,7 +62,6 @@ export class PosSessionComponent implements OnInit {
     this.possessionService.getUserOpen(this.globals.userid)
       .subscribe(sess => {
         if (sess.length > 0){
-          console.log(sess);
           this.globals.pos_open = true;
           this.globals.pos_session = sess[0]!.session_id!;
           this.possession = sess[0]!.session_id!;
@@ -65,6 +69,7 @@ export class PosSessionComponent implements OnInit {
           this.opened = true;
           this.isOpen = sess[0]!.open!;
           this.startB = sess[0]!.start_balance!.toString();
+          this.storeString = sess[0]!.store;
           this.shiftSelect = sess[0]!.shift!.toString();
           this.transaction = Number(sess[0]!.pos!.length);
           this.calculation(sess);
@@ -77,7 +82,9 @@ export class PosSessionComponent implements OnInit {
         }
     });
     this.possessionService.getUserClose(this.globals.userid)
-      .subscribe(sessclose => {this.posessiondones = sessclose})
+      .subscribe(sessclose => {this.posessiondones = sessclose});
+    this.storeService.findAllActive()
+      .subscribe(store => {this.stores = store;this.storeString=store[0].id});
   }
 
   toggleCalc(): void {
@@ -143,6 +150,7 @@ export class PosSessionComponent implements OnInit {
             const timestamp = current.getTime();
             const pos_session = {
               session_id: this.possession,
+              store: this.storeString,
               time_open: timestamp,
               shift: Number(this.shiftSelect),
               start_balance: Number(this.startB),

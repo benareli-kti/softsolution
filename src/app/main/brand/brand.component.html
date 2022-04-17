@@ -2,9 +2,9 @@
 	<div class="flex-left">
 		<div *ngIf="isIM || isAdm" class="submit-form">
     		<div fxLayout="row">
-            <input class="inputs" type="text" name="description" [(ngModel)]="brandadd.description" required id="description" placeholder="Brands *">
+            <input class="inputs" type="text" name="description" [(ngModel)]="brandadd.description" required id="description" placeholder="Merek *">
             <div (click)="saveBrand()" class="quick_add">
-      			<button class="submit">Add</button></div>
+      			<button class="submit">Tambah</button></div>
     		</div>
   		</div>
 	</div>
@@ -21,15 +21,15 @@
 
 <div fxLayout="row" fxLayoutAlign="space-around center" class="filtered" *ngIf="isShow">
   <div *ngIf="isIM || isAdm" fxLayout="column">
-    <button class="submit" style="font-size: .7em; margin-top:5pt" (click)="searchActive()">active</button>
-    <button class="submit pink" style="font-size: .65em; margin-top:5pt" (click)="searchInactive()">inactive</button>
+    <button class="submit" style="font-size: .7em; margin-top:5pt" (click)="searchActive()">aktif</button>
+    <button class="submit pink" style="font-size: .65em; margin-top:5pt" (click)="searchInactive()">nonaktif</button>
   </div>      
 </div>
 
 <div class="table-container">
 <mat-table #table [dataSource]="dataSource">
   <ng-container matColumnDef="name">
-    <th class="th-style" fxFlex="50%" mat-header-cell *matHeaderCellDef>Name</th>
+    <th class="th-style" fxFlex="50%" mat-header-cell *matHeaderCellDef>Nama</th>
     <td class="tr-style" fxFlex="50%" mat-cell *matCellDef="let brands">
       <span *ngIf="brands.active==false" class="inactive">&nbsp;&nbsp;</span>
       {{brands.description}}
@@ -50,6 +50,6 @@
 </div>
 
 <div fxLayout="row" fxLayoutAlign="space-between center">
-  <button class="btn-gradient text-gradient upload" (click)="openUpload()">Upload</button>
+  <button class="btn-gradient text-gradient upload" (click)="openUpload()">Unggah</button>
   <mat-paginator [pageSizeOptions]="[10, 20, 50, 100]" showFirstLastButtons></mat-paginator>
 </div>
