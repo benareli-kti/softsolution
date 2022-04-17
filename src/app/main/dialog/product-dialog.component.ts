@@ -23,6 +23,8 @@ import { Tax } from 'src/app/models/tax.model';
 import { TaxService } from 'src/app/services/tax.service';
 import { Qop } from 'src/app/models/qop.model';
 import { QopService } from 'src/app/services/qop.service';
+import { Stockmove } from 'src/app/models/stockmove.model';
+import { StockmoveService } from 'src/app/services/stockmove.service';
 
 @Component({
   selector: 'app-product-dialog',
@@ -30,18 +32,12 @@ import { QopService } from 'src/app/services/qop.service';
   styleUrls: ['./dialog.component.sass']
 })
 export class ProductDialogComponent implements OnInit {
-  @Input() currentProd: Product = {
-    sku: '',
-    name: '',
-    category: '',
-    brand: '',
-    isStock: false,
-    active: false
-  };
   isChecked = false;
   isStock = true;
   isNew = false;
+  isDis = false;
   bbigger = false;
+  isCG?: boolean = true;
   oriid?: string;
   orisku?: string;
   oriname?: string;
@@ -87,61 +83,13 @@ export class ProductDialogComponent implements OnInit {
   a = 0; b = 0;
   isUpdated = 'update';
   log = 0;
-
-  //Add
-  productadd: Product = {
-    sku: '',
-    name: '',
-    description: '',
-    category: '',
-    supplier: '',
-    brand: '',
-    taxin: '',
-    taxout: '',
-    isStock: true,
-    active: true
-  };
-
-  //Select Category
-  selectedCategory: string = "";
-  selectedData: { valueCat: string; text: string } = {
-    valueCat: "",
-    text: ""
-  };
-  selectedCategoryControl = new FormControl(this.selectedCategory);
-  selectedValue(event: MatSelectChange) {
-    this.categoryid = event.value;
-  }
-
-  //Select Brand
-  selectedBrand: string = "";
-  selectedData2: { valueBrand: string; textBrand: string } = {
-    valueBrand: "",
-    textBrand: ""
-  };
-  selectedBrandControl = new FormControl(this.selectedBrand);
-  selectedValue2(event: MatSelectChange) {
-    this.brandid = event.value;
-  }
-
-  //Select Brand
-  selectedPartner: string = "";
-  selectedData3: { valuePartner: string; textPartner: string } = {
-    valuePartner: "",
-    textPartner: ""
-  };
-  selectedPartnerControl = new FormControl(this.selectedPartner);
-  selectedValue3(event: MatSelectChange) {
-    this.partnerid = event.value;
-  }
-
   taxInString?: string;
   taxOutString?: string;
 
   //Table
   qops?: Qop[]; 
   displayedColumns: string[] = 
-  ['warehouse', 'partner', 'qty'];
+  ['warehouse', 'partner', 'qty', 'cost'];
   dataSource = new MatTableDataSource<Qop>();
 
   //Dialog Data
@@ -166,6 +114,7 @@ export class ProductDialogComponent implements OnInit {
     private partnerService: PartnerService,
     private taxService: TaxService,
     private qopService: QopService,
+    private stockmoveService: StockmoveService,
     private globals: Globals,
     private logService: LogService,
     private fb: FormBuilder,
@@ -184,6 +133,7 @@ export class ProductDialogComponent implements OnInit {
       this.datsku = "";
       this.datname = "";
     }
+    this.isCG = this.globals.cost_general;
     this.imageInfos = this.uploadService.getFiles();
     this.retrieveProduct();
     this.checkRole();
@@ -246,24 +196,9 @@ export class ProductDialogComponent implements OnInit {
           this.datisstock = 'false';
           this.isStock = false;
         }
-        if (prod.category){
-          this.selectedCategory = prod.category._id;
-          this.categoryid = prod.category._id;
-        }else{
-          this.selectedCategory = "";
-        }
-        if (prod.brand){
-          this.selectedBrand = prod.brand._id;
-          this.brandid = prod.brand._id;
-        }else{
-          this.selectedBrand = "";
-        }
-        if (prod.supplier){
-          this.selectedPartner = prod.supplier._id;
-          this.partnerid = prod.supplier._id;
-        }else{
-          this.selectedPartner = "";
-        }
+        if(prod.category) this.categoryid = prod.category._id;
+        if(prod.brand) this.brandid = prod.brand._id;
+        if(prod.supplier) this.partnerid = prod.supplier._id;
         this.taxInString = prod.taxin;
         this.taxOutString = prod.taxout;
     });
@@ -326,6 +261,14 @@ export class ProductDialogComponent implements OnInit {
       .subscribe({
         next: (dataSup) => {
           this.partners = dataSup;
+        },
+        error: (e) => console.error(e)
+      })
+    this.stockmoveService.getProd(this.datid)
+      .subscribe({
+        next: (sm) => {
+          if(sm.length>0) this.isDis = true;
+            console.log(this.datid);
         },
         error: (e) => console.error(e)
       })
@@ -413,7 +356,7 @@ export class ProductDialogComponent implements OnInit {
   updateData(): void {
     if (!this.datname || this.datname == null
       || !this.datlprice || this.datlprice == null
-      || !this.selectedCategory || this.selectedCategory == null){
+      || !this.categoryid || this.categoryid == null){
       this._snackBar.open("Isian (*) tidak boleh kosong!", "Tutup", {duration: 5000});
     }else{
       if(!this.fileName){this.fileName = this.oriimage!};
@@ -501,7 +444,7 @@ export class ProductDialogComponent implements OnInit {
   createData(): void {
     if (!this.datname || this.datname == null
       || !this.datlprice || this.datlprice == null
-      || !this.selectedCategory || this.selectedCategory == null){
+      || !this.categoryid || this.categoryid == null){
       this._snackBar.open("Field (*) tidak boleh kosong!", "Tutup", {duration: 5000});
     }else{
       const data = {

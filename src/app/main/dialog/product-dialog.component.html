@@ -11,7 +11,7 @@
       <mat-button-toggle class="paddingstock" value="false">Jasa</mat-button-toggle>
     </mat-button-toggle-group>
 
-    <mat-button-toggle-group class="active_btn margin_7" *ngIf="!isNew" disabled #group2="matButtonToggleGroup" [(value)]="datisstock" (change)="onStockChange(group2.value)">
+    <mat-button-toggle-group class="active_btn margin_7" *ngIf="!isNew" [disabled]="isDis" #group2="matButtonToggleGroup" [(value)]="datisstock" (change)="onStockChange(group2.value)">
       <mat-button-toggle class="paddingstock" value="true">Stock</mat-button-toggle>
       <mat-button-toggle class="paddingstock" value="false">Jasa</mat-button-toggle>
     </mat-button-toggle-group>
@@ -43,12 +43,12 @@
         <div class="flexfull">
           <div class="holder flex50">
             <div class="descrip">SKU</div>
-            <input class="inputs width-90" maxlength="10" required placeholder="SKU" [(ngModel)]="datsku">
+            <input class="inputs width-90" maxlength="10" placeholder="SKU" [(ngModel)]="datsku">
           </div>
 
           <div class="holder flex50 margin_7">
             <div class="descrip">Nama *</div>
-            <input class="inputs width-90" required placeholder="Name" [(ngModel)]="datname">
+            <input class="inputs width-90" placeholder="Name" [(ngModel)]="datname">
           </div>
         </div>
         <div class="holder" style="margin-top:7pt;">
@@ -67,7 +67,7 @@
     <div class="flex50">
       <div class="holder-row" style="margin-top:7pt;">
         <div class="descrip flex30 harga">Harga Jual *</div>
-        <input class="inputs flex70" required placeholder="Harga Jual" type="number" [(ngModel)]="datlprice">
+        <input class="inputs flex70" placeholder="Harga Jual" type="number" [(ngModel)]="datlprice">
       </div>
       <div class="holder-row" style="margin-top:7pt;">
         <div class="descrip flex30 harga">Harga Batas</div>
@@ -110,33 +110,36 @@
       </div>
     </div>
 
-    <div class="flex50 holder margin_7">     
-      <mat-form-field class="input_field">
-        <mat-label class="descrip">Kategori *</mat-label>
-        <mat-select class="inputs" name="categoryString" (selectionChange)="selectedValue($event)" [(value)]="selectedCategory">
-          <mat-option *ngFor="let productcat of productcats" [value]="productcat.id" ngDefaultControl [(ngModel)]="productadd.category">
-          {{ productcat.description }}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
+    <div class="flex50 holder margin_7">
+      <div fxLayout="row" style="margin-top:7pt;">
+        <div class="flex33 descrip">Kategori *</div>
+        <select class="inputs flex70 width-100" [(ngModel)]="categoryid">
+          <option value=""></option>
+          <option *ngFor="let productcat of productcats" [value]="productcat.id">
+            {{ productcat.description }}
+          </option>
+        </select>
+      </div>
 
-      <mat-form-field class="input_field ">
-        <mat-label class="descrip">Merek</mat-label>
-        <mat-select name="brandString" class="inputs" (selectionChange)="selectedValue2($event)" [(value)]="selectedBrand">
-          <mat-option value=""> </mat-option>
-          <mat-option *ngFor="let brand of brands" [value]="brand.id" ngDefaultControl [(ngModel)]="productadd.brand">{{ brand.description }}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
+      <div fxLayout="row" style="margin-top:7pt;">
+        <div class="flex33 descrip">Merek</div>
+        <select class="inputs flex70 width-100" [(ngModel)]="brandid">
+          <option value=""></option>
+          <option *ngFor="let brand of brands" [value]="brand.id">
+            {{ brand.description }}
+          </option>
+        </select>
+      </div>
 
-      <mat-form-field class="input_field ">
-        <mat-label class="descrip">Supplier</mat-label>
-        <mat-select name="partnerString" class="inputs" (selectionChange)="selectedValue3($event)" [(value)]="selectedPartner">
-          <mat-option value=""> </mat-option>
-          <mat-option *ngFor="let partner of partners" [value]="partner.id" ngDefaultControl [(ngModel)]="productadd.supplier">{{ partner.name }}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
+      <div fxLayout="row" style="margin-top:7pt;">
+        <div class="flex33 descrip">Supplier</div>
+        <select class="inputs flex70 width-100" [(ngModel)]="partnerid">
+          <option value=""></option>
+          <option *ngFor="let partner of partners" [value]="partner.id">
+            {{ partner.name }}
+          </option>
+        </select>
+      </div>
     </div>
     
   </div>
@@ -146,7 +149,7 @@
   </div>
 </div>
 
-<!--<mat-table #table [dataSource]="dataSource" class="mat-table">
+<mat-table *ngIf="!isCG" #table [dataSource]="dataSource" class="mat-table">
   <ng-container matColumnDef="warehouse">
     <th class="th-style" fxFlex="40%" mat-header-cell *matHeaderCellDef>Gudang</th>
     <td class="tr-style" fxFlex="40%" mat-cell *matCellDef="let qops">
@@ -161,9 +164,15 @@
     </td>
   </ng-container>
   <ng-container matColumnDef="qty">
-    <th class="th-style" fxFlex="20%" mat-header-cell *matHeaderCellDef>Quantity</th>
+    <th class="th-style" fxFlex="20%" mat-header-cell *matHeaderCellDef>Qty</th>
     <td class="tr-style" fxFlex="20%" mat-cell *matCellDef="let qops">
       {{qops.qop}}
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="cost">
+    <th class="th-style" fxFlex="20%" mat-header-cell *matHeaderCellDef>HPP</th>
+    <td class="tr-style" fxFlex="20%" mat-cell *matCellDef="let qops">
+      {{qops.cost | number : '1.2-2' }}
     </td>
   </ng-container>
 
@@ -171,7 +180,7 @@
   <tr mat-row class="tableRow" 
       *matRowDef="let row; columns: displayedColumns;"
   ></tr>
-</mat-table>-->
+</mat-table>
 
 <div class="width-100" fxLayout="row" fxLayoutAlign="space-between center">
   <div class="width-90">

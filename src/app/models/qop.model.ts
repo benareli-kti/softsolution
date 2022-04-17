@@ -4,4 +4,5 @@ export class Qop {
 	partner?: string;
 	warehouse?: string;
     qop?: number;
+    cost?: number;
 }

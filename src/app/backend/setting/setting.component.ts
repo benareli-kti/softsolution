@@ -96,6 +96,7 @@ export class SettingComponent implements OnInit {
         .subscribe({
           next: (res) => {
             this.retrieveSetting();
+            this.reloadPage();
           },
           error: (e) => console.error(e)
         });

@@ -118,6 +118,7 @@ export class AppComponent implements OnInit, AfterViewInit{
         .subscribe(setting => {
           this.globals.pos_shift = setting[0].pos_shift;
           this.pos_shift = setting[0].pos_shift;
+          this.globals.cost_general = setting[0].cost_general;
           if(this.globals.pos_shift){
             this.user2Service.get(user.id)
               .subscribe(users => {

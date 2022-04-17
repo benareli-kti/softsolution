@@ -8,6 +8,7 @@ export class Globals{
     userid?: string;
     roles?: string[];
     isPOS?: boolean;
+    cost_general?: boolean;
     pos_shift?: boolean;
     pos_open?: boolean;
     pos_session?: string;

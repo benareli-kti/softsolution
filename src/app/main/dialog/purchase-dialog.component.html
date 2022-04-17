@@ -1,13 +1,48 @@
 <div class="basic-container submit-form" fxLayout="column" fxLayoutAlign="space-between center" >
 <div class="width-100">
   <div class="marginbot" fxLayout="row" fxLayoutAlign="space-between center">
-    Purchase Order
+    <h2>Pembelian</h2>
     <button class="close_btn" mat-button (click)="closeDialog()">X</button>
   </div>
 
-  <div class="flex50">
-    <div class="descrip flex35">Name *</div>
-    <input class="inputs width-90" id="desc" required placeholder="Name">
+  <div fxLayout="row" class="width100" fxLayoutAlign="space-between start">
+    <div class="flex50 text-left">
+      <div fxLayout="column">
+        <div fxLayout="row">
+          <div class="flex30">Supplier</div>
+          <div class="flex70">
+            <select class="inputs width-90" [(ngModel)]="supplierString">
+            <option *ngFor="let partner of partners" [value]="partner.id">
+                {{ partner.name }}
+            </option>
+          </select>
+          </div>
+        </div>
+      </div>
+      <br/>
+      <div fxLayout="column">
+        <div fxLayout="row">
+          <div class="flex30">Gudang</div>
+          <div class="flex70">
+            <select class="inputs width-90" [(ngModel)]="warehouseString">
+            <option *ngFor="let warehouse of warehouses" [value]="warehouse.id">
+                {{ warehouse.name }}
+            </option>
+          </select>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="flex50 text-left">
+      <div fxLayout="column">
+        <div fxLayout="row">
+          <div class="flex30">Date</div>
+          <div class="flex70">
+            <input type="date" class="inputs width-90"/>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 

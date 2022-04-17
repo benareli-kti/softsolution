@@ -7,6 +7,10 @@ import { Purchase } from 'src/app/models/purchase.model';
 import { PurchaseService } from 'src/app/services/purchase.service';
 import { Log } from 'src/app/models/log.model';
 import { LogService } from 'src/app/services/log.service';
+import { Partner } from 'src/app/models/partner.model';
+import { PartnerService } from 'src/app/services/partner.service';
+import { Warehouse } from 'src/app/models/warehouse.model';
+import { WarehouseService } from 'src/app/services/warehouse.service';
 
 @Component({
   selector: 'app-purchase-dialog',
@@ -20,6 +24,11 @@ export class PurchaseDialogComponent implements OnInit {
   isAdm = false;
   isRes = false;
 
+  partners?: Partner[];
+  warehouses?: Warehouse[];
+  supplierString?: string;
+  warehouseString?: string;
+
   a = 0; b = 0;
   isUpdated = 'update';
   currDescription?: string;
@@ -30,6 +39,8 @@ export class PurchaseDialogComponent implements OnInit {
     private _snackBar: MatSnackBar,
     private globals: Globals,
     private logService: LogService,
+    private partnerService: PartnerService,
+    private warehouseService: WarehouseService,
     private purchaseService: PurchaseService,
     @Inject(MAT_DIALOG_DATA) public data: any,
   ){}
@@ -57,6 +68,7 @@ export class PurchaseDialogComponent implements OnInit {
     };
     if(!this.isTM || !this.isAdm) this.isRes = true;
     this.retrieveLog();
+    this.retrieveData();
   }
 
   retrieveLog(): void {
@@ -66,6 +78,24 @@ export class PurchaseDialogComponent implements OnInit {
           logPR = logPR.filter
           (dataPR => dataPR.brand === this.data.id)
           this.log = logPR.length;
+        },
+        error: (e) => console.error(e)
+      })
+  }
+
+  retrieveData(): void {
+    this.partnerService.findAllActiveSupplier()
+      .subscribe({
+        next: (dataSup) => {
+          this.partners = dataSup;
+        },
+        error: (e) => console.error(e)
+      })
+    this.warehouseService.findAllActive()
+      .subscribe({
+        next: (datawh) => {
+          this.warehouses = datawh;
+          this.warehouseString = datawh[0].id;
         },
         error: (e) => console.error(e)
       })

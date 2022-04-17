@@ -22,6 +22,9 @@ export class StockmoveService {
   get(id: any): Observable<Stockmove> {
     return this.http.get(`${baseUrl}/${id}`);
   }
+  getProd(product: any): Observable<Stockmove[]> {
+    return this.http.get<Stockmove[]>(`${baseUrl}/prod/${product}`);
+  }
   create(data: any): Observable<any> {
     return this.http.post(baseUrl, data);
   }

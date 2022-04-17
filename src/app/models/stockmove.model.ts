@@ -6,4 +6,5 @@ export class Stockmove {
 	warehouse?: string;
     qin?: number;
     qout?: number;
+    cost?: number;
 }

@@ -6,6 +6,7 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dial
 import { MatSelectChange, MatSelectModule } from '@angular/material/select';
 import { Log } from 'src/app/models/log.model';
 import { LogService } from 'src/app/services/log.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { Stockmove } from 'src/app/models/stockmove.model';
 import { StockmoveService } from 'src/app/services/stockmove.service';
@@ -36,7 +37,7 @@ export class StockMoveDialogComponent implements OnInit {
   datname?: string;
   warehouseid?: any;
   partnerid?: any;
-  datqty=0; qin=0; qout=0; qqof=0;
+  datqty=0; qin=0; qout=0; qqof=0; datcost=0;
 
   products?: Product[];
   warehouses?: Warehouse[];
@@ -47,30 +48,9 @@ export class StockMoveDialogComponent implements OnInit {
   currDescription?: string;
   log = 0;
 
-  //Select Category
-  selectedWarehouse: string = "";
-  selectedData: { valueWH: string; text: string } = {
-    valueWH: "",
-    text: ""
-  };
-  selectedWarehouseControl = new FormControl(this.selectedWarehouse);
-  selectedValue(event: MatSelectChange) {
-    this.warehouseid = event.value;
-  }
-
-  //Select Partner
-  selectedPartner: string = "";
-  selectedData2: { valuePR: string; text: string } = {
-    valuePR: "",
-    text: ""
-  };
-  selectedPartnerControl = new FormControl(this.selectedPartner);
-  selectedValue2(event: MatSelectChange) {
-    this.partnerid = event.value;
-  }
-
   constructor(
     public dialogRef: MatDialogRef<StockMoveDialogComponent>,
+    private _snackBar: MatSnackBar,
     private globals: Globals,
     private logService: LogService,
     private productService: ProductService,
@@ -99,6 +79,7 @@ export class StockMoveDialogComponent implements OnInit {
       .subscribe({
         next: (dataPC) => {
           this.warehouses = dataPC;
+          this.warehouseid = dataPC[0].id;
         },
         error: (e) => console.error(e)
       });
@@ -111,53 +92,29 @@ export class StockMoveDialogComponent implements OnInit {
         error: (e) => console.error(e)
       });
   }
-
-  /*createData(): void {
-    if(!this.partnerid){
-      this.partnerid = "null";
-    }
-    if(this.datinout=='in'){
-      this.qin = this.datqty;
-    }else{
-      this.qout = this.datqty;
-    }
-    const dataSM = {
-      user: this.globals.userid,
-      product: this.data,
-      partner: this.partnerid,
-      warehouse: this.warehouseid,
-      qin: this.qin,
-      qout: this.qout
-    };
-    this.stockmoveService.create(dataSM)
-      .subscribe({
-        next: (res) => {
-          this.qof();
-          //this.closeDialog();
-        },
-        error: (e) => console.error(e)
-      });
-  }*/
   
   createData(): void{
-    if(!this.partnerid){
-      this.partnerid = "null";
+    if(!this.warehouseid || this.warehouseid == null){
+      this._snackBar.open("Gudang (*) tidak boleh kosong!", "Tutup", {duration: 5000});
+    }else{
+      const dataSM = {
+        user: this.globals.userid,
+        product: this.data,
+        partner: this.partnerid ?? "null",
+        warehouse: this.warehouseid,
+        qin: this.datqty ?? 0,
+        cost: this.datcost ?? 0,
+        meth: this.globals.cost_general
+      };
+      this.stockmoveService.create(dataSM)
+        .subscribe({
+          next: (res) => {
+            if(!this.globals.cost_general) this.qop();
+            else this.closeDialog();
+          },
+          error: (e) => console.error(e)
+        }); 
     }
-    const dataSM = {
-      user: this.globals.userid,
-      product: this.data,
-      partner: this.partnerid,
-      warehouse: this.warehouseid,
-      qin: this.datqty
-    };
-    this.stockmoveService.create(dataSM)
-      .subscribe({
-        next: (res) => {
-          this.qop();
-          //this.closeDialog();
-        },
-        error: (e) => console.error(e)
-      }); 
   }
   
   qop(): void{
@@ -165,7 +122,8 @@ export class StockMoveDialogComponent implements OnInit {
       product: this.data,
       partner: this.partnerid,
       warehouse: this.warehouseid,
-      qop: this.datqty
+      qop: this.datqty,
+      cost: this.datcost
     }
     this.qopService.createUpdate(qop)
       .subscribe({
@@ -175,30 +133,6 @@ export class StockMoveDialogComponent implements OnInit {
         error: (e) => console.error(e)
       })
   }
-
-  /*qof(): void{
-    if(!this.partnerid){
-      this.partnerid = "null";
-    }
-    if(this.datinout=='in'){
-      this.qqof = this.datqty;
-    }else{
-      this.qqof = 0-this.datqty;
-    }
-    const qof = {
-      product: this.data,
-      partner: this.partnerid,
-      warehouse: this.warehouseid,
-      qof: this.qqof
-    };
-    this.qofService.create(qof)
-      .subscribe({
-        next: (res) => {
-          this.closeDialog();
-        },
-        error: (e) => console.error(e)
-      });
-  }*/
 
   closeDialog() {
     this.dialogRef.close();
