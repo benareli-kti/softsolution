@@ -2,8 +2,8 @@
 <div class="width-100" style="overflow-y: scroll;">
   <div class="marginbot" fxLayout="row" fxLayoutAlign="space-between center">
     <mat-button-toggle-group class="active_btn" #group="matButtonToggleGroup" [(value)]="statusActive" (change)="onValChange(group.value)">
-      <mat-button-toggle value="true">Active</mat-button-toggle>
-      <mat-button-toggle value="false">Not Active</mat-button-toggle>
+      <mat-button-toggle value="true">Aktif</mat-button-toggle>
+      <mat-button-toggle value="false">Nonaktif</mat-button-toggle>
     </mat-button-toggle-group>
 
     <mat-button-toggle-group class="active_btn margin_7" *ngIf="isNew" #group2="matButtonToggleGroup" [(value)]="datisstock" (change)="onStockChange(group2.value)">
@@ -33,7 +33,7 @@
         <div fxLayout="row" fxLayoutAlign="space-around start" style="margin-top:-5pt;">
           <!--class="choosefile submit pink"-->
           <input class="choosefile" type="file" accept="image/*" (change)="selectFiles($event)" />
-          <button class="save_btn" style="font-size:.8em;" [disabled]="!selectedFiles" (click)="uploadFiles()">Upload</button>
+          <button class="save_btn" style="font-size:.8em;" [disabled]="!selectedFiles" (click)="uploadFiles()">Unggah</button>
         </div>
       </div>
     </div>
@@ -47,7 +47,7 @@
           </div>
 
           <div class="holder flex50 margin_7">
-            <div class="descrip">Name *</div>
+            <div class="descrip">Nama *</div>
             <input class="inputs width-90" required placeholder="Name" [(ngModel)]="datname">
           </div>
         </div>
@@ -75,7 +75,7 @@
       </div>
       <div class="alert" role="alert" *ngIf="bbigger">Harga Batas tidak bisa lebih besar!</div>
       <div class="holder-row" style="margin-top:7pt;">
-        <div class="descrip flex30 harga">Cost</div>
+        <div class="descrip flex30 harga">HPP</div>
         <input class="inputs flex70" placeholder="0" type="number" [(ngModel)]="datcost">
       </div>
       <div class="holder-row" style="margin-top:7pt;">
@@ -112,7 +112,7 @@
 
     <div class="flex50 holder margin_7">     
       <mat-form-field class="input_field">
-        <mat-label class="descrip">Category *</mat-label>
+        <mat-label class="descrip">Kategori *</mat-label>
         <mat-select class="inputs" name="categoryString" (selectionChange)="selectedValue($event)" [(value)]="selectedCategory">
           <mat-option *ngFor="let productcat of productcats" [value]="productcat.id" ngDefaultControl [(ngModel)]="productadd.category">
           {{ productcat.description }}
@@ -121,7 +121,7 @@
       </mat-form-field>
 
       <mat-form-field class="input_field ">
-        <mat-label class="descrip">Brand</mat-label>
+        <mat-label class="descrip">Merek</mat-label>
         <mat-select name="brandString" class="inputs" (selectionChange)="selectedValue2($event)" [(value)]="selectedBrand">
           <mat-option value=""> </mat-option>
           <mat-option *ngFor="let brand of brands" [value]="brand.id" ngDefaultControl [(ngModel)]="productadd.brand">{{ brand.description }}
@@ -175,8 +175,8 @@
 
 <div class="width-100" fxLayout="row" fxLayoutAlign="space-between center">
   <div class="width-90">
-    <button *ngIf="!isNew" [disabled]="isRes" mat-button class="submit save_btn" (click)="checkBigger()">Save</button>
-    <button *ngIf="isNew" [disabled]="isRes" mat-button class="submit save_btn" (click)="checkBigger()">Save</button>
+    <button *ngIf="!isNew" [disabled]="isRes" mat-button class="submit save_btn" (click)="checkBigger()">Simpan</button>
+    <button *ngIf="isNew" [disabled]="isRes" mat-button class="submit save_btn" (click)="checkBigger()">Simpan</button>
   </div>
   <div class="width-10"><button class="log_btn" [(ngModel)]="log"><mat-icon>message</mat-icon> {{log}}</button></div>
 </div>

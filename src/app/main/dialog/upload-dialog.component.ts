@@ -67,18 +67,18 @@ export class UploadDialogComponent implements OnInit {
 
   ngOnInit() {
     if(this.data=="brand"){
-      this.data1 = [["description"], ["brand 1"], ["brand 2"], ["brand 3"]];
+      this.data1 = [["nama"], ["merk 1"], ["merk 2"], ["merk 3"]];
     }else if(this.data=="product category"){
-      this.data1 = [["catid","description"], ["ID001","category 1"], 
-        ["ID002","category 2"], ["ID003","category 3"]];
+      this.data1 = [["id","nama"], ["ID001","kategori 1"], 
+        ["ID002","kategori 2"], ["ID003","kategori 3"]];
     }else if(this.data=="warehouse"){
-      this.data1 = [["short","name"], ["WH1","Warehouse 1"], 
-        ["WH2","Warehouse 2"], ["WH3","Warehouse 3"]];
+      this.data1 = [["kode","nama"], ["WH1","Gudang 1"], 
+        ["WH2","Gudang 2"], ["WH3","Gudang 3"]];
     }else if(this.data=="partner"){
-      this.data1 = [["code","name","phone","customer","supplier"], ["CUST1","John Doe","0813","ya",""], 
+      this.data1 = [["kode","nama","phone","pelanggan","supplier"], ["CUST1","John Doe","0813","ya",""], 
         ["CUST2","Jane Doe","0817","ya","ya"],["CUST3","Jack Doe","0855","","ya"]];
     }else if(this.data=="product"){
-      this.data1 = [["sku","name","description","type","listprice","botprice","cost","category","brand","taxin","taxout"], 
+      this.data1 = [["sku","nama","deskripsi","tipe","hargajual","hargabatas","hpp","kategori","merek","pajakmasuk","pajakkeluar"], 
       ["PROD001","Book 1","Author Mr X","barang","100000","","70000","category 1","brand 1","11","11"], 
       ["PROD002","Book 2","","barang","90000","87500","60000","category 1","brand 2","11","11"],
       ["SERV001","Servis 1","Servis Buku","jasa","50000","","","category 1","","",""]];
@@ -138,30 +138,30 @@ export class UploadDialogComponent implements OnInit {
 
   startSequence(): void {
     if(this.data=="brand"){
-      let index = this.brands!.findIndex(a => a.description === this.datas[this.checker].description);
+      let index = this.brands!.findIndex(a => a.description === this.datas[this.checker].nama);
       if(index!=-1) this.indexes.push(this.checker + 1);
-      if(this.datas[this.checker].description==''||this.datas[this.checker].description==null) this.emptys.push(this.checker + 1);
+      if(this.datas[this.checker].nama==''||this.datas[this.checker].nama==null) this.emptys.push(this.checker + 1);
       this.checkers();
     }else if(this.data=="product category"){
-      let index = this.productcats!.findIndex(a => a.description === this.datas[this.checker].description);
+      let index = this.productcats!.findIndex(a => a.description === this.datas[this.checker].nama);
       if(index!=-1) this.indexes.push(this.checker + 1);
-      if(this.datas[this.checker].description==''||this.datas[this.checker].description==null) this.emptys.push(this.checker + 1);
+      if(this.datas[this.checker].nama==''||this.datas[this.checker].nama==null) this.emptys.push(this.checker + 1);
       this.checkers();  
     }else if(this.data=="warehouse"){
-      let index = this.warehouses!.findIndex(a => a.name === this.datas[this.checker].name);
+      let index = this.warehouses!.findIndex(a => a.name === this.datas[this.checker].nama);
       if(index!=-1) this.indexes.push(this.checker + 1);
-      if(this.datas[this.checker].name==''||this.datas[this.checker].name==null) this.emptys.push(this.checker + 1);
+      if(this.datas[this.checker].nama==''||this.datas[this.checker].nama==null) this.emptys.push(this.checker + 1);
       this.checkers();  
     }else if(this.data=="partner"){
-      let index = this.partners!.findIndex(a => a.name === this.datas[this.checker].name);
+      let index = this.partners!.findIndex(a => a.name === this.datas[this.checker].nama);
       if(index!=-1) this.indexes.push(this.checker + 1);
-      if(this.datas[this.checker].name==''||this.datas[this.checker].name==null) this.emptys.push(this.checker + 1);
+      if(this.datas[this.checker].nama==''||this.datas[this.checker].nama==null) this.emptys.push(this.checker + 1);
       this.checkers();  
     }else if(this.data=="product"){
-      let index = this.products!.findIndex(a => a.name === this.datas[this.checker].name);
+      let index = this.products!.findIndex(a => a.name === this.datas[this.checker].nama);
       if(index!=-1) this.indexes.push(this.checker + 1);
-      if(this.datas[this.checker].category==''||this.datas[this.checker].category==null) this.emptys.push(this.checker + 1);
-      if(this.datas[this.checker].name==''||this.datas[this.checker].name==null) this.emptys.push(this.checker + 1);
+      if(this.datas[this.checker].kategori==''||this.datas[this.checker].kategori==null) this.emptys.push(this.checker + 1);
+      if(this.datas[this.checker].nama==''||this.datas[this.checker].nama==null) this.emptys.push(this.checker + 1);
       this.checkers();  
     }
   }

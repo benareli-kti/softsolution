@@ -8,6 +8,7 @@ import { MatSort, SortDirection } from '@angular/material/sort';
 import { MatSelectChange, MatSelectModule } from '@angular/material/select';
 import { MatDialog } from '@angular/material/dialog';
 import { DataFilter, filterOption } from 'src/app/models/datafilter';
+import { PurchaseDialogComponent } from '../dialog/purchase-dialog.component';
 
 import { Purchase } from 'src/app/models/purchase.model';
 import { PurchaseService } from 'src/app/services/purchase.service';
@@ -40,6 +41,7 @@ export class PurchaseComponent implements OnInit {
 
   constructor(
     private globals: Globals,
+    private dialog: MatDialog,
     private purchaseService: PurchaseService,
     private productService: ProductService,
     private productCatService: ProductCatService,
@@ -89,7 +91,14 @@ export class PurchaseComponent implements OnInit {
   }
 
   addPurchase(): void {
-
+    const dialog = this.dialog.open(PurchaseDialogComponent, {
+      width: '100vw',
+      height: '100%',
+      disableClose: true,
+      
+    })
+      .afterClosed()
+      .subscribe(() => this.retrieveData());
   }
 
 }

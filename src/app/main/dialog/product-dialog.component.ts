@@ -414,7 +414,7 @@ export class ProductDialogComponent implements OnInit {
     if (!this.datname || this.datname == null
       || !this.datlprice || this.datlprice == null
       || !this.selectedCategory || this.selectedCategory == null){
-      this._snackBar.open("Field (*) tidak boleh kosong!", "Tutup", {duration: 5000});
+      this._snackBar.open("Isian (*) tidak boleh kosong!", "Tutup", {duration: 5000});
     }else{
       if(!this.fileName){this.fileName = this.oriimage!};
       if(this.a+this.b==4){this.isUpdated = 'deactivate'};

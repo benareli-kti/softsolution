@@ -28,10 +28,24 @@
 
 <div class="flex-vertical global-setting">
   <div fxLayout="row" fxLayoutAlign="space-between center">
+    <span class="setting-title">Costing Setting</span>
+    <div class="btn-rainbow">
+      <div class="btn-white">
+        <button class="btn-gradient text-gradient" (click)="save2()">Save</button>
+      </div>
+    </div>
+  </div>
+  <div class="flex-left width33 text-left">
+    <mat-slide-toggle class="padtop" [(ngModel)]="cost_general" (change)="onCGShift($event.checked)">General</mat-slide-toggle>
+  </div>
+</div>
+
+<div class="flex-vertical global-setting">
+  <div fxLayout="row" fxLayoutAlign="space-between center">
   	<span class="setting-title">POS Setting</span>
   	<div class="btn-rainbow">
   		<div class="btn-white">
-  			<button class="btn-gradient text-gradient" (click)="save2()">Save</button>
+  			<button class="btn-gradient text-gradient" (click)="save3()">Save</button>
   		</div>
   	</div>
   </div>

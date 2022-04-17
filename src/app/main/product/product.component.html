@@ -1,9 +1,7 @@
 <div class="flex-container">
 	<div class="flex-left">
 		<div *ngIf="isIM || isAdm" (click)="openQuickAdd()" class="submit-form quick_add">
-    		<button class="submit">
-        Quick add
-        </button>
+    		<button class="submit">Tambah</button>
   		</div>
 	</div>
 
@@ -19,7 +17,7 @@
 
 <div fxLayout="row" fxLayoutAlign="space-around center" class="filtered" *ngIf="isShow">
   <mat-form-field>
-    <mat-label>Category</mat-label>
+    <mat-label>Kategori</mat-label>
     <mat-select name="categoryString" (selectionChange)="applyCatFilter($event)">
       <mat-option value="">All</mat-option>
       <mat-option *ngFor="let productcat of productcats" [value]="productcat.id" ngDefaultControl [(ngModel)]="filterCat">
@@ -29,7 +27,7 @@
   </mat-form-field>
 
   <mat-form-field>
-    <mat-label>Brand</mat-label>
+    <mat-label>Merek</mat-label>
     <mat-select name="brandString" (selectionChange)="applyBrandFilter($event)">
       <mat-option value="">All</mat-option>
       <mat-option *ngFor="let brand of brands" [value]="brand.id" ngDefaultControl [(ngModel)]="filterBrand">
@@ -38,8 +36,8 @@
     </mat-select>
   </mat-form-field>
   <div *ngIf="isIM || isAdm" fxLayout="column">
-    <button class="submit" style="font-size: .7em; margin-top:5pt" (click)="searchActive()">active</button>
-    <button class="submit pink" style="font-size: .65em; margin-top:5pt" (click)="searchInactive()">inactive</button>
+    <button class="submit" style="font-size: .7em; margin-top:5pt" (click)="searchActive()">aktif</button>
+    <button class="submit pink" style="font-size: .65em; margin-top:5pt" (click)="searchInactive()">nonaktif</button>
   </div>
 </div>
 
@@ -65,13 +63,13 @@
     </td>
   </ng-container>
   <ng-container matColumnDef="category">
-    <th class="th-style" fxFlex="15%" mat-header-cell *matHeaderCellDef mat-sort-header>Category</th>
+    <th class="th-style" fxFlex="15%" mat-header-cell *matHeaderCellDef mat-sort-header>Kategori</th>
     <td class="tr-style" fxFlex="15%" mat-cell *matCellDef="let products">
       {{products.category.description}}
     </td>
   </ng-container>
   <ng-container matColumnDef="brand">
-    <th class="th-style" fxFlex="15%" mat-header-cell *matHeaderCellDef>Brand</th>
+    <th class="th-style" fxFlex="15%" mat-header-cell *matHeaderCellDef>Merek</th>
     <td class="tr-style" fxFlex="15%" mat-cell *matCellDef="let products">
       <div *ngIf="!products.brand"></div>
       <div *ngIf="products.brand">
@@ -79,7 +77,7 @@
     </td>
   </ng-container>
   <ng-container matColumnDef="stock">
-    <th class="th-style" fxFlex="50%" mat-header-cell *matHeaderCellDef>Action</th>
+    <th class="th-style" fxFlex="50%" mat-header-cell *matHeaderCellDef>Aksi</th>
     <td class="tr-style" fxFlex="50%" mat-cell *matCellDef="let products">
       <div *ngIf="products.isStock == true">
         <a class="add_stock" (click)="openStockDialog(products.id)">Tambah Stock</a>
@@ -98,6 +96,6 @@
 </div>
 
 <div fxLayout="row" fxLayoutAlign="space-between center">
-  <button class="btn-gradient text-gradient upload" (click)="openUpload()">Upload</button>
+  <button class="btn-gradient text-gradient upload" (click)="openUpload()">Unggah</button>
   <mat-paginator [pageSizeOptions]="[10, 20, 50, 100]" showFirstLastButtons></mat-paginator>
 </div>

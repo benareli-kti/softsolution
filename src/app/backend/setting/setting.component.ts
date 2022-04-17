@@ -22,6 +22,7 @@ import { StoreService } from 'src/app/services/store.service';
 export class SettingComponent implements OnInit {
   stores?: Store[];
   settingid?: string;
+  cost_general?: boolean = true;
   pos_shift?: boolean = false;
   comp_name?: string;
   comp_addr?: string;
@@ -51,6 +52,7 @@ export class SettingComponent implements OnInit {
     this.settingService.getAll()
       .subscribe(setting => {
         this.settingid = setting[0].id;
+        this.cost_general = setting[0].cost_general;
         this.comp_name = setting[0].comp_name;
         this.comp_addr = setting[0].comp_addr;
         this.comp_phone = setting[0].comp_phone;
@@ -66,6 +68,7 @@ export class SettingComponent implements OnInit {
   }
 
   onPosShift(enable: boolean) {if(enable){this.pos_shift=true;}else{this.pos_shift=false;}}
+  onCGShift(enable: boolean) {if(enable){this.cost_general=true;}else{this.cost_general=false;}}
 
   save1(): void {
     const save1 = {
@@ -85,16 +88,30 @@ export class SettingComponent implements OnInit {
   }
 
   save2(): void {
+    const save2 = {
+      cost_general: this.cost_general
+    }
+
+    this.settingService.update(this.settingid, save2)
+        .subscribe({
+          next: (res) => {
+            this.retrieveSetting();
+          },
+          error: (e) => console.error(e)
+        });
+  }
+
+  save3(): void {
     this.possessionService.getAllOpen()
       .subscribe(poss => {
         if(poss.length>0){
           this._snackBar.open("Tidak bisa menutup karena ada POS Session Terbuka", "Tutup", {duration: 10000});
           this.retrieveSetting();
         }else{
-          const save2 = {
+          const save3 = {
             pos_shift: this.pos_shift
           }
-          this.settingService.update(this.settingid, save2)
+          this.settingService.update(this.settingid, save3)
             .subscribe({
               next: (res) => {
                 this.retrieveSetting();

@@ -44,6 +44,7 @@ import { PosComponent } from './main/pos/pos.component';
 import { PosSessionComponent } from './main/pos-session/pos-session.component';
 import { SettingComponent } from './backend/setting/setting.component';
 import { ProfileComponent } from './backend/profile/profile.component';
+import { PurchaseComponent } from './main/purchase/purchase.component';
 
 import { BrandDialogComponent } from './main/dialog/brand-dialog.component';
 import { ProductDialogComponent } from './main/dialog/product-dialog.component';
@@ -54,7 +55,7 @@ import { StockMoveDialogComponent } from './main/dialog/stockmove-dialog.compone
 import { PosdetailDialogComponent } from './main/dialog/posdetail-dialog.component';
 import { PaymentDialogComponent } from './main/dialog/payment-dialog.component';
 import { UploadDialogComponent } from './main/dialog/upload-dialog.component';
-import { PurchaseComponent } from './main/purchase/purchase.component';
+import { PurchaseDialogComponent } from './main/dialog/purchase-dialog.component';
 
 @NgModule({
   declarations: [
@@ -63,24 +64,26 @@ import { PurchaseComponent } from './main/purchase/purchase.component';
     HomeComponent,
     RegisterComponent,
     ProductCatComponent,
-    ProductcatDialogComponent,
     BrandComponent,
-    BrandDialogComponent,
     ProductComponent,
-    ProductDialogComponent,
     WarehouseComponent,
-    WarehouseDialogComponent,
     PartnerComponent,
-    PartnerDialogComponent,
-    StockMoveDialogComponent,
     PosComponent,
-    PosdetailDialogComponent,
-    PaymentDialogComponent,
     PosSessionComponent,
     SettingComponent,
     ProfileComponent,
+    PurchaseComponent,
+    
+    ProductcatDialogComponent,
+    BrandDialogComponent,
+    ProductDialogComponent,
+    WarehouseDialogComponent,
+    PartnerDialogComponent,
+    StockMoveDialogComponent,
+    PosdetailDialogComponent,
+    PaymentDialogComponent,
     UploadDialogComponent,
-    PurchaseComponent
+    PurchaseDialogComponent
   ],
   imports: [
     BrowserModule,

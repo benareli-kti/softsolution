@@ -43,33 +43,33 @@
             <span>POS</span>
           </button>
           <button mat-button class="menu-button" (click)="toggleTransac()" *ngIf="isLoggedIn && isIU">
-            <span>Transaction</span>
+            <span>Transaksi</span>
           </button>
           <button mat-button class="menu-button" [routerLink]="'/purchase'" *ngIf="isLoggedIn && isTransacShow">
             <mat-icon class="mat-icon">keyboard_arrow_right</mat-icon>
-            <span>Purchase</span>
+            <span>Pembelian</span>
           </button>
           <button mat-button class="menu-button" (click)="toggleProduct()" *ngIf="isLoggedIn && isIU">
-            <span>Product</span>
+            <span>Katalog Produk</span>
           </button>
           <button mat-button class="menu-button" [routerLink]="'/productcategory'" *ngIf="isLoggedIn && isProductShow">
             <mat-icon class="mat-icon">keyboard_arrow_right</mat-icon>
-            <span>Category</span>
+            <span>Kategori</span>
           </button>
           <button mat-button class="menu-button" [routerLink]="'/brand'" *ngIf="isLoggedIn && isProductShow">
             <mat-icon class="mat-icon">keyboard_arrow_right</mat-icon>
-            <span>Brand</span>
+            <span>Merek</span>
           </button>
           <button mat-button class="menu-button" [routerLink]="'/product'" *ngIf="isLoggedIn && isProductShow">
             <mat-icon class="mat-icon">keyboard_arrow_right</mat-icon>
-            <span>Product </span>
+            <span>Produk</span>
           </button>
           <button mat-button class="menu-button" [routerLink]="'/warehouse'" *ngIf="isLoggedIn && isProductShow">
             <mat-icon class="mat-icon">keyboard_arrow_right</mat-icon>
-            <span>Warehouse</span>
+            <span>Gudang</span>
           </button>
           <button mat-button class="menu-button" [routerLink]="'/partner'" *ngIf="isLoggedIn && isPU">
-            <span>Partner</span>
+            <span>Katalog Partner</span>
           </button>
         </div>
         <div *ngIf="sidenav.mode === 'side'" >
