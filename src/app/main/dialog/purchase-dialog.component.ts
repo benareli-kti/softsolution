@@ -29,12 +29,21 @@ export class PurchaseDialogComponent implements OnInit {
   isAdm = false;
   isRes = false;
   term: string;
+  openDropDown = false;
 
   partners?: Partner[];
   warehouses?: Warehouse[];
   products?: Product[];
   supplierString?: string;
   warehouseString?: string;
+  ph?: string;
+  btn?: string;
+  datid?: string;
+  datqty?: number;
+  datcost?: number;
+  datdisc?: number;
+  dattax?: number;
+  datsub?: number;
 
   //Table
   displayedColumns: string[] = 
@@ -47,6 +56,7 @@ export class PurchaseDialogComponent implements OnInit {
   currDescription?: string;
   log = 0;
   currentIndex1 = -1;
+
 
   constructor(
     public dialogRef: MatDialogRef<PurchaseDialogComponent>,
@@ -75,6 +85,8 @@ export class PurchaseDialogComponent implements OnInit {
     this.currDescription = this.data.description;*/
     this.datas = [{product:"",qty:"",price_unit:""}]
     this.dataSource.data = this.datas;
+    this.ph = "<< Klik untuk tambah";
+    this.btn = "+";
     this.checkRole();
   }
 
@@ -129,13 +141,40 @@ export class PurchaseDialogComponent implements OnInit {
 
   getProd(product: Product, index: number): void {
     this.currentIndex1 = index;
+    this.onF();
+    //this.term = product.name;
+    this.ph = product.name;
+    this.datid = product.id;
+    this.datqty = 1;
+    this.datcost = product.cost ?? 0;
+    this.dattax = product.taxout.tax ?? 0;
+    this.datsub = (this.datqty * this.datcost!) +
+      (this.dattax!/100 * (this.datqty * this.datcost!));
+  }
+
+  pushing(): void {
     if(this.datas[0].product=='') this.datas.splice(0,1);
     const dataPush = {
-      id: product.id, product: product.name, qty: 1,
-        price_unit: product.cost ?? 0, subtotal: product.cost ?? 0
+      id: this.datid, product: this.ph, qty: this.datqty,
+        price_unit: this.datcost ?? 0, tax: this.dattax ?? 0,
+        subtotal: (this.datqty! * this.datcost!) +
+      (this.dattax!/100 * (this.datqty! * this.datcost!)) ?? 0
     }
     this.datas.push(dataPush);
     this.dataSource.data = this.datas;
+    this.ph = "<< Klik untuk tambah";
+    this.btn = "+";
+  }
+
+  onF(): void {
+    this.openDropDown = !this.openDropDown;
+    if(this.openDropDown){
+      this.ph = "KETIK untuk mencari";
+      this.btn = "x";
+    }else{
+      this.ph = "<< Klik untuk tambah";
+      this.btn = "+";
+    }
   }
 
   closeDialog() {

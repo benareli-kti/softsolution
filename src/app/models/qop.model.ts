@@ -1,8 +1,8 @@
 export class Qop {
 	id?: any;
-	product?: string;
-	partner?: string;
-	warehouse?: string;
+	product?: any;
+	partner?: any;
+	warehouse?: any;
     qop?: number;
     cost?: number;
 }

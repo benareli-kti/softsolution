@@ -59,21 +59,23 @@
       <th class="th-new" style="border-left:1px solid #ccc;" fxFlex="20%">Product</th>
       <th class="th-new" fxFlex="10%">Qty</th>
       <th class="th-new" fxFlex="20%">Harga Satuan</th>
-      <th class="th-new" fxFlex="10%">Diskon</th>
-      <th class="th-new" fxFlex="10%">Pajak</th>
+      <th class="th-new" fxFlex="10%">Diskon(%)</th>
+      <th class="th-new" fxFlex="10%">Pajak(%)</th>
       <th class="th-new" fxFlex="30%">Subtotal</th>
     </tr>
     <tr>
-      <td class="td-new" style="border-left:1px solid #ddd;" fxFlex="20%"><input class="inputs" placeholder="+ TAMBAH" [(ngModel)]="term"/></td>
-      <td class="td-new" fxFlex="10%"><input class="inputs"/></td>
-      <td class="td-new" fxFlex="20%"><input class="inputs"/></td>
-      <td class="td-new" fxFlex="10%"><input class="inputs"/></td>
-      <td class="td-new" fxFlex="10%"><input class="inputs"/></td>
-      <td class="td-new" fxFlex="30%"><input class="inputs"/></td>
+      <td class="td-new" style="border-left:1px solid #ddd;" fxFlex="20%">
+        <button class="btn-rainbow btn-rainbow17" (click)="onF()">{{btn}}</button><input class="inputs width-75" placeholder="{{ph}}" [(ngModel)]="term"/></td>
+      <td class="td-new" fxFlex="10%"><input class="inputs width-100" [(ngModel)]="datqty"/></td>
+      <td class="td-new" fxFlex="20%"><input class="inputs width-100" [(ngModel)]="datcost"/></td>
+      <td class="td-new" fxFlex="10%"><input class="inputs width-100" [(ngModel)]="datdisc"/></td>
+      <td class="td-new" fxFlex="10%"><input class="inputs width-100" [(ngModel)]="dattax"/></td>
+      <td class="td-new" fxFlex="20%"><input disabled class="inputs width-100" [(ngModel)]="datsub"/></td>
+      <td class="td-new btn-rainbow" style="text-align:center;" fxFlex="10%"><div style="width:100%;" (click)="pushing()">TAMBAH</div></td>
     </tr>
   </table>
 
-  <ul>
+  <ul class="prod" *ngIf="openDropDown">
     <li class="list-group-item category"
       *ngFor="let product of products|filter:term; let i1 = index"
       [class.active]="i1 == currentIndex1"

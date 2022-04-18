@@ -51,7 +51,21 @@
 	</div>
 
 	<div class="right-container">
-		<div class="pos-number">
+		<div class="qops" *ngIf="isqop">
+			<ul class="prod">
+   				<li class="list-group-item category"
+      			  *ngFor="let qops of qopss; let i1 = index"
+      			  [class.active]="i1 == currentIndex1"
+      			  (click)="insertQop(qops, i1)">
+      			  <div fxLayout="row" fxLayoutAlign="start start">
+      			  	<div style="width:35pt;">{{qops.qop}}</div>
+      			  	<div>{{qops.partner}}</div>
+      			  	
+      			  </div>
+    			</li>
+  			</ul>
+		</div>
+		<div class="pos-number" *ngIf="!isqop">
 			<div>
 				<div fxLayout="row" style="margin-top:-8pt; margin-left:10pt; margin-right:10pt" fxLayoutAlign="space-around center">
 					<mat-form-field style="height:30pt; width:90pt;" class="input_field flex50">
@@ -114,7 +128,7 @@
       					<!--(click)="setActiveTutorial(tutorial, i)"-->
       					<div fxLayout="row" fxLayoutAlign="space-between center">
       						<div (click)="openPosDetail(i3)" fxLayout="column" class="flex60" style="padding-right:3pt;">
-        						{{ order.product_name }}
+        						{{ order.product_name }} || {{order.partner}}
         						<div>{{order.qty}} X {{order.price_unit}}</div>
         					</div>
         					<div (click)="openPosDetail(i3)" fxLayout="column" class="flex30">

@@ -23,6 +23,8 @@ import { Partner } from 'src/app/models/partner.model';
 import { PartnerService } from 'src/app/services/partner.service';
 import { Warehouse } from 'src/app/models/warehouse.model';
 import { WarehouseService } from 'src/app/services/warehouse.service';
+import { Qop } from 'src/app/models/qop.model';
+import { QopService } from 'src/app/services/qop.service';
 import { Store } from 'src/app/models/store.model';
 import { StoreService } from 'src/app/services/store.service';
 import { Possession } from 'src/app/models/possession.model';
@@ -57,6 +59,10 @@ export class PosComponent {
   rowHeight: string;
 
   baseUrl = BaseURL.BASE_URL;
+
+  //qops
+  qopss?: any;
+  isqop = false;
 
   //disc
   isCalc = false;
@@ -116,8 +122,8 @@ export class PosComponent {
   width = 0;
   @HostListener('window:resize', ['$event'])
     onResize() {
-      if(window.innerWidth>=1024){this.cols = 4; this.rowHeight = "65pt";}
-      else if(window.innerWidth<1024&&window.innerWidth>=800){this.cols = 3; this.rowHeight = "65pt";}
+      if(window.innerWidth>=1024){this.cols = 3; this.rowHeight = "60pt";}
+      else if(window.innerWidth<1024&&window.innerWidth>=800){this.cols = 3; this.rowHeight = "60pt";}
       else if(window.innerWidth<800){this.cols = 1; this.rowHeight = "25pt";}
     }
 
@@ -131,6 +137,7 @@ export class PosComponent {
     private productCatService: ProductCatService,
     private brandService: BrandService,
     private warehouseService: WarehouseService,
+    private qopService: QopService,
     private storeService: StoreService,
     private partnerService: PartnerService,
     private possessionService: PossessionService,
@@ -151,8 +158,9 @@ export class PosComponent {
     }
     this.retrieveData();
     this.checkRole();
-    if(window.innerWidth>=1024){this.cols = 4; this.rowHeight = "65pt";}
-    else if(window.innerWidth<1024&&window.innerWidth>=800){this.cols = 3; this.rowHeight = "65pt";}
+    this.qopss = [{partner:''}];
+    if(window.innerWidth>=1024){this.cols = 3; this.rowHeight = "60pt";}
+    else if(window.innerWidth<1024&&window.innerWidth>=800){this.cols = 3; this.rowHeight = "60pt";}
     else if(window.innerWidth<800){this.cols = 1; this.rowHeight = "25pt";}
   }
 
@@ -334,41 +342,109 @@ export class PosComponent {
   }
 
   pukimai(product: Product): void {
-    let avail = false;
-    let taxes = 0;
-    if(product.taxout) taxes = product.taxout.tax;
-    for (let x=0; x < this.orders.length; x++){
-      if(product.id == this.orders[x].product){
-        avail = true;
-        let qtyold = this.orders[x].qty;
-        let subold = this.orders[x].subtotal;
-        let oIndx = this.orders.findIndex((obj => obj.product == product.id));
-        this.orders[oIndx].qty = qtyold + 1;
-        this.orders[oIndx].subtotal = subold + product.listprice;
-        this.orders[oIndx].taxes = this.orders[oIndx].tax / 100 * this.orders[oIndx].subtotal;
+    if(this.globals.cost_general){
+      let avail = false;
+      let taxes = 0;
+      if(product.taxout) taxes = product.taxout.tax;
+      for (let x=0; x < this.orders.length; x++){
+        if(product.id == this.orders[x].product){
+          avail = true;
+          let qtyold = this.orders[x].qty;
+          let subold = this.orders[x].subtotal;
+          let oIndx = this.orders.findIndex((obj => obj.product == product.id));
+          this.orders[oIndx].qty = qtyold + 1;
+          this.orders[oIndx].subtotal = subold + product.listprice;
+          this.orders[oIndx].taxes = this.orders[oIndx].tax / 100 * this.orders[oIndx].subtotal;
+          this.subtotal = this.subtotal + product!.listprice!;
+          this.tax = this.tax + (this.orders[oIndx].tax / 100 * product!.listprice!);
+          this.calculateTotal();
+        }
+      }
+      
+      if (!avail){
+        const data = {
+          order_id: this.posid,
+          qty: 1,
+          price_unit: product.listprice,
+          subtotal: product.listprice,
+          product: product.id,
+          product_name: product.name,
+          tax: taxes,
+          taxes: taxes/100 * product!.listprice!,
+          isStock: product.isStock,
+          user: this.globals.userid
+        };
         this.subtotal = this.subtotal + product!.listprice!;
-        this.tax = this.tax + (this.orders[oIndx].tax / 100 * product!.listprice!);
+        this.tax = this.tax + taxes/100 * product!.listprice!;
+        this.orders.push(data);
         this.calculateTotal();
       }
+    }else{
+      this.qopService.getProd(product.id, this.warehouseid)
+        .subscribe({
+          next: (qop) => {
+            if(this.qopss[0].partner=='') this.qopss.splice(0,1);
+            for(let x=0;x<qop.length;x++){
+              if(!qop[x].partner){
+                this.qopss.push({id:qop[x].id,partner:'No Supplier',
+                qop:qop[x].qop,product:qop[x].product,part_id:''});
+              }else{
+                this.qopss.push({id:qop[x].id,partner:qop[x].partner.name,
+                qop:qop[x].qop,product:qop[x].product,part_id:qop[x].partner._id});
+              }
+            }
+            this.isqop = true;
+          },error: (e) => console.error(e)
+        })
     }
-    const data = {
-      order_id: this.posid,
-      qty: 1,
-      price_unit: product.listprice,
-      subtotal: product.listprice,
-      product: product.id,
-      product_name: product.name,
-      tax: taxes,
-      taxes: taxes/100 * product!.listprice!,
-      isStock: product.isStock,
-      user: this.globals.userid
-    };
-    if (!avail){
-      this.subtotal = this.subtotal + product!.listprice!;
-      this.tax = this.tax + taxes/100 * product!.listprice!;
-      this.orders.push(data);
-      this.calculateTotal();
-    }    
+  }    
+
+  insertQop(qops: any, index: number){
+    this.productService.get(qops.product)
+      .subscribe({
+        next: (pro) => {
+          let avail = false;
+          let taxes = 0;
+          if(pro.taxout) taxes = pro.taxout.tax;
+          for (let x=0; x < this.orders.length; x++){
+            if(pro.id == this.orders[x].product && qops.part_id == this.orders[x].partner){
+              avail = true;
+              let qtyold = this.orders[x].qty;
+              let subold = this.orders[x].subtotal;
+              let oIndx = this.orders.findIndex((obj => obj.product == pro.id && obj.partner == qops.part_id));
+              this.orders[oIndx].qty = qtyold + 1;
+              this.orders[oIndx].subtotal = subold + pro.listprice;
+              this.orders[oIndx].taxes = this.orders[oIndx].tax / 100 * this.orders[oIndx].subtotal;
+              this.subtotal = this.subtotal + pro!.listprice!;
+              this.tax = this.tax + (this.orders[oIndx].tax / 100 * pro!.listprice!);
+              this.qopss = [{partner:''}];
+              this.isqop = false;
+              this.calculateTotal();
+            }
+          }
+          if(!avail){
+            const data = {
+              order_id: this.posid,
+              qty: 1,
+              price_unit: pro.listprice,
+              subtotal: pro.listprice,
+              product: pro.id,
+              product_name: pro.name,
+              partner: qops.part_id,
+              tax: taxes,
+              taxes: taxes/100 * pro!.listprice!,
+              isStock: pro.isStock,
+              user: this.globals.userid
+            };
+            this.subtotal = this.subtotal + pro!.listprice!;
+            this.tax = this.tax + taxes/100 * pro!.listprice!;
+            this.orders.push(data);
+            this.qopss = [{partner:''}];
+            this.isqop = false;
+            this.calculateTotal();
+          }
+        },error:(e) => console.error(e)
+      })
   }
 
   startPay(): void{
