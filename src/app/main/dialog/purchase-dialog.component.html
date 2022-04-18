@@ -52,6 +52,79 @@
       </td>
     </tr>
   </table>-->
+
+ 
+  <table class="table-new">
+    <tr>
+      <th class="th-new" style="border-left:1px solid #ccc;" fxFlex="20%">Product</th>
+      <th class="th-new" fxFlex="10%">Qty</th>
+      <th class="th-new" fxFlex="20%">Harga Satuan</th>
+      <th class="th-new" fxFlex="15%">Diskon</th>
+      <th class="th-new" fxFlex="15%">Pajak</th>
+      <th class="th-new" fxFlex="20%">Subtotal</th>
+    </tr>
+    <tr>
+      <td class="td-new" style="border-left:1px solid #ddd;" fxFlex="20%"><input class="inputs" placeholder="+ TAMBAH" [(ngModel)]="term"/></td>
+      <td class="td-new" fxFlex="10%"><input class="inputs"/></td>
+      <td class="td-new" fxFlex="20%"><input class="inputs"/></td>
+      <td class="td-new" fxFlex="15%"><input class="inputs"/></td>
+      <td class="td-new" fxFlex="15%"><input class="inputs"/></td>
+      <td class="td-new" fxFlex="20%"><input class="inputs"/></td>
+    </tr>
+  </table>
+
+  <ul>
+    <li class="list-group-item category"
+      *ngFor="let product of products|filter:term; let i1 = index"
+      [class.active]="i1 == currentIndex1"
+      (click)="getProd(product, i1)">
+      {{ product.name }}
+    </li>
+  </ul>
+
+  <mat-table #table [dataSource]="dataSource" class="mat-table">
+  <ng-container matColumnDef="product">
+    <th class="th-style" fxFlex="20%" mat-header-cell *matHeaderCellDef>Product</th>
+    <td class="tr-style" fxFlex="20%" mat-cell *matCellDef="let datas">
+      {{datas.product}}
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="qty">
+    <th class="th-style" fxFlex="10%" mat-header-cell *matHeaderCellDef>Qty</th>
+    <td class="tr-style" fxFlex="10%" mat-cell *matCellDef="let datas">
+      {{datas.qty}}
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="price_unit">
+    <th class="th-style" fxFlex="20%" mat-header-cell *matHeaderCellDef>Harga Satuan</th>
+    <td class="tr-style" fxFlex="20%" mat-cell *matCellDef="let datas">
+      {{datas.price_unit}}
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="discount">
+    <th class="th-style" fxFlex="15%" mat-header-cell *matHeaderCellDef>Diskon</th>
+    <td class="tr-style" fxFlex="15%" mat-cell *matCellDef="let datas">
+      {{datas.discount}}
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="tax">
+    <th class="th-style" fxFlex="15%" mat-header-cell *matHeaderCellDef>Pajak</th>
+    <td class="tr-style" fxFlex="15%" mat-cell *matCellDef="let datas">
+      {{datas.tax}}
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="subtotal">
+    <th class="th-style" fxFlex="20%" mat-header-cell *matHeaderCellDef>Subtotal</th>
+    <td class="tr-style" fxFlex="20%" mat-cell *matCellDef="let datas">
+      {{datas.subtotal}}
+    </td>
+  </ng-container>
+
+  <!--<tr mat-header-row *matHeaderRowDef="displayedColumns" class="tableHeader"></tr>-->
+  <tr mat-row class="tableRow" 
+      *matRowDef="let row; columns: displayedColumns;"
+  ></tr>
+</mat-table>
 </div>
 
 <div class="width-100" fxLayout="row" fxLayoutAlign="space-between center">

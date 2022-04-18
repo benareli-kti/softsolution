@@ -43,6 +43,9 @@ export class ProductService {
   findAllStock(): Observable<Product[]> {
     return this.http.get<Product[]>(`${baseUrl}/stock`);
   }
+  findAllActiveStock(): Observable<Product[]> {
+    return this.http.get<Product[]>(`${baseUrl}/activestock`);
+  }
   findByDesc(name: any): Observable<Product[]> {
     return this.http.get<Product[]>(`${baseUrl}?name=${name}`);
   }

@@ -1,3 +1,6 @@
+@import url('https://fonts.googleapis.com/css2?family=Aleo:wght@300;400;700&display=swap')
+@import url('https://fonts.googleapis.com/css2?family=Anek+Bangla:wght@300;600;800&display=swap')
+
 ::ng-deep .mat-form-field-underline
   display: none
 
@@ -125,6 +128,31 @@ table.sjs-table > tr:first-child > td
 table.sjs-table > tr > td
   padding: 1pt 4pt
 
+.table-new
+  margin-top: 30pt
+  background: #fff
+  font-size: 1.2em
+  width: 100%
+  display: flex
+  flex-direction: column
+
+  .th-new
+    color: #333
+    background: #eee
+    font-size: .7em
+    font-family: 'Anek Bangla', sans-serif
+    text-align: center
+    border-right: 1px solid #ccc
+    border-top: 1px solid #ccc
+
+  .td-new
+    border-right: 1px solid #ddd
+    border-top: 1px dashed #ccc
+    padding: 4pt 0pt 0pt 0pt
+    text-align: left
+    font-size: .8em
+
+
 mat-table
   background: #fff
   font-size: 1.2em
@@ -234,6 +262,22 @@ input[type=file]::file-selector-button
   letter-spacing: 1pt
   border: 0
 
+ul
+  position: fixed
+  top: 10%
+  z-index: 999
+  width: 20%
+  padding-left: 10pt
+  background: #fff
+  border-radius: 10pt
+  box-shadow: 5px 5px 20px 1px #dedede
+
+  li
+    list-style-type: none
+    text-align: left
+    padding: 4pt
+    border-bottom: 2px dashed #ddd
+
 .input_50
   width: 47%
   text-align: left
@@ -307,3 +351,6 @@ $layout-breakpoint-small: 800px
 
   .paddingstock
     padding: 0pt 10pt
+
+  ul
+    top: 45%
