@@ -59,17 +59,17 @@
       <th class="th-new" style="border-left:1px solid #ccc;" fxFlex="20%">Product</th>
       <th class="th-new" fxFlex="10%">Qty</th>
       <th class="th-new" fxFlex="20%">Harga Satuan</th>
-      <th class="th-new" fxFlex="15%">Diskon</th>
-      <th class="th-new" fxFlex="15%">Pajak</th>
-      <th class="th-new" fxFlex="20%">Subtotal</th>
+      <th class="th-new" fxFlex="10%">Diskon</th>
+      <th class="th-new" fxFlex="10%">Pajak</th>
+      <th class="th-new" fxFlex="30%">Subtotal</th>
     </tr>
     <tr>
       <td class="td-new" style="border-left:1px solid #ddd;" fxFlex="20%"><input class="inputs" placeholder="+ TAMBAH" [(ngModel)]="term"/></td>
       <td class="td-new" fxFlex="10%"><input class="inputs"/></td>
       <td class="td-new" fxFlex="20%"><input class="inputs"/></td>
-      <td class="td-new" fxFlex="15%"><input class="inputs"/></td>
-      <td class="td-new" fxFlex="15%"><input class="inputs"/></td>
-      <td class="td-new" fxFlex="20%"><input class="inputs"/></td>
+      <td class="td-new" fxFlex="10%"><input class="inputs"/></td>
+      <td class="td-new" fxFlex="10%"><input class="inputs"/></td>
+      <td class="td-new" fxFlex="30%"><input class="inputs"/></td>
     </tr>
   </table>
 
@@ -102,14 +102,14 @@
     </td>
   </ng-container>
   <ng-container matColumnDef="discount">
-    <th class="th-style" fxFlex="15%" mat-header-cell *matHeaderCellDef>Diskon</th>
-    <td class="tr-style" fxFlex="15%" mat-cell *matCellDef="let datas">
+    <th class="th-style" fxFlex="10%" mat-header-cell *matHeaderCellDef>Diskon</th>
+    <td class="tr-style" fxFlex="10%" mat-cell *matCellDef="let datas">
       {{datas.discount}}
     </td>
   </ng-container>
   <ng-container matColumnDef="tax">
-    <th class="th-style" fxFlex="15%" mat-header-cell *matHeaderCellDef>Pajak</th>
-    <td class="tr-style" fxFlex="15%" mat-cell *matCellDef="let datas">
+    <th class="th-style" fxFlex="10%" mat-header-cell *matHeaderCellDef>Pajak</th>
+    <td class="tr-style" fxFlex="10%" mat-cell *matCellDef="let datas">
       {{datas.tax}}
     </td>
   </ng-container>
@@ -117,6 +117,12 @@
     <th class="th-style" fxFlex="20%" mat-header-cell *matHeaderCellDef>Subtotal</th>
     <td class="tr-style" fxFlex="20%" mat-cell *matCellDef="let datas">
       {{datas.subtotal}}
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="action">
+    <th class="th-style" fxFlex="10%" mat-header-cell *matHeaderCellDef>Aksi</th>
+    <td class="tr-style" fxFlex="10%" mat-cell *matCellDef="let datas">
+      Edit
     </td>
   </ng-container>
 

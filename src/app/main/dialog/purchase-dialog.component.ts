@@ -38,7 +38,7 @@ export class PurchaseDialogComponent implements OnInit {
 
   //Table
   displayedColumns: string[] = 
-  ['product', 'qty', 'price_unit', 'discount', 'tax', 'subtotal'];
+  ['product', 'qty', 'price_unit', 'discount', 'tax', 'subtotal', 'action'];
   dataSource = new MatTableDataSource<any>();
   datas?: any;
 
@@ -73,8 +73,8 @@ export class PurchaseDialogComponent implements OnInit {
         this.a = 1;
       }
     this.currDescription = this.data.description;*/
-    this.datas = [{product:"FT PENDO",qty:1,price_unit:10}]
-    this.dataSource = this.datas;
+    this.datas = [{product:"",qty:"",price_unit:""}]
+    this.dataSource.data = this.datas;
     this.checkRole();
   }
 
@@ -129,19 +129,13 @@ export class PurchaseDialogComponent implements OnInit {
 
   getProd(product: Product, index: number): void {
     this.currentIndex1 = index;
+    if(this.datas[0].product=='') this.datas.splice(0,1);
     const dataPush = {
       id: product.id, product: product.name, qty: 1,
-        price_unit: product.cost, subtotal: product.cost
+        price_unit: product.cost ?? 0, subtotal: product.cost ?? 0
     }
     this.datas.push(dataPush);
-    //this.datas = [{product:"BABI",qty:1},{product:"FT PENDO",qty:1}]
-    //if(this.datas[0].product=='') this.datas.splice(0,1);
-    this.check();
-  }
-
-  check(): void {
-    this.dataSource = this.datas;
-    console.log(this.datas, this.dataSource);
+    this.dataSource.data = this.datas;
   }
 
   closeDialog() {
