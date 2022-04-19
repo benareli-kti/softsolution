@@ -8,6 +8,8 @@ import { Log } from 'src/app/models/log.model';
 import { LogService } from 'src/app/services/log.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
+import { Id } from 'src/app/models/id.model';
+import { IdService } from 'src/app/services/id.service';
 import { Stockmove } from 'src/app/models/stockmove.model';
 import { StockmoveService } from 'src/app/services/stockmove.service';
 import { Qof } from 'src/app/models/qof.model';
@@ -37,6 +39,8 @@ export class StockMoveDialogComponent implements OnInit {
   datname?: string;
   warehouseid?: any;
   partnerid?: any;
+  transid?: string;
+  prefixes?: string;
   datqty=0; qin=0; qout=0; qqof=0; datcost=0;
 
   products?: Product[];
@@ -44,6 +48,7 @@ export class StockMoveDialogComponent implements OnInit {
   partners?: Partner[];
 
   a = 0; b = 0;
+  x = 0;
   isUpdated = 'update';
   currDescription?: string;
   log = 0;
@@ -52,6 +57,7 @@ export class StockMoveDialogComponent implements OnInit {
     public dialogRef: MatDialogRef<StockMoveDialogComponent>,
     private _snackBar: MatSnackBar,
     private globals: Globals,
+    private idService: IdService,
     private logService: LogService,
     private productService: ProductService,
     private partnerService: PartnerService,
@@ -97,24 +103,51 @@ export class StockMoveDialogComponent implements OnInit {
     if(!this.warehouseid || this.warehouseid == null){
       this._snackBar.open("Gudang (*) tidak boleh kosong!", "Tutup", {duration: 5000});
     }else{
-      const dataSM = {
-        user: this.globals.userid,
-        product: this.data,
-        partner: this.partnerid ?? "null",
-        warehouse: this.warehouseid,
-        qin: this.datqty ?? 0,
-        cost: this.datcost ?? 0,
-        meth: this.globals.cost_general
-      };
-      this.stockmoveService.create(dataSM)
+      this.idService.getAll()
         .subscribe({
-          next: (res) => {
-            if(!this.globals.cost_general) this.qop();
-            else this.closeDialog();
+          next: (ids) => {
+            if(ids[0]!.transfer_id! < 10) this.prefixes = '00000';
+            else if(ids[0]!.transfer_id! < 100) this.prefixes = '0000';
+            else if(ids[0]!.transfer_id! < 1000) this.prefixes = '000';
+            else if(ids[0]!.transfer_id! < 10000) this.prefixes = '00';
+            else if(ids[0]!.transfer_id! < 100000) this.prefixes = '0';
+            this.x = ids[0]!.transfer_id!;
+            this.transid = "TRANS"+new Date().getFullYear().toString().substr(-2)+
+            '0'+(new Date().getMonth() + 1).toString().slice(-2)+
+            this.prefixes+ids[0]!.transfer_id!.toString();
+            this.createSM(ids[0].id);
           },
           error: (e) => console.error(e)
-        }); 
+      });
     }
+  }
+
+  createSM(ids: string): void {
+    const dataSM = {
+      trans_id: this.transid,
+      user: this.globals.userid,
+      product: this.data,
+      partner: this.partnerid ?? "null",
+      warehouse: this.warehouseid,
+      qin: this.datqty ?? 0,
+      cost: this.datcost ?? 0,
+      meth: this.globals.cost_general
+    };
+    console.log(dataSM);
+    this.stockmoveService.create(dataSM)
+      .subscribe({
+        next: (res) => {
+          const transfer_ids = {
+            transfer_id: this.x + 1
+          };
+          this.idService.update(ids, transfer_ids)
+            .subscribe({
+              next: (res) => {
+                this.qop();
+              },error: (e) => console.error(e)
+            });
+        },error: (e) => console.error(e)
+      }); 
   }
   
   qop(): void{

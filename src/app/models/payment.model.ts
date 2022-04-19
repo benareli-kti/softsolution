@@ -1,5 +1,6 @@
 export class Payment {
 	id?: any;
+    pay_id?: string;
 	order_id?: string;
 	amount_total?: number;
 	payment1?: number;

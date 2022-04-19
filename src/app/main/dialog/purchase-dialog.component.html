@@ -65,7 +65,7 @@
     </tr>
     <tr>
       <td class="td-new" style="border-left:1px solid #ddd;" fxFlex="20%">
-        <button class="btn-rainbow btn-rainbow17" (click)="onF()">{{btn}}</button><input class="inputs width-75" placeholder="{{ph}}" [(ngModel)]="term"/></td>
+        <input class="inputs width-100" (focus)="onF()" placeholder="{{ph}}" [(ngModel)]="term"/></td>
       <td class="td-new" fxFlex="10%"><input class="inputs width-100" [(ngModel)]="datqty"/></td>
       <td class="td-new" fxFlex="20%"><input class="inputs width-100" [(ngModel)]="datcost"/></td>
       <td class="td-new" fxFlex="10%"><input class="inputs width-100" [(ngModel)]="datdisc"/></td>

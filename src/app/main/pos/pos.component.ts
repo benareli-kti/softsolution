@@ -84,6 +84,7 @@ export class PosComponent {
 
   term: string;
   posid?: string;
+  payid?: string;
   prefixes?: string;
 
   isRightShow = false;
@@ -469,11 +470,9 @@ export class PosComponent {
               .subscribe({
                 next: (res) => {
                   this.openPayment();
-                },
-                error: (e) => console.error(e)
+                },error: (e) => console.error(e)
               });
-          },
-          error: (e) => console.error(e)
+          },error: (e) => console.error(e)
       });
     }else{
       this._snackBar.open("Order Kosong", "Tutup", {duration: 5000});
@@ -504,58 +503,71 @@ export class PosComponent {
     if(!this.globals.pos_session_id || this.globals.pos_session_id == null
       || this.globals.pos_session_id==''){ this.sess_id = "null" }
       else{ this.sess_id = this.globals.pos_session_id};
-    const payments = {
-      session: this.sess_id,
-      order_id: this.posid,
-      amount_total: this.total,
-      payment1: res.payment1,
-      pay1method: res.pay1Type,
-      payment2: res.payment2,
-      pay2method: res.pay2Type,
-      change: res.change,
-      changeMethod: "tunai"
-    };
-    this.paymentService.create(payments)
+    this.idService.getAll()
       .subscribe({
-        next: (res) => {
-          this.createPOS(res.id);
-        },
-        error: (e) => console.error(e)
-      })
+        next: (ids) => {
+          if(ids[0]!.pay_id! < 10) this.prefixes = '00000';
+          else if(ids[0]!.pay_id! < 100) this.prefixes = '0000';
+          else if(ids[0]!.pay_id! < 1000) this.prefixes = '000';
+          else if(ids[0]!.pay_id! < 10000) this.prefixes = '00';
+          else if(ids[0]!.pay_id! < 100000) this.prefixes = '0';
+          let y = ids[0]!.pay_id!;
+          this.payid = "PAY"+new Date().getFullYear().toString().substr(-2)+
+            '0'+(new Date().getMonth() + 1).toString().slice(-2)+
+          this.prefixes+ids[0]!.pos_id!.toString();
+          const pay_ids = {
+            pay_id: y + 1
+          };
+          const payments = {pay_id: this.payid,session: this.sess_id,order_id: this.posid,
+            amount_total: this.total,payment1: res.payment1,pay1method: res.pay1Type,
+            payment2: res.payment2,pay2method: res.pay2Type,change: res.change,changeMethod: "tunai"
+          };
+          this.paymentService.create(payments)
+            .subscribe({
+              next: (res) => {
+                this.idService.update(ids[0].id, pay_ids)
+                  .subscribe({
+                    next: (res) => {
+                      this.createPOS(res.id);
+                    },error: (e) => console.error(e)
+                  });
+              },error: (e) => console.error(e)
+            })
+        },error: (e) => console.error(e)
+    });
   }
 
   createPOS(payment: any): void {
-    if(!this.partnerid || this.partnerid == null
-      || this.partnerid=='') this.partnerid = "null";
     if(!this.globals.pos_session_id || this.globals.pos_session_id == null
       || this.globals.pos_session_id==''){ this.sess_id = "null" }
-      else{ this.sess_id = this.globals.pos_session_id};
-    if(!this.tax || this.tax==null) this.tax = 0;
-      const posdata = {
-        order_id: this.posid,
-        disc_type: this.discType,
-        discount: this.disc,
-        amount_tax: this.tax,
-        amount_untaxed: this.subtotal,
-        amount_total: this.total,
-        user: this.globals.userid,
-        payment: payment,
-        session: this.sess_id
-      };
-      this.posService.create(posdata)
-        .subscribe({
-          next: (res) => {
-            this.rollingDetail(res.id);
-          },
-          error: (e) => console.error(e)
-        });
+      else{ this.sess_id = this.globals.pos_session_id}
+    const posdata = {
+      order_id: this.posid,
+      partner: this.partnerid ?? "null",
+      disc_type: this.discType,
+      discount: this.disc,
+      amount_tax: this.tax ?? 0,
+      amount_untaxed: this.subtotal,
+      amount_total: this.total,
+      user: this.globals.userid,
+      payment: payment,
+      session: this.sess_id
+    };
+    console.log(posdata);
+    this.posService.create(posdata)
+      .subscribe({
+        next: (res) => {
+          this.rollingDetail(res.id);
+        },error: (e) => console.error(e)
+      });
     
   }
 
   rollingDetail(orderid: string): void {
     if(this.orders.length>0){
       this.createDetail(orderid, this.orders[0].qty, this.orders[0].price_unit,
-        this.orders[0].subtotal, this.orders[0].product, this.orders[0].isStock.toString());
+        this.orders[0].subtotal, this.orders[0].product, this.orders[0].partner,
+        this.orders[0].isStock.toString());
     }else{
       this.total = 0;
       this.subtotal = 0;
@@ -565,11 +577,12 @@ export class PosComponent {
   }
 
   createDetail(orderid:string, qty:number, price_unit:number, 
-    subtotal:number, product:string, isStock:string): void {
+    subtotal:number, product:string, partner:string, isStock:string): void {
       const posdetail = {
         ids: orderid,
         order_id: this.posid,
         qty: qty,
+        partner: partner,
         price_unit: price_unit,
         subtotal: subtotal,
         product: product,

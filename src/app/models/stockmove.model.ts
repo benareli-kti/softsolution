@@ -1,5 +1,6 @@
 export class Stockmove {
 	id?: any;
+	trans_id?: string;
 	user?: string;
 	product?: string;
 	partner?: string;

@@ -36,14 +36,13 @@ export class PurchaseDialogComponent implements OnInit {
   products?: Product[];
   supplierString?: string;
   warehouseString?: string;
-  ph?: string;
-  btn?: string;
   datid?: string;
   datqty?: number;
   datcost?: number;
   datdisc?: number;
   dattax?: number;
   datsub?: number;
+  ph?: string = 'Ketik disini untuk cari';
 
   //Table
   displayedColumns: string[] = 
@@ -73,20 +72,8 @@ export class PurchaseDialogComponent implements OnInit {
 
 
   ngOnInit() {
-    /*if (this.data.active == true){
-        this.statusActive = 'true';
-        this.isChecked = true;
-        this.a = 0;
-      } else {
-        this.statusActive = 'false';
-        this.isChecked = false;
-        this.a = 1;
-      }
-    this.currDescription = this.data.description;*/
     this.datas = [{product:"",qty:"",price_unit:""}]
     this.dataSource.data = this.datas;
-    this.ph = "<< Klik untuk tambah";
-    this.btn = "+";
     this.checkRole();
   }
 
@@ -142,7 +129,7 @@ export class PurchaseDialogComponent implements OnInit {
   getProd(product: Product, index: number): void {
     this.currentIndex1 = index;
     this.onF();
-    //this.term = product.name;
+    this.term = product.name!.toString();
     this.ph = product.name;
     this.datid = product.id;
     this.datqty = 1;
@@ -162,19 +149,12 @@ export class PurchaseDialogComponent implements OnInit {
     }
     this.datas.push(dataPush);
     this.dataSource.data = this.datas;
-    this.ph = "<< Klik untuk tambah";
-    this.btn = "+";
+    this.ph = "Ketik disini untuk cari";
+    this.term = "";
   }
 
   onF(): void {
     this.openDropDown = !this.openDropDown;
-    if(this.openDropDown){
-      this.ph = "KETIK untuk mencari";
-      this.btn = "x";
-    }else{
-      this.ph = "<< Klik untuk tambah";
-      this.btn = "+";
-    }
   }
 
   closeDialog() {
