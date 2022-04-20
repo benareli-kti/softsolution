@@ -381,6 +381,7 @@ export class PosComponent {
         this.calculateTotal();
       }
     }else{
+      this.qopss = [{partner:''}];
       this.qopService.getProd(product.id, this.warehouseid)
         .subscribe({
           next: (qop) => {
@@ -408,11 +409,11 @@ export class PosComponent {
           let taxes = 0;
           if(pro.taxout) taxes = pro.taxout.tax;
           for (let x=0; x < this.orders.length; x++){
-            if(pro.id == this.orders[x].product && qops.part_id == this.orders[x].partner){
+            if(qops.id == this.orders[x].qop){
               avail = true;
               let qtyold = this.orders[x].qty;
               let subold = this.orders[x].subtotal;
-              let oIndx = this.orders.findIndex((obj => obj.product == pro.id && obj.partner == qops.part_id));
+              let oIndx = this.orders.findIndex(obj => obj.qop == qops.id);
               this.orders[oIndx].qty = qtyold + 1;
               this.orders[oIndx].subtotal = subold + pro.listprice;
               this.orders[oIndx].taxes = this.orders[oIndx].tax / 100 * this.orders[oIndx].subtotal;
@@ -432,11 +433,13 @@ export class PosComponent {
               product: pro.id,
               product_name: pro.name,
               partner: qops.part_id,
+              qop: qops.id,
               tax: taxes,
               taxes: taxes/100 * pro!.listprice!,
               isStock: pro.isStock,
               user: this.globals.userid
             };
+            console.log(data);
             this.subtotal = this.subtotal + pro!.listprice!;
             this.tax = this.tax + taxes/100 * pro!.listprice!;
             this.orders.push(data);
@@ -553,7 +556,6 @@ export class PosComponent {
       payment: payment,
       session: this.sess_id
     };
-    console.log(posdata);
     this.posService.create(posdata)
       .subscribe({
         next: (res) => {
@@ -567,7 +569,7 @@ export class PosComponent {
     if(this.orders.length>0){
       this.createDetail(orderid, this.orders[0].qty, this.orders[0].price_unit,
         this.orders[0].subtotal, this.orders[0].product, this.orders[0].partner,
-        this.orders[0].isStock.toString());
+        this.orders[0].isStock.toString(), this.orders[0].qop);
     }else{
       this.total = 0;
       this.subtotal = 0;
@@ -577,7 +579,7 @@ export class PosComponent {
   }
 
   createDetail(orderid:string, qty:number, price_unit:number, 
-    subtotal:number, product:string, partner:string, isStock:string): void {
+    subtotal:number, product:string, partner:string, isStock:string, qop: string): void {
       const posdetail = {
         ids: orderid,
         order_id: this.posid,
@@ -587,8 +589,10 @@ export class PosComponent {
         subtotal: subtotal,
         product: product,
         isStock: isStock,
+        qop: qop,
         warehouse: this.warehouseid,
-        user: this.globals.userid
+        user: this.globals.userid,
+        meth: this.globals.cost_general
       };
       this.posDetailService.create(posdetail)
         .subscribe({

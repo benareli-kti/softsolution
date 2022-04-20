@@ -56,7 +56,8 @@
    				<li class="list-group-item category"
       			  *ngFor="let qops of qopss; let i1 = index"
       			  [class.active]="i1 == currentIndex1"
-      			  (click)="insertQop(qops, i1)">
+      			  (click)="insertQop(qops, i1)"
+      			  style="padding:10pt;">
       			  <div fxLayout="row" fxLayoutAlign="start start">
       			  	<div style="width:35pt;">{{qops.qop}}</div>
       			  	<div>{{qops.partner}}</div>

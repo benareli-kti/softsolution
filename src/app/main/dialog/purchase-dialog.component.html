@@ -77,7 +77,7 @@
 
   <ul class="prod" *ngIf="openDropDown">
     <li class="list-group-item category"
-      *ngFor="let product of products|filter:term; let i1 = index"
+      *ngFor="let product of products | filter:term; let i1 = index"
       [class.active]="i1 == currentIndex1"
       (click)="getProd(product, i1)">
       {{ product.name }}
