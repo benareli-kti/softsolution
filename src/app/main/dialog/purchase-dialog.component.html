@@ -66,12 +66,12 @@
     <tr>
       <td class="td-new" style="border-left:1px solid #ddd;" fxFlex="20%">
         <input class="inputs width-100" (focus)="onF()" placeholder="{{ph}}" [(ngModel)]="term"/></td>
-      <td class="td-new" fxFlex="10%"><input class="inputs width-100" [(ngModel)]="datqty"/></td>
-      <td class="td-new" fxFlex="20%"><input class="inputs width-100" [(ngModel)]="datcost"/></td>
+      <td class="td-new" fxFlex="10%"><input class="inputs width-100" (blur)="calculate()" [(ngModel)]="datqty"/></td>
+      <td class="td-new" fxFlex="20%"><input class="inputs width-100" (blur)="calculate()" [(ngModel)]="datcost"/></td>
       <td class="td-new" fxFlex="10%"><input class="inputs width-100" [(ngModel)]="datdisc"/></td>
       <td class="td-new" fxFlex="10%"><input class="inputs width-100" [(ngModel)]="dattax"/></td>
       <td class="td-new" fxFlex="20%"><input disabled class="inputs width-100" [(ngModel)]="datsub"/></td>
-      <td class="td-new btn-rainbow" style="text-align:center;" fxFlex="10%"><div style="width:100%;" (click)="pushing()">TAMBAH</div></td>
+      <td class="td-new btn-rainbow" style="text-align:center;" fxFlex="10%"><button style="width:100%;background:none;border:none;color:white;" (click)="pushing()">TAMBAH</button></td>
     </tr>
   </table>
 
@@ -116,8 +116,8 @@
     </td>
   </ng-container>
   <ng-container matColumnDef="subtotal">
-    <th class="th-style" fxFlex="20%" mat-header-cell *matHeaderCellDef>Subtotal</th>
-    <td class="tr-style" fxFlex="20%" mat-cell *matCellDef="let datas">
+    <th class="th-style text-center" fxFlex="20%" mat-header-cell *matHeaderCellDef>Subtotal</th>
+    <td class="tr-style text-right" fxFlex="20%" mat-cell *matCellDef="let datas">
       {{datas.subtotal}}
     </td>
   </ng-container>
@@ -133,6 +133,32 @@
       *matRowDef="let row; columns: displayedColumns;"
   ></tr>
 </mat-table>
+  <table class="table-new text-right" style="margin-top:2pt;">
+    <tr>
+      <td fxFlex="50%"></td>
+      <td class="td-total" fxFlex="20%">Subtotal</td>
+      <td class="td-total" fxFlex="20%">Rp. xxx</td>
+      <td class="td-total" fxFlex="10%"></td>
+    </tr>
+    <tr>
+      <td fxFlex="50%"></td>
+      <td class="td-total" fxFlex="20%">Disc</td>
+      <td class="td-total" fxFlex="20%">Rp. xxx</td>
+      <td class="td-total" fxFlex="10%"></td>
+    </tr>
+    <tr>
+      <td fxFlex="50%"></td>
+      <td class="td-total" fxFlex="20%">Tax</td>
+      <td class="td-total" fxFlex="20%">Rp. xxx</td>
+      <td class="td-total" fxFlex="10%"></td>
+    </tr>
+    <tr>
+      <td fxFlex="50%"></td>
+      <td class="td-total" fxFlex="20%"><b>TOTAL</b></td>
+      <td class="td-total" fxFlex="20%"><b>Rp. xxx</b></td>
+      <td class="td-total" fxFlex="10%"></td>
+    </tr>
+  </table>
 </div>
 
 <div class="width-100" fxLayout="row" fxLayoutAlign="space-between center">

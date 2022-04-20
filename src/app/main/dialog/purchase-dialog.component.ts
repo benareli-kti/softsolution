@@ -144,17 +144,27 @@ export class PurchaseDialogComponent implements OnInit {
     const dataPush = {
       id: this.datid, product: this.ph, qty: this.datqty,
         price_unit: this.datcost ?? 0, tax: this.dattax ?? 0,
-        subtotal: (this.datqty! * this.datcost!) +
-      (this.dattax!/100 * (this.datqty! * this.datcost!)) ?? 0
+        subtotal: (this.datqty ?? 0) * (this.datcost ?? 0) +
+      ((this.dattax ?? 0)/100 * ((this.datqty ?? 0) * (this.datcost ?? 0))) ?? 0
     }
     this.datas.push(dataPush);
     this.dataSource.data = this.datas;
     this.ph = "Ketik disini untuk cari";
     this.term = "";
+    this.datqty = undefined;
+    this.datcost = undefined;
+    this.datdisc = undefined;
+    this.dattax = undefined;
+    this.datsub = undefined;
   }
 
   onF(): void {
     this.openDropDown = !this.openDropDown;
+  }
+
+  calculate(): void {
+    this.datsub =  (this.datqty ?? 0) * (this.datcost ?? 0) +
+      ((this.dattax ?? 0)/100 * ((this.datqty ?? 0) * (this.datcost ?? 0))) ?? 0
   }
 
   closeDialog() {
