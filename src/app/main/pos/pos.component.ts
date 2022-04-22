@@ -127,8 +127,8 @@ export class PosComponent {
   width = 0;
   @HostListener('window:resize', ['$event'])
     onResize() {
-      if(window.innerWidth>=1024){this.cols = 3; this.rowHeight = "60pt";}
-      else if(window.innerWidth<1024&&window.innerWidth>=800){this.cols = 3; this.rowHeight = "60pt";}
+      if(window.innerWidth>=1024){this.cols = 4; this.rowHeight = "60pt";}
+      else if(window.innerWidth<1024&&window.innerWidth>=800){this.cols = 4; this.rowHeight = "60pt";}
       else if(window.innerWidth<800){this.cols = 1; this.rowHeight = "25pt";}
     }
 
@@ -164,8 +164,8 @@ export class PosComponent {
     this.retrieveData();
     this.checkRole();
     this.qopss = [{partner:''}];
-    if(window.innerWidth>=1024){this.cols = 3; this.rowHeight = "60pt";}
-    else if(window.innerWidth<1024&&window.innerWidth>=800){this.cols = 3; this.rowHeight = "60pt";}
+    if(window.innerWidth>=1024){this.cols = 4; this.rowHeight = "60pt";}
+    else if(window.innerWidth<1024&&window.innerWidth>=800){this.cols = 4; this.rowHeight = "60pt";}
     else if(window.innerWidth<800){this.cols = 1; this.rowHeight = "25pt";}
   }
 
