@@ -67,9 +67,6 @@ export class SettingComponent implements OnInit {
       })
   }
 
-  onPosShift(enable: boolean) {if(enable){this.pos_shift=true;}else{this.pos_shift=false;}}
-  onCGShift(enable: boolean) {if(enable){this.cost_general=true;}else{this.cost_general=false;}}
-
   save1(): void {
     const save1 = {
       comp_name: this.comp_name,
@@ -93,13 +90,10 @@ export class SettingComponent implements OnInit {
     }
 
     this.settingService.update(this.settingid, save2)
-        .subscribe({
-          next: (res) => {
-            this.retrieveSetting();
-            this.reloadPage();
-          },
-          error: (e) => console.error(e)
-        });
+      .subscribe(res => {
+        this.retrieveSetting();
+        this.reloadPage();
+      });
   }
 
   save3(): void {

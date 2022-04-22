@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
+import { Product } from 'src/app/models/product.model';
+import { ProductService } from 'src/app/services/product.service';
 
 @Injectable({providedIn: 'root'})
 
@@ -13,4 +15,5 @@ export class Globals{
     pos_open?: boolean;
     pos_session?: string;
     pos_session_id?: string;
+    product_global?: Product[];
 }

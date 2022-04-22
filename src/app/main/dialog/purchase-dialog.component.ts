@@ -91,38 +91,25 @@ export class PurchaseDialogComponent implements OnInit {
 
   retrieveLog(): void {
     this.logService.getAll()
-      .subscribe({
-        next: (logPR) => {
-          logPR = logPR.filter
-          (dataPR => dataPR.brand === this.data.id)
-          this.log = logPR.length;
-        },
-        error: (e) => console.error(e)
+      .subscribe(logPR => {
+        logPR = logPR.filter(dataPR => dataPR.brand === this.data.id);
+        this.log = logPR.length;
       })
   }
 
   retrieveData(): void {
     this.partnerService.findAllActiveSupplier()
-      .subscribe({
-        next: (dataSup) => {
-          this.partners = dataSup;
-        },
-        error: (e) => console.error(e)
+      .subscribe(dataSup => {
+        this.partners = dataSup;
       })
     this.warehouseService.findAllActive()
-      .subscribe({
-        next: (datawh) => {
-          this.warehouses = datawh;
-          this.warehouseString = datawh[0].id;
-        },
-        error: (e) => console.error(e)
+      .subscribe(datawh => {
+        this.warehouses = datawh;
+        this.warehouseString = datawh[0].id;
       })
     this.productService.findAllActiveStock()
-      .subscribe({
-        next: (dataProd) => {
-          this.products = dataProd;
-        },
-        error: (e) => console.error(e)
+      .subscribe(dataProd => {
+        this.products = dataProd;
       })
   }
 

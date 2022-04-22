@@ -10,7 +10,6 @@ import { ProductService } from 'src/app/services/product.service';
   styleUrls: ['./dialog.component.sass']
 })
 export class PosdetailDialogComponent implements OnInit {
-  
   isChecked = false;
   statusActive?: string;
   isTU = false;

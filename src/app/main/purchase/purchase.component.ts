@@ -69,19 +69,13 @@ export class PurchaseComponent implements OnInit {
 
   retrieveData(): void {
     this.partnerService.findAllActiveSupplier()
-      .subscribe({
-        next: (dataSup) => {
-          this.partners = dataSup;
-        },
-        error: (e) => console.error(e)
+      .subscribe(dataSup => {
+        this.partners = dataSup;
       })
     this.warehouseService.findAllActive()
-      .subscribe({
-        next: (datawh) => {
-          this.warehouses = datawh;
-          this.warehouseString = datawh[0].id;
-        },
-        error: (e) => console.error(e)
+      .subscribe(datawh => {
+        this.warehouses = datawh;
+        this.warehouseString = datawh[0].id;
       })
   }
 
@@ -94,11 +88,9 @@ export class PurchaseComponent implements OnInit {
     const dialog = this.dialog.open(PurchaseDialogComponent, {
       width: '100vw',
       height: '100%',
-      disableClose: true,
-      
+      disableClose: true,   
     })
       .afterClosed()
       .subscribe(() => this.retrieveData());
   }
-
 }

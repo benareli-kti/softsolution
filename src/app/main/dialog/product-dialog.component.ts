@@ -226,64 +226,37 @@ export class ProductDialogComponent implements OnInit {
 
   retrieveProduct(): void {
     this.productCatService.findAllActive()
-      .subscribe({
-        next: (dataPC) => {
-          this.productcats = dataPC;
-        },
-        error: (e) => console.error(e)
+      .subscribe(dataPC => {
+        this.productcats = dataPC;
       });
-
     this.brandService.findAllActive()
-      .subscribe({
-        next: (dataB) => {
-          this.brands = dataB;
-        },
-        error: (e) => console.error(e)
+      .subscribe(dataB => {
+        this.brands = dataB;
       });
-
     this.taxService.getAll()
-      .subscribe({
-        next: (tax) => {
-          this.taxs = tax;
-        },
-        error: (e) => console.error(e)
+      .subscribe(tax => {
+        this.taxs = tax;
       });
-
     this.qopService.findByProduct(this.data)
-      .subscribe({
-        next: (dataQop) => {
-          this.dataSource.data = dataQop;
-        },
-        error: (e) => console.error(e)
+      .subscribe(dataQop => {
+        this.dataSource.data = dataQop;
       })
-
     this.partnerService.findAllActiveSupplier()
-      .subscribe({
-        next: (dataSup) => {
-          this.partners = dataSup;
-        },
-        error: (e) => console.error(e)
+      .subscribe(dataSup => {
+        this.partners = dataSup;
       })
     this.stockmoveService.getProd(this.datid)
-      .subscribe({
-        next: (sm) => {
-          if(sm.length>0) this.isDis = true;
-            console.log(this.datid);
-        },
-        error: (e) => console.error(e)
+      .subscribe(sm => {
+        if(sm.length>0) this.isDis = true;
       })
   }
 
   retrieveLog(): void {
     this.logService.getAll()
-      .subscribe({
-        next: (logPR) => {
-          logPR = logPR.filter
-          (dataPR => dataPR.product === this.data)
+      .subscribe(logPR => {
+          logPR = logPR.filter(dataPR => dataPR.product === this.data);
           this.log = logPR.length;
-        },
-        error: (e) => console.error(e)
-      })
+        })
   }
 
   closeDialog() {
@@ -432,11 +405,8 @@ export class ProductDialogComponent implements OnInit {
         user: this.globals.userid
       };
       this.productService.update(this.data, dataProd)
-        .subscribe({
-          next: (res) => {
-            this.closeDialog();
-          },
-          error: (e) => console.error(e)
+        .subscribe(res => {
+          this.closeDialog();
         });
     }
   }
@@ -469,12 +439,9 @@ export class ProductDialogComponent implements OnInit {
         user: this.globals.userid
       };
       this.productService.create(data)
-        .subscribe({
-          next: (res) => {
-            this.closeDialog();
-          },
-          error: (e) => console.error(e)
-      });
+        .subscribe(res => {
+          this.closeDialog();
+        });
     }
   }
 }

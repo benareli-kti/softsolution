@@ -15,14 +15,6 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
   styleUrls: ['./dialog.component.sass']
 })
 export class PartnerDialogComponent implements OnInit {
-  @Input() currentPartner: Partner = {
-    code: '',
-    name: '',
-    phone: '',
-    isCustomer: false,
-    isSupplier: false,
-    active: true
-  };
   isChecked = false;
   isCustomer = false;
   isSupplier = false;
@@ -94,14 +86,9 @@ export class PartnerDialogComponent implements OnInit {
 
   retrieveLog(): void {
     this.logService.getAll()
-      .subscribe({
-        next: (logPA) => {
-          logPA = logPA.filter
-          (dataPR => dataPR.partner === this.datid)
-          console.log(logPA);
-          this.log = logPA.length;
-        },
-        error: (e) => console.error(e)
+      .subscribe(logPA => {
+        logPA = logPA.filter(dataPR => dataPR.partner === this.datid);
+        this.log = logPA.length;
       })
   }
 
@@ -147,11 +134,8 @@ export class PartnerDialogComponent implements OnInit {
         user: this.globals.userid
       };
       this.partnerService.update(this.data.id, data)
-        .subscribe({
-          next: (res) => {
-            this.closeDialog();
-          },
-          error: (e) => console.error(e)
+        .subscribe(res => {
+          this.closeDialog();
         });
     }
   }
@@ -171,11 +155,8 @@ export class PartnerDialogComponent implements OnInit {
         user: this.globals.userid
       };
       this.partnerService.create(data)
-        .subscribe({
-          next: (res) => {
-            this.closeDialog();
-          },
-          error: (e) => console.error(e)
+        .subscribe(res => {
+          this.closeDialog();
         });
     }
   }

@@ -5,6 +5,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoreModule } from '@ngrx/store';
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
+import { NgxPrintModule } from 'ngx-print';
 
 import { LayoutModule } from '@angular/cdk/layout';
 import { FlexLayoutModule } from "@angular/flex-layout";
@@ -25,6 +26,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatGridListModule } from '@angular/material/grid-list';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { AppRoutingModule } from './app-routing.module';
 
 import { NgxFileDragDropModule } from "ngx-file-drag-drop";
@@ -56,6 +58,7 @@ import { PosdetailDialogComponent } from './main/dialog/posdetail-dialog.compone
 import { PaymentDialogComponent } from './main/dialog/payment-dialog.component';
 import { UploadDialogComponent } from './main/dialog/upload-dialog.component';
 import { PurchaseDialogComponent } from './main/dialog/purchase-dialog.component';
+import { PrintposDialogComponent } from './main/dialog/printpos-dialog.component';
 
 @NgModule({
   declarations: [
@@ -83,7 +86,8 @@ import { PurchaseDialogComponent } from './main/dialog/purchase-dialog.component
     PosdetailDialogComponent,
     PaymentDialogComponent,
     UploadDialogComponent,
-    PurchaseDialogComponent
+    PurchaseDialogComponent,
+    PrintposDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -94,6 +98,7 @@ import { PurchaseDialogComponent } from './main/dialog/purchase-dialog.component
     BrowserAnimationsModule,
     StoreModule,
     Ng2SearchPipeModule,
+    NgxPrintModule,
 
     LayoutModule,
     FlexLayoutModule,
@@ -114,6 +119,7 @@ import { PurchaseDialogComponent } from './main/dialog/purchase-dialog.component
     MatSlideToggleModule,
     MatButtonToggleModule,
     MatGridListModule,
+    MatProgressBarModule,
 
     NgxFileDragDropModule
   ],

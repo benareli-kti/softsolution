@@ -14,11 +14,6 @@ import { LogService } from 'src/app/services/log.service';
   styleUrls: ['./dialog.component.sass']
 })
 export class WarehouseDialogComponent implements OnInit {
-  @Input() currentWarehouse: Warehouse = {
-    short: '',
-    name: '',
-    active: false
-  };
   isChecked = false;
   statusActive?: string;
   isMain = false;
@@ -72,13 +67,9 @@ export class WarehouseDialogComponent implements OnInit {
 
   retrieveLog(): void {
     this.logService.getAll()
-      .subscribe({
-        next: (logPR) => {
-          logPR = logPR.filter
-          (dataPR => dataPR.warehouse === this.data.id)
-          this.log = logPR.length;
-        },
-        error: (e) => console.error(e)
+      .subscribe(logPR => {
+        logPR = logPR.filter(dataPR => dataPR.warehouse === this.data.id);
+        this.log = logPR.length;
       })
   }
 
@@ -119,11 +110,8 @@ export class WarehouseDialogComponent implements OnInit {
         user: this.globals.userid
       };
       this.warehouseService.update(this.data.id, data)
-        .subscribe({
-          next: (res) => {
-            this.closeDialog();
-          },
-          error: (e) => console.error(e)
+        .subscribe(res => {
+          this.closeDialog();
         });
     }
   }

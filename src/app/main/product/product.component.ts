@@ -2,18 +2,19 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormsModule, FormControl } from '@angular/forms';
 import { Observable, of } from "rxjs";
 import { Globals } from 'src/app/global';
-import { Product } from 'src/app/models/product.model';
-import { Productcat } from 'src/app/models/productcat.model';
-import { Brand } from 'src/app/models/brand.model';
-import { ProductService } from 'src/app/services/product.service';
-import { ProductCatService } from 'src/app/services/product-cat.service';
-import { BrandService } from 'src/app/services/brand.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort, SortDirection } from '@angular/material/sort';
 import { MatSelectChange, MatSelectModule } from '@angular/material/select';
 import { MatDialog } from '@angular/material/dialog';
 import { DataFilter, filterOption } from 'src/app/models/datafilter';
+
+import { Product } from 'src/app/models/product.model';
+import { ProductService } from 'src/app/services/product.service';
+import { Productcat } from 'src/app/models/productcat.model';
+import { ProductCatService } from 'src/app/services/product-cat.service';
+import { Brand } from 'src/app/models/brand.model';
+import { BrandService } from 'src/app/services/brand.service';
 import { ProductDialogComponent } from '../dialog/product-dialog.component';
 import { StockMoveDialogComponent } from '../dialog/stockmove-dialog.component';
 import { UploadDialogComponent } from '../dialog/upload-dialog.component';
@@ -24,6 +25,7 @@ import { UploadDialogComponent } from '../dialog/upload-dialog.component';
   styleUrls: ['../style/main.component.sass']
 })
 export class ProductComponent implements OnInit {
+  loaded: boolean = false;
   products?: Product[];
   productcats?: Productcat[];
   brands?: Brand[];
@@ -76,10 +78,11 @@ export class ProductComponent implements OnInit {
   retrieveProduct(): void {
     /*prod = prod.filter
     (data => data.active === true)*/
-
+    this.loaded = true;
     if(this.isIM || this.isAdm){
       this.productService.getAll()
         .subscribe(prod => {
+          this.loaded = false;
           this.products = prod;
           this.dataSource.data = prod;
           this.dataSource.paginator = this.paginator;
@@ -88,28 +91,21 @@ export class ProductComponent implements OnInit {
     }else{
       this.productService.findAllActive()
         .subscribe(prod => {
+          this.loaded = false;
           this.products = prod;
           this.dataSource.data = prod;
           this.dataSource.paginator = this.paginator;
           this.dataSource.sort = this.sort;
       });
     }
-
     this.productCatService.findAllActive()
-      .subscribe({
-        next: (dataPC) => {
-          this.productcats = dataPC;
-        },
-        error: (e) => console.error(e)
-    });
-
+      .subscribe(dataPC => {
+        this.productcats = dataPC;
+      });
     this.brandService.findAllActive()
-      .subscribe({
-        next: (dataB) => {
-          this.brands = dataB;
-        },
-        error: (e) => console.error(e)
-    });
+      .subscribe(dataB => {
+        this.brands = dataB;
+      });
   }
 
   searchActive(): void {
@@ -203,5 +199,4 @@ export class ProductComponent implements OnInit {
   toggleDisplay() {
     this.isShow = !this.isShow;
   }
-
 }

@@ -7,9 +7,11 @@ import { MatSelectChange, MatSelectModule } from '@angular/material/select';
 import { MatDialog } from '@angular/material/dialog';
 import { MatGridList } from '@angular/material/grid-list';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { NgxPrintModule } from 'ngx-print';
 
 import { PosdetailDialogComponent } from '../dialog/posdetail-dialog.component';
 import { PaymentDialogComponent } from '../dialog/payment-dialog.component';
+import { PrintposDialogComponent } from '../dialog/printpos-dialog.component';
 
 import { Id } from 'src/app/models/id.model';
 import { IdService } from 'src/app/services/id.service';
@@ -57,6 +59,8 @@ export class PosComponent {
   orders: Array<any> = [];
   cols: number;
   rowHeight: string;
+
+  loaded: boolean = false;
 
   baseUrl = BaseURL.BASE_URL;
 
@@ -175,6 +179,7 @@ export class PosComponent {
   }
 
   retrieveData(): void{
+    this.loaded = true;
     this.productCatService.findAllActive()
       .subscribe({
         next: (dataPC) => {
@@ -189,12 +194,6 @@ export class PosComponent {
           this.brands = dataB;
         },
         error: (e) => console.error(e)
-    });
-
-    this.productService.findAllActive()
-      .subscribe(prod => {
-        this.products = prod;
-        this.oriprods = this.products;
     });
 
     this.warehouseService.findAllActive()
@@ -215,6 +214,13 @@ export class PosComponent {
     this.partnerService.findAllActiveCustomer()
       .subscribe(partn => {
         this.partners = partn;
+    });
+
+    this.productService.findAllActive()
+      .subscribe(prod => {
+        this.products = prod;
+        this.oriprods = this.products;
+        this.loaded = false;
     });
 
     this.currentIndex1 = -1;
@@ -238,7 +244,7 @@ export class PosComponent {
   }
 
   clearFilter(): void{
-    this.products = this.oriprods;
+    this.products = this.globals.product_global;
     this.currentIndex1 = -1;
     this.currentIndex2 = -1;
   }
@@ -496,7 +502,27 @@ export class PosComponent {
     })
       .afterClosed()
       .subscribe(res => {
-        this.paying(res);
+        this.openPrint(res);
+      });
+  }
+
+  openPrint(orderid: string) {
+    const dialog = this.dialog.open(PrintposDialogComponent, {
+      width: '98%',
+      height: '90%',
+      disableClose: true,
+      data: {
+        orders: this.orders,
+        posid: this.posid,
+        subtotal: this.subtotal,
+        tax: this.tax,
+        discount: this.discount,
+        total: this.total
+      }
+    })
+      .afterClosed()
+      .subscribe(res => {
+        this.rollingDetail(orderid);
       });
   }
 
@@ -507,36 +533,32 @@ export class PosComponent {
       || this.globals.pos_session_id==''){ this.sess_id = "null" }
       else{ this.sess_id = this.globals.pos_session_id};
     this.idService.getAll()
-      .subscribe({
-        next: (ids) => {
-          if(ids[0]!.pay_id! < 10) this.prefixes = '00000';
-          else if(ids[0]!.pay_id! < 100) this.prefixes = '0000';
-          else if(ids[0]!.pay_id! < 1000) this.prefixes = '000';
-          else if(ids[0]!.pay_id! < 10000) this.prefixes = '00';
-          else if(ids[0]!.pay_id! < 100000) this.prefixes = '0';
-          let y = ids[0]!.pay_id!;
-          this.payid = "PAY"+new Date().getFullYear().toString().substr(-2)+
-            '0'+(new Date().getMonth() + 1).toString().slice(-2)+
-          this.prefixes+ids[0]!.pos_id!.toString();
-          const pay_ids = {
-            pay_id: y + 1
-          };
-          const payments = {pay_id: this.payid,session: this.sess_id,order_id: this.posid,
-            amount_total: this.total,payment1: res.payment1,pay1method: res.pay1Type,
-            payment2: res.payment2,pay2method: res.pay2Type,change: res.change,changeMethod: "tunai"
-          };
-          this.paymentService.create(payments)
-            .subscribe({
-              next: (res) => {
-                this.idService.update(ids[0].id, pay_ids)
-                  .subscribe({
-                    next: (res) => {
-                      this.createPOS(res.id);
-                    },error: (e) => console.error(e)
-                  });
-              },error: (e) => console.error(e)
+      .subscribe(ids => {
+        if(ids[0]!.pay_id! < 10) this.prefixes = '00000';
+        else if(ids[0]!.pay_id! < 100) this.prefixes = '0000';
+        else if(ids[0]!.pay_id! < 1000) this.prefixes = '000';
+        else if(ids[0]!.pay_id! < 10000) this.prefixes = '00';
+        else if(ids[0]!.pay_id! < 100000) this.prefixes = '0';
+        let y = ids[0]!.pay_id!;
+        this.payid = "PAY"+new Date().getFullYear().toString().substr(-2)+
+          '0'+(new Date().getMonth() + 1).toString().slice(-2)+
+        this.prefixes+ids[0]!.pos_id!.toString();
+        const pay_ids = {
+          pay_id: y + 1
+        };
+        const payments = {pay_id: this.payid,session: this.sess_id,order_id: this.posid,
+          amount_total: this.total,payment1: res.payment1,pay1method: res.pay1Type,
+          payment2: res.payment2,pay2method: res.pay2Type,change: res.change,changeMethod: "tunai"
+        };
+        this.paymentService.create(payments)
+          .subscribe(res => {
+            this.idService.update(ids[0].id, pay_ids)
+              .subscribe(res => {
+                this.createPOS(res.id);
+                  //this.openPrint();
+                });
             })
-        },error: (e) => console.error(e)
+        
     });
   }
 
@@ -559,7 +581,8 @@ export class PosComponent {
     this.posService.create(posdata)
       .subscribe({
         next: (res) => {
-          this.rollingDetail(res.id);
+          this.openPrint(res.id);
+          //this.rollingDetail(res.id);
         },error: (e) => console.error(e)
       });
     

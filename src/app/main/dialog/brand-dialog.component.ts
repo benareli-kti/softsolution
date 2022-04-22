@@ -14,10 +14,6 @@ import { LogService } from 'src/app/services/log.service';
   styleUrls: ['./dialog.component.sass']
 })
 export class BrandDialogComponent implements OnInit {
-  @Input() currentBrand: Brand = {
-    description: '',
-    active: false
-  };
   isChecked = false;
   statusActive?: string;
   isIU = false;
@@ -66,13 +62,8 @@ export class BrandDialogComponent implements OnInit {
 
   retrieveLog(): void {
     this.logService.getAll()
-      .subscribe({
-        next: (logPR) => {
-          logPR = logPR.filter
-          (dataPR => dataPR.brand === this.data.id)
-          this.log = logPR.length;
-        },
-        error: (e) => console.error(e)
+      .subscribe(logPR => {
+        logPR = logPR.filter(dataPR => dataPR.brand === this.data.id);
       })
   }
 
@@ -108,11 +99,8 @@ export class BrandDialogComponent implements OnInit {
         user: this.globals.userid
       };
       this.brandService.update(this.data.id, data)
-        .subscribe({
-          next: (res) => {
-            this.closeDialog();
-          },
-          error: (e) => console.error(e)
+        .subscribe(res => {
+          this.closeDialog();
         });
     }
   }

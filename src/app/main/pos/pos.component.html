@@ -1,4 +1,13 @@
-<div class="container">
+<div class="loaders" *ngIf="loaded">
+	<!--<div class="gooey">
+  		<span class="dot"></span>
+  		<div class="dots">
+    		<span></span><span></span><span></span>
+  		</div>
+	</div>-->
+	<div class="loader"></div>
+</div>
+<div class="container" *ngIf="!loaded">
 	<div fxLayout="column" class="left-container">
 		<div >
 			<button class="session" *ngIf="pos_open" [routerLink]="'/pos-session'">Kembali ke sesi</button>
@@ -164,6 +173,8 @@
     		</div>
     	</div>
     	<div class="paynow flex20" (click)="startPay()">PAY</div>
+    	<!--<button class="paynow flex20" printSectionId="biji" ngxPrint>
+    	PAY</button>-->
     </div>
 </div>
 

@@ -14,11 +14,6 @@ import { LogService } from 'src/app/services/log.service';
   styleUrls: ['./dialog.component.sass']
 })
 export class ProductcatDialogComponent implements OnInit {
-  @Input() currentProdCat: Productcat = {
-    catid: '',
-    description: '',
-    active: false
-  };
   isChecked = false;
   statusActive?: string;
   isIU = false;
@@ -68,13 +63,9 @@ export class ProductcatDialogComponent implements OnInit {
 
   retrieveLog(): void {
     this.logService.getAll()
-      .subscribe({
-        next: (logPR) => {
-          logPR = logPR.filter
-          (dataPR => dataPR.category === this.data.id)
-          this.log = logPR.length;
-        },
-        error: (e) => console.error(e)
+      .subscribe(logPR => {
+        logPR = logPR.filter(dataPR => dataPR.category === this.data.id);
+        this.log = logPR.length;
       })
   }
 
@@ -115,11 +106,8 @@ export class ProductcatDialogComponent implements OnInit {
         user: this.globals.userid
       };
       this.productCatService.update(this.data.id, data)
-        .subscribe({
-          next: (res) => {
-            this.closeDialog();
-          },
-          error: (e) => console.error(e)
+        .subscribe(res => {
+          this.closeDialog();
         });
     }
   }

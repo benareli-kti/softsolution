@@ -29,11 +29,6 @@ import { WarehouseService } from 'src/app/services/warehouse.service';
   styleUrls: ['./dialog.component.sass']
 })
 export class StockMoveDialogComponent implements OnInit {
-  @Input() currentStockMove: Stockmove = {
-    product: '',
-    partner: '',
-    warehouse: ''
-  };
   isChecked = false;
   statusActive?: string;
   datname?: string;
@@ -82,20 +77,14 @@ export class StockMoveDialogComponent implements OnInit {
 
   retrieveData(): void {
     this.warehouseService.findAllActive()
-      .subscribe({
-        next: (dataPC) => {
-          this.warehouses = dataPC;
-          this.warehouseid = dataPC[0].id;
-        },
-        error: (e) => console.error(e)
+      .subscribe(dataPC => {
+        this.warehouses = dataPC;
+        this.warehouseid = dataPC[0].id;
       });
 
     this.partnerService.findAllActiveSupplier()
-      .subscribe({
-        next: (dataB) => {
-          this.partners = dataB;
-        },
-        error: (e) => console.error(e)
+      .subscribe(dataB => {
+        this.partners = dataB;
       });
   }
   
@@ -104,21 +93,18 @@ export class StockMoveDialogComponent implements OnInit {
       this._snackBar.open("Gudang (*) tidak boleh kosong!", "Tutup", {duration: 5000});
     }else{
       this.idService.getAll()
-        .subscribe({
-          next: (ids) => {
-            if(ids[0]!.transfer_id! < 10) this.prefixes = '00000';
-            else if(ids[0]!.transfer_id! < 100) this.prefixes = '0000';
-            else if(ids[0]!.transfer_id! < 1000) this.prefixes = '000';
-            else if(ids[0]!.transfer_id! < 10000) this.prefixes = '00';
-            else if(ids[0]!.transfer_id! < 100000) this.prefixes = '0';
-            this.x = ids[0]!.transfer_id!;
-            this.transid = "TRANS"+new Date().getFullYear().toString().substr(-2)+
-            '0'+(new Date().getMonth() + 1).toString().slice(-2)+
-            this.prefixes+ids[0]!.transfer_id!.toString();
-            this.createSM(ids[0].id);
-          },
-          error: (e) => console.error(e)
-      });
+        .subscribe(ids => {
+          if(ids[0]!.transfer_id! < 10) this.prefixes = '00000';
+          else if(ids[0]!.transfer_id! < 100) this.prefixes = '0000';
+          else if(ids[0]!.transfer_id! < 1000) this.prefixes = '000';
+          else if(ids[0]!.transfer_id! < 10000) this.prefixes = '00';
+          else if(ids[0]!.transfer_id! < 100000) this.prefixes = '0';
+          this.x = ids[0]!.transfer_id!;
+          this.transid = "TRANS"+new Date().getFullYear().toString().substr(-2)+
+          '0'+(new Date().getMonth() + 1).toString().slice(-2)+
+          this.prefixes+ids[0]!.transfer_id!.toString();
+          this.createSM(ids[0].id);
+        });
     }
   }
 
@@ -135,18 +121,14 @@ export class StockMoveDialogComponent implements OnInit {
     };
     console.log(dataSM);
     this.stockmoveService.create(dataSM)
-      .subscribe({
-        next: (res) => {
-          const transfer_ids = {
-            transfer_id: this.x + 1
-          };
-          this.idService.update(ids, transfer_ids)
-            .subscribe({
-              next: (res) => {
-                this.qop();
-              },error: (e) => console.error(e)
-            });
-        },error: (e) => console.error(e)
+      .subscribe(res => {
+        const transfer_ids = {
+          transfer_id: this.x + 1
+        };
+        this.idService.update(ids, transfer_ids)
+          .subscribe(res => {
+            this.qop();
+          });
       }); 
   }
   
@@ -159,11 +141,8 @@ export class StockMoveDialogComponent implements OnInit {
       cost: this.datcost
     }
     this.qopService.createUpdate(qop)
-      .subscribe({
-        next: (res) => {
-          this.closeDialog();
-        },
-        error: (e) => console.error(e)
+      .subscribe(res => {
+        this.closeDialog();
       })
   }
 

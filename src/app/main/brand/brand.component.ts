@@ -107,15 +107,12 @@ export class BrandComponent implements OnInit {
         user: this.globals.userid
       };
       this.brandService.create(data)
-        .subscribe({
-          next: (res) => {
-            this.retrieveBrand();
-            this.brandadd = {
-              description: '',
-              active: true
-            };
-          },
-          error: (e) => console.error(e)
+        .subscribe(res => {
+          this.retrieveBrand();
+          this.brandadd = {
+            description: '',
+            active: true
+          };
         });
     }
   }

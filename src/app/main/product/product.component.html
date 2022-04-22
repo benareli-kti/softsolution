@@ -1,3 +1,12 @@
+<div class="loaders" *ngIf="loaded">
+  <!--<div class="gooey">
+      <span class="dot"></span>
+      <div class="dots">
+        <span></span><span></span><span></span>
+      </div>
+  </div>-->
+  <div class="loader" style="margin-right:160pt;"></div>
+</div>
 <div class="flex-container">
 	<div class="flex-left">
 		<div *ngIf="isIM || isAdm" (click)="openQuickAdd()" class="submit-form quick_add">

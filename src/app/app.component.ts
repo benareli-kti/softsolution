@@ -1,4 +1,4 @@
-import { Component, ViewChild, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
+import { Component, ViewChild, HostBinding, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
 import { Globals } from 'src/app/global';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
@@ -26,7 +26,6 @@ export class AppComponent implements OnInit, AfterViewInit{
   isTU = false;
   isAdm = false;
   isPOS = false;
-
   pos_shift?: boolean;
 
   isProductShow = false;
@@ -148,13 +147,9 @@ export class AppComponent implements OnInit, AfterViewInit{
         if (res.matches) {
           this.maxWidth = true;
           this.wiggle();
-          //this.sidenav.mode = 'over';
-          //this.sidenav.close();
         } else {
           this.maxWidth = false;
           this.wiggle();
-          //this.sidenav.mode = 'side';
-          //this.sidenav.open();
         }
       });
   }
@@ -173,8 +168,6 @@ export class AppComponent implements OnInit, AfterViewInit{
   }
 
   wiggle() {
-    //this.sidenav.mode = 'over';
-    //this.sidenav.close();
     if(this.layPOS && this.maxWidth){
       this.sidenav.mode = 'over';
       this.sidenav.close();

@@ -112,17 +112,14 @@ export class WarehouseComponent implements OnInit {
         user: this.globals.userid
       };
       this.warehouseService.create(data)
-        .subscribe({
-          next: (res) => {
-            this.retrieveWarehouse();
-            this.warehouseadd = {
-              name: '',
-              short: '',
-              main: false,
-              active: true
-            };
-          },
-          error: (e) => console.error(e)
+        .subscribe(res => {
+          this.retrieveWarehouse();
+          this.warehouseadd = {
+            name: '',
+            short: '',
+            main: false,
+            active: true
+          };
         });
     }
   }
@@ -153,5 +150,4 @@ export class WarehouseComponent implements OnInit {
       .afterClosed()
       .subscribe(() => this.retrieveWarehouse());
   }
-
 }

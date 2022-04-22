@@ -12,10 +12,6 @@ import { LogService } from 'src/app/services/log.service';
   styleUrls: ['./dialog.component.sass']
 })
 export class PaymentDialogComponent implements OnInit {
-  /*@Input() currentPayment: Brand = {
-    description: '',
-    active: false
-  };*/
   isChecked = false;
   isTU = false;
   isTM = false;
@@ -45,11 +41,6 @@ export class PaymentDialogComponent implements OnInit {
   ){}
 
   ngOnInit() {
-    /*if (this.data.active == true){
-        this.statusActive = 'true';
-        this.isChecked = true;
-        this.a = 0;
-      } */
     this.countChange();
     this.checkRole();
   }
