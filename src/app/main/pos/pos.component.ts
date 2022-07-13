@@ -376,6 +376,8 @@ export class PosComponent {
           subtotal: product.listprice,
           product: product.id,
           product_name: product.name,
+          suom: product.suom.uom_name,
+          uom: product.suom._id,
           tax: taxes,
           taxes: taxes/100 * product!.listprice!,
           isStock: product.isStock,
@@ -438,6 +440,8 @@ export class PosComponent {
               subtotal: pro.listprice,
               product: pro.id,
               product_name: pro.name,
+              suom: pro.suom.uom_name,
+              uom: pro.suom._id,
               partner: qops.part_id,
               qop: qops.id,
               tax: taxes,
@@ -502,7 +506,8 @@ export class PosComponent {
     })
       .afterClosed()
       .subscribe(res => {
-        this.openPrint(res);
+        //this.openPrint(res);
+        this.paying(res);
       });
   }
 
@@ -522,6 +527,8 @@ export class PosComponent {
     })
       .afterClosed()
       .subscribe(res => {
+        //console.log (res);
+
         this.rollingDetail(orderid);
       });
   }
@@ -553,7 +560,7 @@ export class PosComponent {
         this.paymentService.create(payments)
           .subscribe(res => {
             this.idService.update(ids[0].id, pay_ids)
-              .subscribe(res => {
+              .subscribe(res2 => {
                 this.createPOS(res.id);
                   //this.openPrint();
                 });
@@ -592,7 +599,7 @@ export class PosComponent {
     if(this.orders.length>0){
       this.createDetail(orderid, this.orders[0].qty, this.orders[0].price_unit,
         this.orders[0].subtotal, this.orders[0].product, this.orders[0].partner,
-        this.orders[0].isStock.toString(), this.orders[0].qop);
+        this.orders[0].isStock.toString(), this.orders[0].qop, this.orders[0].uom);
     }else{
       this.total = 0;
       this.subtotal = 0;
@@ -601,12 +608,13 @@ export class PosComponent {
     }
   }
 
-  createDetail(orderid:string, qty:number, price_unit:number, 
-    subtotal:number, product:string, partner:string, isStock:string, qop: string): void {
+  createDetail(orderid:string, qty:number, price_unit:number, subtotal:number, 
+    product:string, partner:string, isStock:string, qop: string, uom: string): void {
       const posdetail = {
         ids: orderid,
         order_id: this.posid,
         qty: qty,
+        uom: uom,
         partner: partner,
         price_unit: price_unit,
         subtotal: subtotal,

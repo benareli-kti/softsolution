@@ -66,10 +66,10 @@ export class PaymentDialogComponent implements OnInit {
     }
   }
 
-  onPay2Change(val: string) {
-    this.pay2Type = val;
-    if(val=="bank"){
-      this.payment2 = this.data.total.toString();
+  onPay2Change(val2: string) {
+    this.pay2Type = val2;
+    if(val2=="bank"){
+      this.payment2 = (0-this.changeNum).toString();
       this.countChange();
     }
   }
@@ -99,6 +99,9 @@ export class PaymentDialogComponent implements OnInit {
       if(key=='X'){ 
         this.payment='';
         key='0';
+      }else if(key=='F'){
+        this.payment=(Number(this.data.total)).toString();
+        key='';
       }else if(key=='1k'){
         this.payment=(Number(this.payment)+1000).toString();
         key='';
@@ -130,6 +133,9 @@ export class PaymentDialogComponent implements OnInit {
       if(key=='X'){ 
         this.payment2='';
         key='0';
+      }else if(key=='F'){
+        this.payment2=(0-Number(this.changeNum)).toString();
+        key='';
       }else if(key=='1k'){
         this.payment2=(Number(this.payment2)+1000).toString();
         key='';

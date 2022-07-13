@@ -24,6 +24,7 @@ export class SettingComponent implements OnInit {
   settingid?: string;
   cost_general?: boolean = true;
   pos_shift?: boolean = false;
+  restaurant?: boolean = false;
   comp_name?: string;
   comp_addr?: string;
   comp_phone?: string;
@@ -58,6 +59,7 @@ export class SettingComponent implements OnInit {
         this.comp_phone = setting[0].comp_phone;
         this.comp_email = setting[0].comp_email;
         this.pos_shift = setting[0].pos_shift;
+        this.restaurant = setting[0].restaurant;
       })
     this.storeService.getAll()
       .subscribe(store => {
@@ -104,7 +106,8 @@ export class SettingComponent implements OnInit {
           this.retrieveSetting();
         }else{
           const save3 = {
-            pos_shift: this.pos_shift
+            pos_shift: this.pos_shift,
+            restaurant: this.restaurant,
           }
           this.settingService.update(this.settingid, save3)
             .subscribe({

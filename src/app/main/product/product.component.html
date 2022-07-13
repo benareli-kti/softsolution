@@ -65,6 +65,12 @@
       <a (click)="openDialog(products.id)">{{products.qoh}}</a>
     </td>
   </ng-container>
+  <ng-container matColumnDef="uom">
+    <th class="th-style" fxFlex="7%" mat-header-cell *matHeaderCellDef>Satuan</th>
+    <td class="tr-style" fxFlex="7%" mat-cell *matCellDef="let products">
+      <a (click)="openDialog(products.id)">{{products.suom.uom_name}}</a>
+    </td>
+  </ng-container>
   <ng-container matColumnDef="listprice">
     <th class="th-style" fxFlex="12%" mat-header-cell *matHeaderCellDef>Harga Jual</th>
     <td class="tr-style" fxFlex="12%" mat-cell *matCellDef="let products">
@@ -73,7 +79,7 @@
   </ng-container>
   <ng-container matColumnDef="category">
     <th class="th-style" fxFlex="15%" mat-header-cell *matHeaderCellDef mat-sort-header>Kategori</th>
-    <td class="tr-style" fxFlex="15%" mat-cell *matCellDef="let products">
+    <td class="tr-style" fxFlex="15%" mat-cell *matCellDef="let products" style="cursor: default;">
       {{products.category.description}}
     </td>
   </ng-container>
@@ -81,13 +87,13 @@
     <th class="th-style" fxFlex="15%" mat-header-cell *matHeaderCellDef>Merek</th>
     <td class="tr-style" fxFlex="15%" mat-cell *matCellDef="let products">
       <div *ngIf="!products.brand"></div>
-      <div *ngIf="products.brand">
+      <div *ngIf="products.brand" style="cursor: default;">
       {{products.brand.description}}</div>
     </td>
   </ng-container>
   <ng-container matColumnDef="stock">
-    <th class="th-style" fxFlex="50%" mat-header-cell *matHeaderCellDef>Aksi</th>
-    <td class="tr-style" fxFlex="50%" mat-cell *matCellDef="let products">
+    <th class="th-style" fxFlex="43%" mat-header-cell *matHeaderCellDef>Aksi</th>
+    <td class="tr-style" fxFlex="43%" mat-cell *matCellDef="let products">
       <div *ngIf="products.isStock == true">
         <a class="add_stock" (click)="openStockDialog(products.id)">Tambah Stock</a>
       </div>

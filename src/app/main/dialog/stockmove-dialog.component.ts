@@ -18,6 +18,8 @@ import { Qop } from 'src/app/models/qop.model';
 import { QopService } from 'src/app/services/qop.service';
 import { Product } from 'src/app/models/product.model';
 import { ProductService } from 'src/app/services/product.service';
+import { Uom } from 'src/app/models/uom.model';
+import { UomService } from 'src/app/services/uom.service';
 import { Partner } from 'src/app/models/partner.model';
 import { PartnerService } from 'src/app/services/partner.service';
 import { Warehouse } from 'src/app/models/warehouse.model';
@@ -32,8 +34,11 @@ export class StockMoveDialogComponent implements OnInit {
   isChecked = false;
   statusActive?: string;
   datname?: string;
+  datuom?: string;
+  datsuom?: string;
   warehouseid?: any;
   partnerid?: any;
+  uom_cat?: string;
   transid?: string;
   prefixes?: string;
   datqty=0; qin=0; qout=0; qqof=0; datcost=0;
@@ -41,6 +46,7 @@ export class StockMoveDialogComponent implements OnInit {
   products?: Product[];
   warehouses?: Warehouse[];
   partners?: Partner[];
+  uoms?: Uom[];
 
   a = 0; b = 0;
   x = 0;
@@ -56,6 +62,7 @@ export class StockMoveDialogComponent implements OnInit {
     private logService: LogService,
     private productService: ProductService,
     private partnerService: PartnerService,
+    private uomService: UomService,
     private warehouseService: WarehouseService,
     private stockmoveService: StockmoveService,
     private qofService: QofService,
@@ -65,13 +72,16 @@ export class StockMoveDialogComponent implements OnInit {
 
   ngOnInit() {
     this.retrieveProduct(this.data);
-    this.retrieveData();
   }
 
   retrieveProduct(id: string) {
     this.productService.get(id)
       .subscribe(prod => {
         this.datname = prod.name;
+        this.datuom = prod.suom._id;
+        this.datsuom = prod.suom.uom_name;
+        this.uom_cat = prod.suom.uom_cat;
+        this.retrieveData();
       });
   }
 
@@ -86,6 +96,11 @@ export class StockMoveDialogComponent implements OnInit {
       .subscribe(dataB => {
         this.partners = dataB;
       });
+    console.log(this.uom_cat);
+    this.uomService.getByCat(this.uom_cat)
+      .subscribe(dataUO => {
+        this.uoms = dataUO;
+      })
   }
   
   createData(): void{
@@ -117,6 +132,7 @@ export class StockMoveDialogComponent implements OnInit {
       warehouse: this.warehouseid,
       qin: this.datqty ?? 0,
       cost: this.datcost ?? 0,
+      uom: this.datuom,
       meth: this.globals.cost_general
     };
     console.log(dataSM);
@@ -138,6 +154,7 @@ export class StockMoveDialogComponent implements OnInit {
       partner: this.partnerid,
       warehouse: this.warehouseid,
       qop: this.datqty,
+      uom: this.datuom,
       cost: this.datcost
     }
     this.qopService.createUpdate(qop)

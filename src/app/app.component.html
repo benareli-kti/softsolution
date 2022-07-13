@@ -52,6 +52,10 @@
           <button mat-button class="menu-button" (click)="toggleProduct()" *ngIf="isLoggedIn && isIU">
             <span>Katalog Produk</span>
           </button>
+          <button mat-button class="menu-button" [routerLink]="'/product'" *ngIf="isLoggedIn && isProductShow">
+            <mat-icon class="mat-icon">keyboard_arrow_right</mat-icon>
+            <span>Produk</span>
+          </button>
           <button mat-button class="menu-button" [routerLink]="'/productcategory'" *ngIf="isLoggedIn && isProductShow">
             <mat-icon class="mat-icon">keyboard_arrow_right</mat-icon>
             <span>Kategori</span>
@@ -60,9 +64,9 @@
             <mat-icon class="mat-icon">keyboard_arrow_right</mat-icon>
             <span>Merek</span>
           </button>
-          <button mat-button class="menu-button" [routerLink]="'/product'" *ngIf="isLoggedIn && isProductShow">
+          <button mat-button class="menu-button" [routerLink]="'/uom'" *ngIf="isLoggedIn && isProductShow">
             <mat-icon class="mat-icon">keyboard_arrow_right</mat-icon>
-            <span>Produk</span>
+            <span>Satuan</span>
           </button>
           <button mat-button class="menu-button" [routerLink]="'/warehouse'" *ngIf="isLoggedIn && isProductShow">
             <mat-icon class="mat-icon">keyboard_arrow_right</mat-icon>

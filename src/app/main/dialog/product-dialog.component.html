@@ -81,7 +81,7 @@
       <div class="holder-row" style="margin-top:7pt;">
         <div class="descrip flex25 harga">Pajak Masuk</div>
         <div class="flex25">
-          <select class="inputs" [(ngModel)]="taxInString">
+          <select class="inputs" [(ngModel)]="taxinid">
             <option value=""></option>
             <option *ngFor="let tax of taxs" [value]="tax.id">
             {{ tax.name }}
@@ -90,7 +90,7 @@
         </div>
         <div class="descrip flex25 harga">Pajak Keluar</div>
         <div class="flex25">
-          <select class="inputs" [(ngModel)]="taxOutString">
+          <select class="inputs" [(ngModel)]="taxoutid">
             <option value=""></option>
             <option *ngFor="let tax of taxs" [value]="tax.id">
             {{ tax.name }}
@@ -139,6 +139,27 @@
             {{ partner.name }}
           </option>
         </select>
+      </div>
+
+      <div class="holder-row" style="margin-top:7pt;">
+        <div class="descrip flex25 harga">Satuan Jual</div>
+        <div class="flex25">
+          <select class="inputs" [(ngModel)]="datsuom">
+            <option value=""></option>
+            <option *ngFor="let uom of uoms" [value]="uom.id">
+            {{ uom.uom_name }}
+            </option>
+          </select>
+        </div>
+        <div class="descrip flex25 harga">Satuan Beli</div>
+        <div class="flex25">
+          <select class="inputs" [(ngModel)]="datpuom">
+            <option value=""></option>
+            <option *ngFor="let uom of uoms" [value]="uom.id">
+            {{ uom.uom_name }}
+            </option>
+          </select>
+        </div>
       </div>
     </div>
     

@@ -9,6 +9,7 @@ import { SettingComponent } from './backend/setting/setting.component';
 import { ProductCatComponent } from './main/product-cat/product-cat.component';
 import { BrandComponent } from './main/brand/brand.component';
 import { ProductComponent } from './main/product/product.component';
+import { UomComponent } from './main/uom/uom.component';
 import { WarehouseComponent } from './main/warehouse/warehouse.component';
 import { PartnerComponent } from './main/partner/partner.component';
 import { PurchaseComponent } from './main/purchase/purchase.component';
@@ -24,6 +25,7 @@ const routes: Routes = [
   { path: 'productcategory', component: ProductCatComponent },
   { path: 'brand', component: BrandComponent },
   { path: 'product', component: ProductComponent },
+  { path: 'uom', component: UomComponent },
   { path: 'warehouse', component: WarehouseComponent },
   { path: 'partner', component: PartnerComponent },
   { path: 'purchase', component: PurchaseComponent },

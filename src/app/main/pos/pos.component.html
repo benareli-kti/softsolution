@@ -17,7 +17,7 @@
     	</mat-form-field>
 		<button class="clear-filter" (click)="clearFilter()">Clear Filter</button>
 		<div class="filter">
-		Ketgori
+		Kategori
 		<ul>
       		<li class="list-group-item category"
         		*ngFor="let productcat of productcats; let i1 = index"
@@ -41,6 +41,17 @@
 
 	<!--cols="3"-->
 	<div class="center-container">
+		<div fxLayout="row" fxLayoutAlign="space-around center" style="margin-bottom: 5pt;">
+			<div *ngIf="pos_open" style="width: 150pt; padding-right: 5pt;">
+				<button class="session" style="height: 30pt;" [routerLink]="'/pos-session'">Kembali ke sesi</button>
+			</div>
+			<input type="text" class="inputs" style="width: 90%;" placeholder="Search data" [(ngModel)]="term">
+      
+			<!--<mat-form-field style="max-height: 40pt !important; width: 90%;">
+      			<input matInput type="text" class="form-control" style="text-align: center;" placeholder="Search data" [(ngModel)]="term">
+    		</mat-form-field>-->
+			<!--<button class="clear-filter" (click)="clearFilter()">Clear Filter</button>-->
+		</div>
        	<mat-grid-list 
        		[cols]="cols"
        		[rowHeight]="rowHeight">
@@ -138,7 +149,7 @@
       					<div fxLayout="row" fxLayoutAlign="space-between center">
       						<div (click)="openPosDetail(i3)" fxLayout="column" class="flex60" style="padding-right:3pt;">
         						{{ order.product_name }}
-        						<div>{{order.qty}} X {{order.price_unit}}</div>
+        						<div>{{order.qty}} {{order.suom}} X {{order.price_unit}}</div>
         					</div>
         					<div (click)="openPosDetail(i3)" fxLayout="column" class="flex30">
         						<div style="font-size:1.1em; text-align:right;padding-right:3pt;">{{order.subtotal | number}}</div>

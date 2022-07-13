@@ -22,8 +22,8 @@
       </div>
       <div class="payment-screen" [ngStyle]="{'border': borderchange}" (click)="pay1()">{{payment | number}}</div>
       
-      <div class="descrip" *ngIf="isPay2">Payment
-        <mat-button-toggle-group #group2="matButtonToggleGroup" [(value)]="pay2Type" (change)="onPay2Change(group.value)">
+      <div class="descrip" *ngIf="isPay2">Payment 2
+        <mat-button-toggle-group #group2="matButtonToggleGroup" [(value)]="pay2Type" (change)="onPay2Change(group2.value)">
           <mat-button-toggle value="tunai" aria-label="Tunai">
           Tunai
           </mat-button-toggle>
@@ -71,6 +71,9 @@
           <button class="calc" (click)="press('.')">.</button>
           <button class="calc" (click)="press('0')">0</button>
           <button class="calc" (click)="press('000')">000</button>
+          <button class="calc3" style="color:turquoise;" (click)="press('F')">FULL</button>
+        </div>
+        <div fxLayout="row">
           <button class="calc3" style="color:red;" (click)="press('X')">CLEAR</button>
         </div>
       </div>

@@ -78,10 +78,10 @@ export class UploadDialogComponent implements OnInit {
       this.data1 = [["kode","nama","phone","pelanggan","supplier"], ["CUST1","John Doe","0813","ya",""], 
         ["CUST2","Jane Doe","0817","ya","ya"],["CUST3","Jack Doe","0855","","ya"]];
     }else if(this.data=="product"){
-      this.data1 = [["sku","nama","deskripsi","tipe","hargajual","hargabatas","hpp","kategori","merek","pajakmasuk","pajakkeluar"], 
-      ["PROD001","Book 1","Author Mr X","barang","100000","","70000","category 1","brand 1","11","11"], 
-      ["PROD002","Book 2","","barang","90000","87500","60000","category 1","brand 2","11","11"],
-      ["SERV001","Servis 1","Servis Buku","jasa","50000","","","category 1","","",""]];
+      this.data1 = [["sku","nama","deskripsi","tipe","satuan_jual","satuan_beli","hargajual","hargabatas","hpp","kategori","merek","pajakmasuk","pajakkeluar"], 
+      ["PROD001","Book 1","Author Mr X","barang","Pcs","Pcs","100000","","70000","category 1","brand 1","11","11"], 
+      ["PROD002","Book 2","","barang","Pcs","Lusin","90000","87500","60000","category 1","brand 2","11","11"],
+      ["SERV001","Servis 1","Servis Buku","jasa","","","50000","","","category 1","","",""]];
     }
     this.success = false;
     this.alerted = false;

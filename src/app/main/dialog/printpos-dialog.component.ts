@@ -33,7 +33,7 @@ export class PrintposDialogComponent implements OnInit {
         this.botprice = prod.botprice;
     });*/
     //this.checkRole();
-    console.log(this.data);
+    //console.log(this.data);
   }
 
   closeDialog() {

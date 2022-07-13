@@ -56,47 +56,42 @@ export class AppComponent implements OnInit, AfterViewInit{
           this.layPOS = true;
           this.wiggle();
         }else if(event.url=="/pos-session"){
-          //if(this.globals.pos_open) this.router.navigate(['/pos-session']);
           this.rute = this.rute + ' | Sesi POS';
           this.layPOS = true;
           this.wiggle();
         }else if(event.url=="/purchase"){
-          //if(this.globals.pos_open) this.router.navigate(['/pos-session']);
           this.rute = this.rute + ' | Pembelian';
           this.layPOS = false;
           this.wiggle();
         }else if(event.url=="/partner"){
-          //if(this.globals.pos_open) this.router.navigate(['/pos-session']);
           this.rute = this.rute + ' | Pelanggan/Supplier';
           this.layPOS = false;
           this.wiggle();
         }else if(event.url=="/warehouse"){
-          //if(this.globals.pos_open) this.router.navigate(['/pos-session']);
           this.rute = this.rute + ' | Gudang';
           this.layPOS = false;
           this.wiggle();
         }else if(event.url=="/product"){
-          //if(this.globals.pos_open) this.router.navigate(['/pos-session']);
           this.rute = this.rute + ' | Produk';
           this.layPOS = false;
           this.wiggle();
         }else if(event.url=="/productcategory"){
-          //if(this.globals.pos_open) this.router.navigate(['/pos-session']);
           this.rute = this.rute + ' | Kategori Produk';
           this.layPOS = false;
           this.wiggle();
+        }else if(event.url=="/uom"){
+          this.rute = this.rute + ' | Satuan Produk';
+          this.layPOS = false;
+          this.wiggle();
         }else if(event.url=="/brand"){
-          //if(this.globals.pos_open) this.router.navigate(['/pos-session']);
           this.rute = this.rute + ' | Merek';
           this.layPOS = false;
           this.wiggle();
         }else if(event.url=="/setting"){
-          //if(this.globals.pos_open) this.router.navigate(['/pos-session']);
           this.rute = this.rute + ' | Setting';
           this.layPOS = false;
           this.wiggle();
         }else{
-          //if(this.globals.pos_open) this.router.navigate(['/pos-session']);
           this.layPOS = false;
           this.wiggle();
         }

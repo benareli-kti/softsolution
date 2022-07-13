@@ -37,12 +37,14 @@
   </div>
   <div class="flex-left width33 text-left">
     <!--<mat-slide-toggle class="padtop" [(ngModel)]="cost_general" (change)="onCGShift($event.checked)">General</mat-slide-toggle>-->
-    <span class="span-left">Detail</span>
-    <label class="switch">
-      <input type="checkbox" [(ngModel)]="cost_general">
-      <span class="slider round"></span>
-    </label>
-    <span class="span-right">Umum</span>
+    <div fxLayout="row" fxLayoutAlign="space-between center">
+      <span class="span-left">Detail</span>
+      <label class="switch">
+        <input type="checkbox" [(ngModel)]="cost_general">
+        <span class="slider round"></span>
+      </label>
+      <span class="span-right">Umum</span>
+    </div>
   </div>
 </div>
 
@@ -56,13 +58,24 @@
   	</div>
   </div>
   <div class="flex-left width33 text-left">
-    <!--<mat-slide-toggle class="padtop" [(ngModel)]="pos_shift" (change)="onPosShift($event.checked)">Using Shift</mat-slide-toggle>-->
-    <span class="span-left">No Shift</span>
-    <label class="switch">
-      <input type="checkbox" [(ngModel)]="pos_shift">
-      <span class="slider round"></span>
-    </label>
-    <span class="span-right">Shift</span>
+    <div fxLayout="row" fxLayoutAlign="space-between center">
+      <span class="span-left">Retail</span>
+      <label class="switch">
+        <input type="checkbox" [(ngModel)]="restaurant">
+        <span class="slider round"></span>
+      </label>
+      <span class="span-right">Restaurant</span>
+    </div>
+  </div>
+  <div class="flex-left width33 text-left">
+    <div fxLayout="row" fxLayoutAlign="space-between center">
+      <span class="span-left">No-Shift</span>
+      <label class="switch">
+        <input type="checkbox" [(ngModel)]="pos_shift">
+        <span class="slider round"></span>
+      </label>
+      <span class="span-right">Shift</span>
+    </div>
   </div>
 </div>
 

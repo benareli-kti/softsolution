@@ -40,6 +40,7 @@ import { RegisterComponent } from './landing/register/register.component';
 import { ProductCatComponent } from './main/product-cat/product-cat.component';
 import { BrandComponent } from './main/brand/brand.component';
 import { ProductComponent } from './main/product/product.component';
+import { UomComponent } from './main/uom/uom.component';
 import { WarehouseComponent } from './main/warehouse/warehouse.component';
 import { PartnerComponent } from './main/partner/partner.component';
 import { PosComponent } from './main/pos/pos.component';
@@ -69,6 +70,7 @@ import { PrintposDialogComponent } from './main/dialog/printpos-dialog.component
     ProductCatComponent,
     BrandComponent,
     ProductComponent,
+    UomComponent,
     WarehouseComponent,
     PartnerComponent,
     PosComponent,
@@ -87,7 +89,8 @@ import { PrintposDialogComponent } from './main/dialog/printpos-dialog.component
     PaymentDialogComponent,
     UploadDialogComponent,
     PurchaseDialogComponent,
-    PrintposDialogComponent
+    PrintposDialogComponent,
+    UomComponent
   ],
   imports: [
     BrowserModule,

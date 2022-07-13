@@ -5,6 +5,10 @@ export class Product {
 	name?: string;
 	description?: string;
 	barcode?: string;
+	suom?: any;
+	puom?: any;
+	fg?: boolean;
+	rm?: boolean;
 	image?: string;
     listprice?: number;
     botprice?: number;

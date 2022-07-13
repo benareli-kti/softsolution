@@ -15,6 +15,8 @@ import { Productcat } from 'src/app/models/productcat.model';
 import { ProductCatService } from 'src/app/services/product-cat.service';
 import { Brand } from 'src/app/models/brand.model';
 import { BrandService } from 'src/app/services/brand.service';
+import { Uom } from 'src/app/models/uom.model';
+import { UomService } from 'src/app/services/uom.service';
 import { ProductDialogComponent } from '../dialog/product-dialog.component';
 import { StockMoveDialogComponent } from '../dialog/stockmove-dialog.component';
 import { UploadDialogComponent } from '../dialog/upload-dialog.component';
@@ -29,6 +31,7 @@ export class ProductComponent implements OnInit {
   products?: Product[];
   productcats?: Productcat[];
   brands?: Brand[];
+  uom?: Uom[];
   isShow = false;
   categoryid?: any;
   brandid?: any;
@@ -45,7 +48,7 @@ export class ProductComponent implements OnInit {
 
   //Table
   displayedColumns: string[] = 
-  ['name', 'qty', 'listprice',
+  ['name', 'qty', 'uom', 'listprice',
   'category', 'brand', 'stock'];
   dataSource = new MatTableDataSource<Product>();
   @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;
@@ -59,6 +62,7 @@ export class ProductComponent implements OnInit {
     private productService: ProductService,
     private productCatService: ProductCatService,
     private brandService: BrandService,
+    private uomService: UomService,
     private dialog: MatDialog
   ) {}
 

@@ -44,12 +44,18 @@
   </div>
 
   <div class="flexfull" style="margin-top:25pt;">
-    <div class="descrip flex50">Kuantiti *</div>
-    <div class="descrip flex50 margin_7">HPP *</div>
+    <div class="descrip flex33">Kuantiti *</div>
+    <div class="descrip flex33 margin_7">Satuan *</div>
+    <div class="descrip flex33 margin_7">HPP *</div>
   </div>
   <div class="flexfull">
-    <input class="inputs flex50" placeholder="Jumlah" type="number" [(ngModel)]="datqty">
-    <input class="inputs flex50 margin_7" placeholder="HPP" type="number" [(ngModel)]="datcost">
+    <input class="inputs flex33" placeholder="Jumlah" type="number" [(ngModel)]="datqty">
+    <select class="inputs flex33 margin_7" [(ngModel)]="datuom">
+        <option *ngFor="let uom of uoms" [value]="uom.id">
+          {{ uom.uom_name }}
+        </option>
+      </select>
+    <input class="inputs flex33 margin_7" placeholder="HPP" type="number" [(ngModel)]="datcost">
   </div>
 </div>
 

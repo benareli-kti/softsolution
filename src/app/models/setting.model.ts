@@ -7,4 +7,5 @@ export class Setting {
     comp_phone?: string;
     comp_email?: string;
 	pos_shift?: boolean;
+	restaurant?: boolean;
 }
